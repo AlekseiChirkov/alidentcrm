@@ -15,10 +15,10 @@ class Category(models.Model):
 
 class MyUserManager(BaseUserManager):
     def create_user(self, email, phone, password=None):
-        if not email:
-            raise ValueError("Пожалуйста, введите email")
-        if not phone:
-            raise ValueError("Пожалуйста, введите телефон")
+        # if not email:
+        #     raise ValueError("Пожалуйста, введите email")
+        # if not phone:
+        #     raise ValueError("Пожалуйста, введите телефон")
 
         user = self.model(
             email=self.normalize_email(email),
