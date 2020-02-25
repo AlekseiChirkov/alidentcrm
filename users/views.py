@@ -52,7 +52,7 @@ class MyUserViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": serializer.errors, "state": "2"})
 
     def delete(self, request):
         pk = request.data.get('id', None)
