@@ -9,8 +9,8 @@ class ServiceCategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ServiceSerializer(serializers.HyperlinkedModelSerializer):
-    category = ServiceCategorySerializer()
+class ServiceSerializer(serializers.ModelSerializer):
+    # category = ServiceCategorySerializer()
 
     class Meta:
         model = Service
