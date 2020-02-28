@@ -13,7 +13,7 @@ AliDent is a stomatology clinic
 
     + Headers
     
-            Location: api/users
+            Location: /api/users
             
     + Body
 
@@ -31,20 +31,24 @@ AliDent is a stomatology clinic
                 }
             ]
 
-### Create a New User [POST]
+### Register a New User [POST]
 
 + Request (application/json)
 
-        {
-            "id": 1,
-            "password": "pbkdf2_sha256$180000$tVNBUn3ZLq63$1nt8ZCIKor7chlmiMY48cBc7VcLTIgSrOQKSxo0UWb4=",
-            "name": "",
-            "surname": "",
-            "patronymic": "",
-            "birthday": null,
-            "phone": "0559129557",
-            "email": "tektonik_boy98@mail.ru",
-        }
+     + Headers
+    
+            Location: /rest-auth/registration/
+    
+    + Body
+
+            [
+                {
+                    "username": "0559129557",
+                    "email": "tektonik_boy98@mail.ru",
+                    "password1": "Aleksissanchez98",
+                    "password2": "Aleksissanchez98"
+                }
+            ]
 
 + Response 201 (application/json)
 
@@ -56,13 +60,13 @@ AliDent is a stomatology clinic
 
             {
                 "id": 1,
-                "password": "pbkdf2_sha256$180000$tVNBUn3ZLq63$1nt8ZCIKor7chlmiMY48cBc7VcLTIgSrOQKSxo0UWb4=",
-                "last_login": "2020-02-23T19:24:03.365819+06:00",
-                "name": "",
-                "surname": "",
-                "patronymic": "",
+                "password": "pbkdf2_sha256$180000$01uuDBDXEyFW$GwyjwGyE9/s2Fly+dHyfhXDul6AhY+cVVnO0KsDA2Fc=",
+                "last_login": "2020-02-28T19:33:54+06:00",
+                "name": "Алексей",
+                "surname": "Чирков",
+                "patronymic": "Николаевич",
                 "birthday": null,
-                "phone": "0559129557",
+                "username": "0559129557",
                 "email": "tektonik_boy98@mail.ru",
                 "is_admin": true,
                 "is_staff": true,
@@ -156,7 +160,6 @@ AliDent is a stomatology clinic
             }
 
 
-
 ## Service Collection [/api/services/]
 
 ### List All Services [GET]
@@ -178,30 +181,3 @@ AliDent is a stomatology clinic
                     "category": 1
                 }
             ]
-
-### Create a New User-Category [POST]
-
-+ Request (application/json)
-
-        {
-            "code": 1.1,
-            "name": "Удаление верхнего резца",
-            "price": "1500.00",
-            "category": 1
-        }
-
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: api/service-categories/2
-
-    + Body
-
-            {
-                "id": 1,
-                "code": 1.1,
-                "name": "Удаление верхнего резца",
-                "price": "1500.00",
-                "category": 1
-            }
