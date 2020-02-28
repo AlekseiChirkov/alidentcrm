@@ -38,18 +38,12 @@ AliDent is a stomatology clinic
         {
             "id": 1,
             "password": "pbkdf2_sha256$180000$tVNBUn3ZLq63$1nt8ZCIKor7chlmiMY48cBc7VcLTIgSrOQKSxo0UWb4=",
-            "last_login": "2020-02-23T19:24:03.365819+06:00",
             "name": "",
             "surname": "",
             "patronymic": "",
             "birthday": null,
             "phone": "0559129557",
             "email": "tektonik_boy98@mail.ru",
-            "is_admin": true,
-            "is_staff": true,
-            "is_active": true,
-            "is_superuser": true,
-            "category": null
         }
 
 + Response 201 (application/json)
@@ -79,7 +73,7 @@ AliDent is a stomatology clinic
             
             
             
-## Users-categories collection [/api/users-categories/]
+## Users-Categories Collection [/api/users-categories/]
 
 ### List All Categories [GET]
 
@@ -103,7 +97,6 @@ AliDent is a stomatology clinic
 + Request (application/json)
 
         {
-            "id": 1,
             "name": "Врач",
         }
 
@@ -111,11 +104,104 @@ AliDent is a stomatology clinic
 
     + Headers
 
-            Location: api/users/2
+            Location: api/users-categories/2
 
     + Body
 
             {
                 "id": 2,
                 "name": "Врач",
+            }
+            
+            
+
+## Service Category Collection [/api/service-categories/]
+
+### List All Service-Categories [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: api/service-categories/
+            
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "name": "Удаление",
+                }
+            ]
+
+### Create a New Service-Category [POST]
+
++ Request (application/json)
+
+        {
+            "name": "Удаление",
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: api/service-categories/2
+
+    + Body
+
+            {
+                "id": 2,
+                "name": "Удаление",
+            }
+
+
+
+## Service Collection [/api/services/]
+
+### List All Services [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: api/services/
+            
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "code": 1.1,
+                    "name": "Удаление верхнего резца",
+                    "price": "1500.00",
+                    "category": 1
+                }
+            ]
+
+### Create a New User-Category [POST]
+
++ Request (application/json)
+
+        {
+            "code": 1.1,
+            "name": "Удаление верхнего резца",
+            "price": "1500.00",
+            "category": 1
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: api/service-categories/2
+
+    + Body
+
+            {
+                "id": 1,
+                "code": 1.1,
+                "name": "Удаление верхнего резца",
+                "price": "1500.00",
+                "category": 1
             }
