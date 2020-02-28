@@ -75,7 +75,40 @@ AliDent is a stomatology clinic
                 "category": null
             }
             
+## User login [/rest-auth/login/]
+
+### List All Categories [POST]
++ Request (application/json)
+
+    + Headers
+    
+            Location: /rest-auth/login/
+    
+    + Body
+
+            [
+                {
+                    "username": "0559129557",
+                    "email": "tektonik_boy98@mail.ru"
+                    "password": "Aleksissanchez98"
+                }
+            ]
             
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: /rest-auth/login/
+            
+    + Body
+
+            [
+                {
+                    "username": "0559129557",
+                    "email": "tektonik_boy98@mail.ru"
+                    "password": "Aleksissanchez98"
+                }
+            ]
             
 ## Users-Categories Collection [/api/users-categories/]
 
