@@ -11,8 +11,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class MyUserAdmin(admin.ModelAdmin):
-    list_display = ['name', 'surname', 'patronymic', 'birthday', 'email', 'phone', 'category']
-    list_display_links = ['name', 'surname', 'patronymic', 'email', 'phone']
+    list_display = ['username', 'name', 'surname', 'patronymic', 'birthday', 'category']
+    list_display_links = ['username', 'name', 'surname', 'patronymic']
 
     class Meta:
         model = MyUser

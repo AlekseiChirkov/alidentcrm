@@ -47,8 +47,8 @@ class MyUserViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(user, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+    def post(self):
+        serializer = self.serializer_class(data=self.request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -14,7 +14,7 @@ class Category(models.Model):
 
 
 class MyUserManager(BaseUserManager):
-    def create_user(self, email, phone, password=None):
+    def create_user(self, username, email, password=None):
         # if not email:
         #     raise ValueError("Пожалуйста, введите email")
         # if not phone:
@@ -22,17 +22,17 @@ class MyUserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
-            phone=phone,
+            username=username,
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, phone, password):
+    def create_superuser(self, username, email, password):
         user = self.create_user(
             email=self.normalize_email(email),
+            username=username,
             password=password,
-            phone=phone,
         )
         user.is_admin = True
         user.is_staff = True
@@ -42,11 +42,11 @@ class MyUserManager(BaseUserManager):
 
 
 class MyUser(AbstractBaseUser):
-    name = models.CharField(verbose_name='Имя', max_length=64)
-    surname = models.CharField(verbose_name='Фамилия', max_length=64)
-    patronymic = models.CharField(verbose_name='Отчество', max_length=64)
-    birthday = models.DateField(verbose_name='Дата рождения', null=True)
-    phone = models.CharField(verbose_name='Телефон', max_length=64, unique=True)
+    name = models.CharField(verbose_name='Имя', max_length=64, null=True, blank=True)
+    surname = models.CharField(verbose_name='Фамилия', max_length=64, null=True, blank=True)
+    patronymic = models.CharField(verbose_name='Отчество', max_length=64, null=True, blank=True)
+    birthday = models.DateField(verbose_name='Дата рождения', null=True, blank=True)
+    username = models.CharField(verbose_name='Телефон', max_length=64, unique=True)
     email = models.EmailField(verbose_name='Email', max_length=64, unique=True)
     category = models.ForeignKey(
         Category, verbose_name='Должность', on_delete=models.CASCADE, default=None, null=True, blank=True
@@ -56,8 +56,8 @@ class MyUser(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['phone', ]
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email', ]
 
     objects = MyUserManager()
 

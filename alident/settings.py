@@ -44,6 +44,14 @@ INSTALLED_APPS = [
 
     # rest-framework
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+
+    # django allauth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 
     # corsheaders
     'corsheaders',
@@ -52,6 +60,8 @@ INSTALLED_APPS = [
     'crm.apps.CrmConfig',
     'users.apps.UsersConfig',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -64,6 +74,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
 
 APPEND_SLASH = False
 CORS_ORIGIN_ALLOW_ALL = True
@@ -92,7 +110,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'alident.wsgi.application'
 
 
@@ -136,6 +153,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

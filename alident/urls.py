@@ -17,8 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    # admin urls
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
+
+    # API urls
     path('', include('crm.urls')),
+
+    # rest-framework urls
     path('rest-framework/', include('rest_framework.urls')),
-    # path('users/', include('users.urls')),
+    path('rest-auth/', include('rest_auth.urls')),
+    path('rest-auth/registration/', include('rest_auth.registration.urls')),
 ]
