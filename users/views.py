@@ -47,12 +47,18 @@ class MyUserViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(user, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self):
-        serializer = self.serializer_class(data=self.request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response({"message": serializer.errors, "state": "2"})
+    def post(self, request):
+        if request.method == 'POST':
+            serializer = self.serializer_class(data=request.data)
+            data = {}
+            if serializer.is_valid():
+                account = serializer.save()
+                data['response'] = "Successfully registered a new user"
+                data['email'] = account.email
+                data['username'] = account.username
+            else:
+                data = serializer.errors
+            return Response(data)
 
     def delete(self, request):
         pk = request.data.get('id', None)
