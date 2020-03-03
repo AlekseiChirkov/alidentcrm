@@ -15,6 +15,15 @@ class AppointmentInline(admin.TabularInline):
     extra = 0
 
 
+class StaffAdmin(admin.ModelAdmin):
+    list_display = ['username', 'email', 'name', 'surname', 'patronymic', 'birthday', 'work_time']
+    list_display_links = ['username', 'email', 'name', 'surname', 'patronymic']
+    exclude = ('password', 'last_login')
+
+    class Meta:
+        model = Staff
+
+
 class ServiceCategoryAdmin(admin.ModelAdmin):
     list_display = [field.name for field in ServiceCategory._meta.fields]
 
@@ -80,6 +89,7 @@ class ExpenseAdmin(admin.ModelAdmin):
         model = Expense
 
 
+admin.site.register(Staff, StaffAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
 admin.site.register(Day, DayAdmin)
 admin.site.register(Service, ServiceAdmin)

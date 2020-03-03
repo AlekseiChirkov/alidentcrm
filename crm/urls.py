@@ -7,7 +7,7 @@ from users import views as user_view
 
 router = routers.DefaultRouter()
 router.register('users', user_view.MyUserViewSet)
-router.register('users-categories', user_view.CategoryViewSet)
+router.register('staff', views.StaffViewSet)
 router.register('service-categories', views.ServiceCategoryViewSet)
 router.register('services', views.ServiceViewSet)
 router.register('days', views.DayViewSet)

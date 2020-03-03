@@ -11,6 +11,42 @@ from .serializers import *
 from .models import *
 
 
+class StaffViewSet(viewsets.ModelViewSet):
+    queryset = Staff.objects.all()
+    serializer_class = StaffSerializer
+
+    def get(self):
+        user = self.queryset.all()
+        serializer = self.serializer_class(user, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        if request.method == 'POST':
+            serializer = self.serializer_class(data=request.data)
+            data = {}
+            if serializer.is_valid():
+                account = serializer.save()
+                data['response'] = "Successfully registered a new user"
+                data['email'] = account.email
+                data['username'] = account.username
+            else:
+                data = serializer.errors
+            return Response(data)
+
+    def delete(self, request):
+        pk = request.data.get('id', None)
+        if pk is None:
+            raise ParseError('role_id is required')
+
+        try:
+            user = self.queryset.get(id=pk)
+        except Staff.DoesNotExist:
+            raise Http404
+        else:
+            user.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class ServiceCategoryViewSet(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
     queryset = ServiceCategory.objects.all()
