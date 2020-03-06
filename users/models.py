@@ -2,12 +2,23 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
+class Category(models.Model):
+    name = models.CharField(verbose_name='Категория пользователя', max_length=64)
+
+    class Meta:
+        verbose_name = "Категория пользователя"
+        verbose_name_plural = "Категории пользователей"
+
+    def __str__(self):
+        return self.name
+
+
 class MyUserManager(BaseUserManager):
     def create_user(self, username, email, password=None):
-        if not email:
-            raise ValueError("Пожалуйста, введите email")
-        if not username:
-            raise ValueError("Пожалуйста, введите телефон")
+        # if not email:
+        #     raise ValueError("Пожалуйста, введите email")
+        # if not phone:
+        #     raise ValueError("Пожалуйста, введите телефон")
 
         user = self.model(
             email=self.normalize_email(email),
@@ -37,9 +48,12 @@ class MyUser(AbstractBaseUser):
     birthday = models.DateField(verbose_name='Дата рождения', null=True, blank=True)
     username = models.CharField(verbose_name='Телефон', max_length=64, unique=True)
     email = models.EmailField(verbose_name='Email', max_length=64, unique=True)
+    category = models.ForeignKey(
+        Category, verbose_name='Категория пользователя', on_delete=models.CASCADE, default=None, null=True, blank=True
+    )
     is_admin = models.BooleanField(verbose_name='Администратор', default=False)
-    is_staff = models.BooleanField(verbose_name='Персонал', default=True)
-    is_active = models.BooleanField(verbose_name='Активность', default=True)
+    is_staff = models.BooleanField(verbose_name='Персонал', default=False)
+    is_active = models.BooleanField(verbose_name='Активен', default=True)
     is_superuser = models.BooleanField(verbose_name='Суперпользователь', default=False)
 
     USERNAME_FIELD = 'username'

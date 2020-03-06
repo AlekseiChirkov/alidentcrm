@@ -16,9 +16,7 @@ class AppointmentInline(admin.TabularInline):
 
 
 class StaffAdmin(admin.ModelAdmin):
-    list_display = ['username', 'email', 'name', 'surname', 'patronymic', 'birthday', 'work_time']
-    list_display_links = ['username', 'email', 'name', 'surname', 'patronymic']
-    exclude = ('password', 'last_login')
+    list_display = ['staff']
 
     class Meta:
         model = Staff
@@ -60,8 +58,9 @@ class StageAdmin(admin.ModelAdmin):
 
 
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Appointment._meta.fields]
+    list_display = ['name', 'surname', 'time', 'doctor', 'total_price', 'status', 'service']
     inlines = [ChequeInline]
+    exclude = ['appointment_income']
 
     class Meta:
         model = Appointment

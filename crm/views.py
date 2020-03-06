@@ -12,6 +12,7 @@ from .models import *
 
 
 class StaffViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated, )
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
 
@@ -19,19 +20,6 @@ class StaffViewSet(viewsets.ModelViewSet):
         user = self.queryset.all()
         serializer = self.serializer_class(user, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        if request.method == 'POST':
-            serializer = self.serializer_class(data=request.data)
-            data = {}
-            if serializer.is_valid():
-                account = serializer.save()
-                data['response'] = "Successfully registered a new user"
-                data['email'] = account.email
-                data['username'] = account.username
-            else:
-                data = serializer.errors
-            return Response(data)
 
     def delete(self, request):
         pk = request.data.get('id', None)
@@ -48,7 +36,7 @@ class StaffViewSet(viewsets.ModelViewSet):
 
 
 class ServiceCategoryViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = ServiceCategory.objects.all()
     serializer_class = ServiceCategorySerializer
 
@@ -78,7 +66,7 @@ class ServiceCategoryViewSet(viewsets.ModelViewSet):
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
@@ -108,7 +96,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
 
 class StockViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Stock.objects.all()
     serializer_class = StockSerializer
 
@@ -138,7 +126,7 @@ class StockViewSet(viewsets.ModelViewSet):
 
 
 class DayViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Day.objects.all()
     serializer_class = DaySerializer
 
@@ -168,7 +156,7 @@ class DayViewSet(viewsets.ModelViewSet):
 
 
 class StageViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Stage.objects.all()
     serializer_class = StageSerializer
 
@@ -198,7 +186,7 @@ class StageViewSet(viewsets.ModelViewSet):
 
 
 class AppointmentViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
 
@@ -228,7 +216,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
 
 class ChequeViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Cheque.objects.all()
     serializer_class = ChequeSerializer
 
@@ -258,7 +246,7 @@ class ChequeViewSet(viewsets.ModelViewSet):
 
 
 class ExpenseViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
 

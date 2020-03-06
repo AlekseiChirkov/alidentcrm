@@ -1,7 +1,13 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from .models import MyUser
+from .models import MyUser, Category
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
 
 
 class MyUserSerializer(serializers.ModelSerializer):

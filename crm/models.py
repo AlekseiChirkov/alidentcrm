@@ -2,39 +2,18 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from users.models import AbstractBaseUser, MyUserManager
+from users.models import MyUser
 
 
-class Staff(AbstractBaseUser):
-    name = models.CharField(verbose_name='Имя', max_length=64)
-    surname = models.CharField(verbose_name='Фамилия', max_length=64)
-    patronymic = models.CharField(verbose_name='Отчество', max_length=64)
-    email = models.EmailField(verbose_name='Email', unique=True)
-    username = models.CharField(verbose_name='Телефон', max_length=64, unique=True)
-    birthday = models.DateField(verbose_name='Дата рождения', null=True, blank=True)
-    work_time = models.CharField(verbose_name='Режим работы', max_length=64, null=True, blank=True)
-    is_admin = models.BooleanField(verbose_name='Администратор', default=False)
-    is_staff = models.BooleanField(verbose_name='Персонал', default=True)
-    is_active = models.BooleanField(verbose_name='Активность', default=True)
-    is_superuser = models.BooleanField(verbose_name='Суперпользователь', default=False)
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', ]
-
-    objects = MyUserManager()
+class Staff(models.Model):
+    staff = models.ForeignKey(MyUser, verbose_name='Персонал', on_delete=models.CASCADE, default=None)
 
     class Meta:
         verbose_name = "Персонал"
         verbose_name_plural = "Персонал"
 
     def __str__(self):
-        return '%s %s %s %s %s' % (self.name, self.surname, self.patronymic, self.birthday, self.work_time)
-
-    def has_perm(self, perm, obj=None):
-        return self.is_admin
-
-    def has_module_perms(self, app_label):
-        return True
+        return str(self.staff)
 
 
 class ServiceCategory(models.Model):
@@ -99,13 +78,13 @@ class Stage(models.Model):
 class Appointment(models.Model):
     name = models.CharField(verbose_name='Имя', max_length=64)
     surname = models.CharField(verbose_name='Фамилия', max_length=64)
-    day = models.DateField(verbose_name='День')
-    time = models.TimeField(verbose_name='Время', unique=True)
+    time = models.DateTimeField(verbose_name='Время')
     doctor = models.ForeignKey(Staff, on_delete=models.CASCADE, default=None)
     total_price = models.DecimalField(verbose_name='Сумма', max_digits=10, decimal_places=2, default=0)
     status = models.ForeignKey(Stage, verbose_name='Статус', on_delete=models.CASCADE, default=None)
     appointment_income = models.ForeignKey('Income', verbose_name='Доход с записи', on_delete=models.CASCADE,
                                            default=None, null=True, blank=True)
+    service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE, default=None)
 
     class Meta:
         verbose_name = "Запись"
@@ -113,7 +92,7 @@ class Appointment(models.Model):
 
     def __str__(self):
         return '%s %s %s %s' % (
-            self.name, self.surname, self.day, self.time
+            self.name, self.surname, self.time, self.time
         )
 
 
