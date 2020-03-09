@@ -19,7 +19,7 @@ class ServiceCategorySerializer(serializers.ModelSerializer):
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-    # category = ServiceCategorySerializer()
+    category = ServiceCategorySerializer()
 
     class Meta:
         model = Service
@@ -27,6 +27,8 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class StockSerializer(serializers.ModelSerializer):
+    service = ServiceSerializer()
+
     class Meta:
         model = Stock
         fields = '__all__'
@@ -45,18 +47,28 @@ class StageSerializer(serializers.ModelSerializer):
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
+    doctor = StaffSerializer()
+    service = ServiceSerializer()
+    status = StageSerializer()
+
     class Meta:
         model = Appointment
         fields = ['name', 'surname', 'time', 'doctor', 'status', 'service']
 
 
 class ChequeSerializer(serializers.ModelSerializer):
+    appointment = AppointmentSerializer()
+    service = ServiceSerializer()
+    stock = StockSerializer()
+
     class Meta:
         model = Cheque
         fields = '__all__'
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
+    service = ServiceSerializer()
+
     class Meta:
         model = Expense
         fields = '__all__'
