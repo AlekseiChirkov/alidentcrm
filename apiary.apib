@@ -5,7 +5,7 @@ HOST: https://polls.apiblueprint.org/
 
 AliDent is a stomatology clinic
 
-## Users collection [/api/users]
+## Users collection [/api/users/]
 
 ### List All Users [GET]
 
@@ -13,7 +13,7 @@ AliDent is a stomatology clinic
 
     + Headers
     
-            Location: api/users
+            Location: /api/users/
             
     + Body
 
@@ -31,20 +31,24 @@ AliDent is a stomatology clinic
                 }
             ]
 
-### Create a New User [POST]
+### Register a New User [POST]
 
 + Request (application/json)
 
-        {
-            "id": 1,
-            "password": "pbkdf2_sha256$180000$tVNBUn3ZLq63$1nt8ZCIKor7chlmiMY48cBc7VcLTIgSrOQKSxo0UWb4=",
-            "name": "",
-            "surname": "",
-            "patronymic": "",
-            "birthday": null,
-            "phone": "0559129557",
-            "email": "tektonik_boy98@mail.ru",
-        }
+     + Headers
+    
+            Location: /rest-auth/registration/
+    
+    + Body
+
+            [
+                {
+                    "username": "0559129557",
+                    "email": "tektonik_boy98@mail.ru",
+                    "password1": "Aleksissanchez98",
+                    "password2": "Aleksissanchez98"
+                }
+            ]
 
 + Response 201 (application/json)
 
@@ -55,24 +59,182 @@ AliDent is a stomatology clinic
     + Body
 
             {
-                "id": 1,
-                "password": "pbkdf2_sha256$180000$tVNBUn3ZLq63$1nt8ZCIKor7chlmiMY48cBc7VcLTIgSrOQKSxo0UWb4=",
-                "last_login": "2020-02-23T19:24:03.365819+06:00",
-                "name": "",
-                "surname": "",
-                "patronymic": "",
-                "birthday": null,
-                "phone": "0559129557",
+                "username": "0559129557",
                 "email": "tektonik_boy98@mail.ru",
-                "is_admin": true,
-                "is_staff": true,
-                "is_active": true,
-                "is_superuser": true,
-                "category": null
+                "name": null,
+                "surname": null,
+                "patronymic": null,
+                "birthday": null
             }
             
+## User login [/rest-auth/login/]
+
+### List All Categories [POST]
++ Request (application/json)
+
+    + Headers
+    
+            Location: /rest-auth/login/
+    
+    + Body
+
+            [
+                {
+                    "username": "0559129557",
+                    "email": "tektonik_boy98@mail.ru"
+                    "password": "Aleksissanchez98"
+                }
+            ]
             
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: /rest-auth/login/
             
+    + Body
+
+            [
+                {
+                    "username": "0559129557",
+                    "email": "tektonik_boy98@mail.ru"
+                    "password": "Aleksissanchez98"
+                }
+            ]
+        
+        
+        
+## Appointments [/api/appointments/]
+
+### List All Users [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: /api/appointments/
+            
+    + Body
+
+            [
+                {
+                    "name": "Евгений",
+                    "surname": "Киселев",
+                    "time": "2020-03-05T11:30:06+06:00",
+                    "doctor": {
+                        "id": 1,
+                        "staff": {
+                            "username": "0559129557",
+                            "email": "tektonik_boy98@mail.ru",
+                            "name": null,
+                            "surname": null,
+                            "patronymic": null,
+                            "birthday": null
+                        }
+                    },
+                    "status": {
+                        "id": 1,
+                        "status": "Активен"
+                    },
+                    "service": {
+                        "id": 1,
+                        "category": {
+                            "id": 1,
+                            "name": "Удаление"
+                        },
+                        "code": 1.1,
+                        "name": "Удаление коренного зуба",
+                        "price": "2000.00"
+                    }
+                }
+            ]
+
+### List All Appointments [POST]
++ Request (application/json)
+
+    + Headers
+    
+            Location: /api/appointments/
+    
+    + Body
+
+            [
+                {
+                    "name": "Евгений",
+                    "surname": "Киселев",
+                    "time": "2020-03-05T11:30:06+06:00",
+                    "doctor": {
+                        "id": 1,
+                        "staff": {
+                            "username": "0559129557",
+                            "email": "tektonik_boy98@mail.ru",
+                            "name": null,
+                            "surname": null,
+                            "patronymic": null,
+                            "birthday": null
+                        }
+                    },
+                    "status": {
+                        "id": 1,
+                        "status": "Активен"
+                    },
+                    "service": {
+                        "id": 1,
+                        "category": {
+                            "id": 1,
+                            "name": "Удаление"
+                        },
+                        "code": 1.1,
+                        "name": "Удаление коренного зуба",
+                        "price": "2000.00"
+                    }
+                }
+            ]
+            
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: /api/appointments/1
+            
+    + Body
+
+            [
+                {
+                    "name": "Евгений",
+                    "surname": "Киселев",
+                    "time": "2020-03-05T11:30:06+06:00",
+                    "doctor": {
+                        "id": 1,
+                        "staff": {
+                            "username": "0559129557",
+                            "email": "tektonik_boy98@mail.ru",
+                            "name": null,
+                            "surname": null,
+                            "patronymic": null,
+                            "birthday": null
+                        }
+                    },
+                    "status": {
+                        "id": 1,
+                        "status": "Активен"
+                    },
+                    "service": {
+                        "id": 1,
+                        "category": {
+                            "id": 1,
+                            "name": "Удаление"
+                        },
+                        "code": 1.1,
+                        "name": "Удаление коренного зуба",
+                        "price": "2000.00"
+                    }
+                }
+            ]
+        
+        
+        
+           
 ## Users-Categories Collection [/api/users-categories/]
 
 ### List All Categories [GET]
@@ -156,7 +318,6 @@ AliDent is a stomatology clinic
             }
 
 
-
 ## Service Collection [/api/services/]
 
 ### List All Services [GET]
@@ -171,37 +332,211 @@ AliDent is a stomatology clinic
 
             [
                 {
-                    "id": 1,
-                    "code": 1.1,
-                    "name": "Удаление верхнего резца",
-                    "price": "1500.00",
-                    "category": 1
+                    {
+                        "id": 1,
+                        "category": {
+                            "id": 1,
+                            "name": "Удаление"
+                        },
+                        "code": 1.1,
+                        "name": "Удаление коренного зуба",
+                        "price": "2000.00"
+                    }
                 }
             ]
+            
 
-### Create a New User-Category [POST]
+### Create a New Service [POST]
 
 + Request (application/json)
 
         {
-            "code": 1.1,
-            "name": "Удаление верхнего резца",
-            "price": "1500.00",
-            "category": 1
+            {
+                "id": 1,
+                "category": {
+                    "id": 1,
+                    "name": "Удаление"
+                },
+                "code": 1.1,
+                "name": "Удаление коренного зуба",
+                "price": "2000.00"
+            }
         }
 
 + Response 201 (application/json)
 
     + Headers
 
-            Location: api/service-categories/2
+            Location: api/services/1
+
+    + Body
+
+            {
+                {
+                    "id": 1,
+                    "category": {
+                        "id": 1,
+                        "name": "Удаление"
+                    },
+                    "code": 1.1,
+                    "name": "Удаление коренного зуба",
+                    "price": "2000.00"
+                }
+            }
+            
+            
+
+## Work Days Collection [/api/days/]
+
+### List All Days [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: api/days/
+            
+    + Body
+
+            [
+                {
+                    "day": "Понедельник"
+                }
+            ]
+            
+
+### Create a New Days [POST]
+
++ Request (application/json)
+
+        {
+            "day": "Понедельник"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: api/days/1
+
+    + Body
+
+            {
+                "day": "Понедельник"
+            }
+            
+            
+            
+## Stocks Collection [/api/stocks/]
+
+### List All Stocks [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: api/stocks/
+            
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "service": {
+                        "id": 1,
+                        "category": {
+                            "id": 1,
+                            "name": "Удаление"
+                        },
+                        "code": 1.1,
+                        "name": "Удаление коренного зуба",
+                        "price": "2000.00"
+                    },
+                    "percentage": 15
+                }
+            ]
+            
+
+### Create a New Stock [POST]
+
++ Request (application/json)
+
+        {
+            "service": {
+                "id": 1,
+                "category": {
+                    "id": 1,
+                    "name": "Удаление"
+                },
+                "code": 1.1,
+                "name": "Удаление коренного зуба",
+                "price": "2000.00"
+            },
+            "percentage": 15
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: api/stock/1
 
     + Body
 
             {
                 "id": 1,
-                "code": 1.1,
-                "name": "Удаление верхнего резца",
-                "price": "1500.00",
-                "category": 1
+                "service": {
+                    "id": 1,
+                    "category": {
+                        "id": 1,
+                        "name": "Удаление"
+                    },
+                    "code": 1.1,
+                    "name": "Удаление коренного зуба",
+                    "price": "2000.00"
+                },
+                "percentage": 15
+            }
+            
+
+
+## Statuses Collection [/api/status/]
+
+### List All Statuses [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: api/statuses/
+            
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "status": "Активен"
+                }
+            ]
+            
+
+### Create a New Status [POST]
+
++ Request (application/json)
+
+        {
+            "status": "Активен"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: api/statuses/1
+
+    + Body
+
+            {
+                "id": 1,
+                "status": "Активен"
             }
