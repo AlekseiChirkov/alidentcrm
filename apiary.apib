@@ -59,20 +59,12 @@ AliDent is a stomatology clinic
     + Body
 
             {
-                "id": 1,
-                "password": "pbkdf2_sha256$180000$01uuDBDXEyFW$GwyjwGyE9/s2Fly+dHyfhXDul6AhY+cVVnO0KsDA2Fc=",
-                "last_login": "2020-02-28T19:33:54+06:00",
-                "name": "Алексей",
-                "surname": "Чирков",
-                "patronymic": "Николаевич",
-                "birthday": null,
                 "username": "0559129557",
                 "email": "tektonik_boy98@mail.ru",
-                "is_admin": true,
-                "is_staff": true,
-                "is_active": true,
-                "is_superuser": true,
-                "category": null
+                "name": null,
+                "surname": null,
+                "patronymic": null,
+                "birthday": null
             }
             
 ## User login [/rest-auth/login/]
@@ -129,9 +121,31 @@ AliDent is a stomatology clinic
                     "name": "Евгений",
                     "surname": "Киселев",
                     "time": "2020-03-05T11:30:06+06:00",
-                    "doctor": 1,
-                    "status": 1,
-                    "service": 1
+                    "doctor": {
+                        "id": 1,
+                        "staff": {
+                            "username": "0559129557",
+                            "email": "tektonik_boy98@mail.ru",
+                            "name": null,
+                            "surname": null,
+                            "patronymic": null,
+                            "birthday": null
+                        }
+                    },
+                    "status": {
+                        "id": 1,
+                        "status": "Активен"
+                    },
+                    "service": {
+                        "id": 1,
+                        "category": {
+                            "id": 1,
+                            "name": "Удаление"
+                        },
+                        "code": 1.1,
+                        "name": "Удаление коренного зуба",
+                        "price": "2000.00"
+                    }
                 }
             ]
 
@@ -149,9 +163,31 @@ AliDent is a stomatology clinic
                     "name": "Евгений",
                     "surname": "Киселев",
                     "time": "2020-03-05T11:30:06+06:00",
-                    "doctor": 1,
-                    "status": 1,
-                    "service": 1
+                    "doctor": {
+                        "id": 1,
+                        "staff": {
+                            "username": "0559129557",
+                            "email": "tektonik_boy98@mail.ru",
+                            "name": null,
+                            "surname": null,
+                            "patronymic": null,
+                            "birthday": null
+                        }
+                    },
+                    "status": {
+                        "id": 1,
+                        "status": "Активен"
+                    },
+                    "service": {
+                        "id": 1,
+                        "category": {
+                            "id": 1,
+                            "name": "Удаление"
+                        },
+                        "code": 1.1,
+                        "name": "Удаление коренного зуба",
+                        "price": "2000.00"
+                    }
                 }
             ]
             
@@ -168,9 +204,31 @@ AliDent is a stomatology clinic
                     "name": "Евгений",
                     "surname": "Киселев",
                     "time": "2020-03-05T11:30:06+06:00",
-                    "doctor": 1,
-                    "status": 1,
-                    "service": 1
+                    "doctor": {
+                        "id": 1,
+                        "staff": {
+                            "username": "0559129557",
+                            "email": "tektonik_boy98@mail.ru",
+                            "name": null,
+                            "surname": null,
+                            "patronymic": null,
+                            "birthday": null
+                        }
+                    },
+                    "status": {
+                        "id": 1,
+                        "status": "Активен"
+                    },
+                    "service": {
+                        "id": 1,
+                        "category": {
+                            "id": 1,
+                            "name": "Удаление"
+                        },
+                        "code": 1.1,
+                        "name": "Удаление коренного зуба",
+                        "price": "2000.00"
+                    }
                 }
             ]
         
@@ -274,11 +332,16 @@ AliDent is a stomatology clinic
 
             [
                 {
-                    "id": 1,
-                    "code": 1.1,
-                    "name": "Удаление верхнего резца",
-                    "price": "1500.00",
-                    "category": 1
+                    {
+                        "id": 1,
+                        "category": {
+                            "id": 1,
+                            "name": "Удаление"
+                        },
+                        "code": 1.1,
+                        "name": "Удаление коренного зуба",
+                        "price": "2000.00"
+                    }
                 }
             ]
             
@@ -288,10 +351,16 @@ AliDent is a stomatology clinic
 + Request (application/json)
 
         {
-            "code": 1.1,
-            "name": "Удаление зуба",
-            "price": "1500.00",
-            "category": 1
+            {
+                "id": 1,
+                "category": {
+                    "id": 1,
+                    "name": "Удаление"
+                },
+                "code": 1.1,
+                "name": "Удаление коренного зуба",
+                "price": "2000.00"
+            }
         }
 
 + Response 201 (application/json)
@@ -303,11 +372,16 @@ AliDent is a stomatology clinic
     + Body
 
             {
-                "id": 1,
-                "code": 1.1,
-                "name": "Удаление зуба",
-                "price": "1500.00",
-                "category": 1
+                {
+                    "id": 1,
+                    "category": {
+                        "id": 1,
+                        "name": "Удаление"
+                    },
+                    "code": 1.1,
+                    "name": "Удаление коренного зуба",
+                    "price": "2000.00"
+                }
             }
             
             
@@ -368,8 +442,17 @@ AliDent is a stomatology clinic
             [
                 {
                     "id": 1,
-                    "percentage": 15,
-                    "service": 1
+                    "service": {
+                        "id": 1,
+                        "category": {
+                            "id": 1,
+                            "name": "Удаление"
+                        },
+                        "code": 1.1,
+                        "name": "Удаление коренного зуба",
+                        "price": "2000.00"
+                    },
+                    "percentage": 15
                 }
             ]
             
@@ -379,8 +462,17 @@ AliDent is a stomatology clinic
 + Request (application/json)
 
         {
-            "percentage": 15,
-            "service": 1
+            "service": {
+                "id": 1,
+                "category": {
+                    "id": 1,
+                    "name": "Удаление"
+                },
+                "code": 1.1,
+                "name": "Удаление коренного зуба",
+                "price": "2000.00"
+            },
+            "percentage": 15
         }
 
 + Response 201 (application/json)
@@ -393,8 +485,17 @@ AliDent is a stomatology clinic
 
             {
                 "id": 1,
-                "percentage": 15,
-                "service": 1
+                "service": {
+                    "id": 1,
+                    "category": {
+                        "id": 1,
+                        "name": "Удаление"
+                    },
+                    "code": 1.1,
+                    "name": "Удаление коренного зуба",
+                    "price": "2000.00"
+                },
+                "percentage": 15
             }
             
 
