@@ -1,16 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
-
-class Category(models.Model):
-    name = models.CharField(verbose_name='Категория пользователя', max_length=64)
-
-    class Meta:
-        verbose_name = "Категория пользователя"
-        verbose_name_plural = "Категории пользователей"
-
-    def __str__(self):
-        return self.name
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 
 class MyUserManager(BaseUserManager):
@@ -41,16 +30,19 @@ class MyUserManager(BaseUserManager):
         return user
 
 
-class MyUser(AbstractBaseUser):
+class MyUser(AbstractBaseUser, PermissionsMixin):
+    USER_TYPES = (
+        ('Owner', 'Owner'),
+        ('Doctor', 'Doctor'),
+        ('Client', 'Client')
+    )
     name = models.CharField(verbose_name='Имя', max_length=64, null=True, blank=True)
     surname = models.CharField(verbose_name='Фамилия', max_length=64, null=True, blank=True)
     patronymic = models.CharField(verbose_name='Отчество', max_length=64, null=True, blank=True)
     birthday = models.DateField(verbose_name='Дата рождения', null=True, blank=True)
     username = models.CharField(verbose_name='Телефон', max_length=64, unique=True)
     email = models.EmailField(verbose_name='Email', max_length=64, unique=True)
-    category = models.ForeignKey(
-        Category, verbose_name='Категория пользователя', on_delete=models.CASCADE, default=None, null=True, blank=True
-    )
+    category = models.CharField(verbose_name='Категория пользователя', choices=USER_TYPES, max_length=64)
     is_admin = models.BooleanField(verbose_name='Администратор', default=False)
     is_staff = models.BooleanField(verbose_name='Персонал', default=False)
     is_active = models.BooleanField(verbose_name='Активен', default=True)

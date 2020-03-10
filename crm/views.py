@@ -3,16 +3,14 @@ from rest_framework import status, viewsets
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
-from django.contrib import messages
 
+from users.permissions import IsStaffOrAuthenticatedReadOnly
 from .serializers import *
 from .models import *
 
 
 class StaffViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
 
@@ -36,7 +34,7 @@ class StaffViewSet(viewsets.ModelViewSet):
 
 
 class ServiceCategoryViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
     queryset = ServiceCategory.objects.all()
     serializer_class = ServiceCategorySerializer
 
@@ -66,7 +64,7 @@ class ServiceCategoryViewSet(viewsets.ModelViewSet):
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
@@ -96,7 +94,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
 
 class StockViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
     queryset = Stock.objects.all()
     serializer_class = StockSerializer
 
@@ -126,7 +124,7 @@ class StockViewSet(viewsets.ModelViewSet):
 
 
 class DayViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
     queryset = Day.objects.all()
     serializer_class = DaySerializer
 
@@ -156,7 +154,7 @@ class DayViewSet(viewsets.ModelViewSet):
 
 
 class StageViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
     queryset = Stage.objects.all()
     serializer_class = StageSerializer
 
@@ -216,7 +214,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
 
 class ChequeViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
     queryset = Cheque.objects.all()
     serializer_class = ChequeSerializer
 
@@ -246,7 +244,7 @@ class ChequeViewSet(viewsets.ModelViewSet):
 
 
 class ExpenseViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
 
