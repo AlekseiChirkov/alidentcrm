@@ -4,20 +4,19 @@ from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from .permissions import IsOwnerOrReadOnly, IsStaffOrAuthenticatedReadOnly
 from .serializers import *
 from .models import *
 
 
 class MyUserViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsStaffOrAuthenticatedReadOnly, )
+    permission_classes = (IsAuthenticated, )
     queryset = MyUser.objects.all()
     serializer_class = MyUserSerializer
 
-    def get(self):
-        user = self.queryset.all()
-        serializer = self.serializer_class(user, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        return self.queryset.filter(username=self.request.user)
+        # serializer = self.serializer_class(user, many=True)
+        # return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         if request.method == 'POST':
