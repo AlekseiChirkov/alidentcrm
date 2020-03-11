@@ -2,21 +2,23 @@ from django.http import Http404
 from rest_framework import status, viewsets
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 
 from .serializers import *
 from .models import *
 
 
 class MyUserViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated, )
     queryset = MyUser.objects.all()
     serializer_class = MyUserSerializer
 
     def get_queryset(self):
-        return self.queryset.filter(username=self.request.user)
-        # serializer = self.serializer_class(user, many=True)
-        # return Response(serializer.data, status=status.HTTP_200_OK)
+        return self.queryset.filter(email=self.request.user)
+        # if MyUser.category == "Owner":
+        #     return self.queryset.filter(username=self.request.user)
+        # else:
+        #     user = self.queryset.all()
+        #     serializer = self.serializer_class(user, many=True)
+        #     return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         if request.method == 'POST':
