@@ -42,7 +42,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     birthday = models.DateField(verbose_name='Дата рождения', null=True, blank=True)
     username = models.CharField(verbose_name='Телефон', max_length=64, unique=True)
     email = models.EmailField(verbose_name='Email', max_length=64, unique=True)
-    category = models.CharField(verbose_name='Категория пользователя', choices=USER_TYPES, max_length=64)
+    category = models.CharField(verbose_name='Категория пользователя', choices=USER_TYPES, max_length=64, blank=True,
+                                null=True)
     is_admin = models.BooleanField(verbose_name='Администратор', default=False)
     is_staff = models.BooleanField(verbose_name='Персонал', default=False)
     is_active = models.BooleanField(verbose_name='Активен', default=True)
