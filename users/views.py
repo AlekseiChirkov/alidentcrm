@@ -1,10 +1,26 @@
 from django.http import Http404
+from django.conf import settings
+from django.shortcuts import redirect
+from django.core.mail import send_mail
 from rest_framework import status, viewsets
-from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
+from rest_framework.exceptions import ParseError
 
 from .serializers import *
 from .models import *
+
+
+def email_to_clients():
+    queryset = MyUser.objects.all().filter(category='Client')
+
+    subject = 'Test'
+    message = 'text'
+    email_from = settings.EMAIL_HOST_USER
+    for user in queryset:
+        recipient_list = [user.email]
+        send_mail(subject, message, email_from, recipient_list)
+
+    return message('OK')
 
 
 class MyUserViewSet(viewsets.ModelViewSet):

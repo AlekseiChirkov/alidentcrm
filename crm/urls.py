@@ -20,4 +20,5 @@ router.register('status', views.StageViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    # path('send/', user_view.email_to_clients),
 ]
