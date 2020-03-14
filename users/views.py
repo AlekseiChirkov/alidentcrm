@@ -13,8 +13,9 @@ from .models import *
 def email_to_clients():
     queryset = MyUser.objects.all().filter(category='Client')
 
-    subject = 'Test'
-    message = 'text'
+    subject = 'Пора на обследование!'
+    message = 'Как давно вы проверяли свои зубы? Прора их проверить! Ведь от здоровья Вашей ротовой полости зависит ' \
+              'здоровье почти всего вашего организма! '
     email_from = settings.EMAIL_HOST_USER
     for user in queryset:
         recipient_list = [user.email]
