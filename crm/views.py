@@ -64,7 +64,6 @@ class ServiceCategoryViewSet(viewsets.ModelViewSet):
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
@@ -73,24 +72,24 @@ class ServiceViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(service, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def delete(self, request):
-        pk = request.data.get('id', None)
-        if pk is None:
-            raise ParseError('role_id is required')
-
-        try:
-            service = self.queryset.get(id=pk)
-        except Service.DoesNotExist:
-            raise Http404
-        else:
-            service.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+    # def post(self, request):
+    #     serializer = self.serializer_class(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #
+    # def delete(self, request):
+    #     pk = request.data.get('id', None)
+    #     if pk is None:
+    #         raise ParseError('role_id is required')
+    #
+    #     try:
+    #         service = self.queryset.get(id=pk)
+    #     except Service.DoesNotExist:
+    #         raise Http404
+    #     else:
+    #         service.delete()
+    #         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class StockViewSet(viewsets.ModelViewSet):
@@ -184,7 +183,6 @@ class StageViewSet(viewsets.ModelViewSet):
 
 
 class AppointmentViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
 
