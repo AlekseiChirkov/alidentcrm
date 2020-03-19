@@ -10,7 +10,7 @@ from .models import *
 
 
 class StaffViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
+    permission_classes = (IsAuthenticated,)
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
 
@@ -34,7 +34,7 @@ class StaffViewSet(viewsets.ModelViewSet):
 
 
 class ServiceCategoryViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
+    permission_classes = (IsAuthenticated,)
     queryset = ServiceCategory.objects.all()
     serializer_class = ServiceCategorySerializer
 
@@ -64,7 +64,7 @@ class ServiceCategoryViewSet(viewsets.ModelViewSet):
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
+    permission_classes = (IsAuthenticated,)
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
@@ -94,7 +94,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
 
 class StockViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
+    permission_classes = (IsAuthenticated,)
     queryset = Stock.objects.all()
     serializer_class = StockSerializer
 
@@ -124,7 +124,7 @@ class StockViewSet(viewsets.ModelViewSet):
 
 
 class DayViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
+    permission_classes = (IsAuthenticated,)
     queryset = Day.objects.all()
     serializer_class = DaySerializer
 
@@ -154,7 +154,7 @@ class DayViewSet(viewsets.ModelViewSet):
 
 
 class StageViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
+    permission_classes = (IsAuthenticated,)
     queryset = Stage.objects.all()
     serializer_class = StageSerializer
 
@@ -214,7 +214,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
 
 class ChequeViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
+    permission_classes = (IsAuthenticated,)
     queryset = Cheque.objects.all()
     serializer_class = ChequeSerializer
 
@@ -244,7 +244,7 @@ class ChequeViewSet(viewsets.ModelViewSet):
 
 
 class ExpenseViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsStaffOrAuthenticatedReadOnly,)
+    permission_classes = (IsAuthenticated,)
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
 

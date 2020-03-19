@@ -28,14 +28,10 @@ class MyUserViewSet(viewsets.ModelViewSet):
     queryset = MyUser.objects.all()
     serializer_class = MyUserSerializer
 
-    def get_queryset(self):
-        return self.queryset.filter(email=self.request.user)
-        # if MyUser.category == "Owner":
-        #     return self.queryset.filter(username=self.request.user)
-        # else:
-        #     user = self.queryset.all()
-        #     serializer = self.serializer_class(user, many=True)
-        #     return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self):
+        user = self.queryset.all()
+        serializer = self.serializer_class(user, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         if request.method == 'POST':
