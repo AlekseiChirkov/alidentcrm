@@ -50,35 +50,24 @@ class DaySerializer(serializers.ModelSerializer):
         fields = ['day']
 
 
-class StageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Stage
-        fields = ['status']
-
-
 class AppointmentSerializer(serializers.ModelSerializer):
-    # doctor = StaffSerializer()
-    # service = ServiceSerializer()
-    # status = StageSerializer()
+    doctor = StaffSerializer()
+    service = ServiceSerializer()
 
     class Meta:
         model = Appointment
         fields = ['name', 'surname', 'time', 'doctor', 'status', 'service']
 
-    # def create(self, validated_data):
-    #     doctor_data = validated_data.pop('doctor')
-    #     doctor = Staff.objects.create(**validated_data)
-    #     Staff.objects.create(staff=doctor, **doctor_data)
-    #
-    #     service_data = validated_data.pop('service')
-    #     service = Service.objects.create(**validated_data)
-    #     Service.objects.create(service=service, **service_data)
-    #
-    #     status_data = validated_data.pop('status')
-    #     status = Stage.objects.create(**validated_data)
-    #     Stage.objects.create(status=status, **status_data)
-    #
-    #     return doctor
+    def create(self, validated_data):
+        doctor_data = validated_data.pop('doctor')
+        doctor = Staff.objects.create(**validated_data)
+        Staff.objects.create(staff=doctor, **doctor_data)
+
+        service_data = validated_data.pop('service')
+        service = Service.objects.create(**validated_data)
+        Service.objects.create(service=service, **service_data)
+
+        return doctor
 
 
 class ChequeSerializer(serializers.ModelSerializer):

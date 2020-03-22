@@ -50,17 +50,11 @@ class DayAdmin(admin.ModelAdmin):
         model = Day
 
 
-class StageAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Stage._meta.fields]
-
-    class Meta:
-        model = Stage
-
-
 class AppointmentAdmin(admin.ModelAdmin):
     list_display = ['name', 'surname', 'time', 'doctor', 'total_price', 'status', 'service']
     inlines = [ChequeInline]
     exclude = ['appointment_income']
+    readonly_fields = ('total_price',)
 
     class Meta:
         model = Appointment
@@ -96,5 +90,4 @@ admin.site.register(ServiceCategory, ServiceCategoryAdmin)
 admin.site.register(Cheque, ChequeAdmin)
 admin.site.register(Stock, StockAdmin)
 admin.site.register(Expense, ExpenseAdmin)
-admin.site.register(Stage, StageAdmin)
 admin.site.register(Income, IncomeAdmin)

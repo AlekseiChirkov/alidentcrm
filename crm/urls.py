@@ -15,10 +15,10 @@ router.register('appointments', views.AppointmentViewSet)
 router.register('cheques', views.ChequeViewSet)
 router.register('stocks', views.StockViewSet)
 router.register('expenses', views.ExpenseViewSet)
-router.register('status', views.StageViewSet)
 
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('crm/', include(router.urls)),
+    path('', views.home, name='home')
     # path('send/', user_view.email_to_clients),
 ]

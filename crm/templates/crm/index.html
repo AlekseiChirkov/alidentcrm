@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Home</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'crm/main.css' %}" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        <img src="{% static 'crm/img/AliDent.svg' %}" alt="">
+    </div>
+    <div class="nav">
+        <a href="">Главная</a>
+        <a href="">Прайс</a>
+        <a href="">Акции</a>
+        <a href="">Контакты</a>
+        <a href="">Галерея</a>
+        <button id="appointment">Запись</button>
+    </div>
+</nav>
+
+<div class="content">
+    <div class="content-left">
+        <h1>Ваша улыбка - <br>Наша забота!</h1>
+        <p>
+            Наши высококвалифицированные доктора приложат все усилия, чтобы ваши зубы были нетолько красивыми но и здоровыми!
+        </p>
+        <p> 
+            Абсолютно любое Вашего желание будет фелигранно и качественно исполнено нашими высококвалифицированными докторами!
+        </p>
+    </div>
+    <div class="content-right">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+          </ol>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img class="d-block w-100" src="{% static 'crm/img/content.png' %}" alt="First slide" height="530px">
+            </div>
+            <div class="carousel-item">
+              <img class="d-block w-100" src="{% static 'crm/img/content.png' %}" alt="Second slide" height="530px">
+            </div>
+            <div class="carousel-item">
+              <img class="d-block w-100" src="{% static 'crm/img/content.png' %}" alt="Third slide" height="530px">
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+    </div>
+</div>
+
+<div class="appointment">
+    <div class="appointment-left">
+        <h2>ХОТИТЕ ЗАПИСАТЬСЯ?<br>СДЕЛАЙТЕ ЭТО ПРЯМО СЕЙЧАС!</h2>
+        <hr>
+        <p>Запишитесь на прием к доктору за пару кликов<br>или по телефону!</p>
+        <div class="appointmentbtn"><button id="leftbtn">Запись онлайн!</button> <div id="or">или</div>
+        <div class="nestedbtn" id="btn">
+            <div id="whitebtn">По номеру</div>
+            <div id="pinkbtn">+996ХХХХХХХХХ</div>
+        </div>
+        </div>
+    </div>
+    <div class="appointment-right">
+        <h2>ХОТИТЕ ЗАПИСАТЬСЯ?<br>СДЕЛАЙТЕ ЭТО ПРЯМО СЕЙЧАС!</h2>
+        <hr>
+    </div>
+</div>
+
+<div class="about-us">
+    <div class="about">
+        <h3>О нас</h3>
+        <h2>Добро пожаловать в<br>нашу стоматологию!</h2>
+        <hr>
+        <h4>Наша стоматология</h4>
+        <p>
+            У нас Вы убедитесь - стоматология в настоящее время способна творить чудеса.
+        </p>
+        <p>
+            Стоматологическая клиника «АлиДент Семейная стоматолгия! » предоставляет возможность обратиться к профессионалам. Эстетическая, имплантационная, детская ортодонтическая стоматология - среди врачей нашей клиники есть высококвалифицированные специалисты всех современных направлений стоматологии.
+        </p>
+    </div>
+    <div class="gallery">
+        <div class="mainimg">
+            <img src="{% static 'crm/img/Rectangle34.png' %}" alt="">
+        </div>
+        <div class="secondaryimg">
+            <img src="{% static 'crm/img/Rectangle35.png' %}" alt="">
+            <img src="{% static 'crm/img/Rectangle36.png' %}" alt="">
+            <img src="{% static 'crm/img/Rectangle37.png' %}" alt="">
+        </div>
+    </div>
+</div>
+
+<div class="doctors">
+    <h1>Наши доктора</h1>
+    <hr>
+    <div class="doctorsimg">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a href="#first" class="nav-link active" role="tab" data-toggle="tab">
+                    <img src="{% static 'crm/img/content.png' %}" alt="">
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#second" class="nav-link" role="tab" data-toggle="tab">
+                    <img src="{% static 'crm/img/content.png' %}" alt="">
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#third" class="nav-link" role="tab" data-toggle="tab">
+                    <img src="{% static 'crm/img/content.png' %}" alt="">
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#fourth" class="nav-link" role="tab" data-toggle="tab">
+                    <img src="{% static 'crm/img/content.png' %}" alt="">
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#fifth" class="nav-link" role="tab" data-toggle="tab">
+                    <img src="{% static 'crm/img/content.png' %}" alt="">
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#sixth" class="nav-link" role="tab" data-toggle="tab">
+                    <img src="{% static 'crm/img/content.png' %}" alt="">
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#seventh" class="nav-link" role="tab" data-toggle="tab">
+                    <img src="{% static 'crm/img/content.png' %}" alt="">
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="first">
+            <div class="aboutdoctors">
+                <div class="aboutdoc">
+                    <div class="leftcontent">
+                        <h2>Диана Зубова</h2>
+                        <p>Информация</p>
+                    </div>
+                    <div class="rightcontent">
+                        <img src="{% static 'crm/img/content.png' %}" alt="">
+                    </div>
+                </div>
+                <div class="rightimgs">
+                    <div class="topimgs">
+                        <img src="{% static 'crm/img/content.png' %}" alt="">
+                        <img src="{% static 'crm/img/content.png' %}" alt="">
+                    </div>
+                    <div class="bottomimgs">
+                        <img src="{% static 'crm/img/content.png' %}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div role="tabpanel" class="tab-pane" id="second">
+            <div class="aboutdoctors">
+                <div class="aboutdoc">
+                    <div class="leftcontent">
+                        <h2>Алексей Чирков</h2>
+                        <p>Информация</p>
+                    </div>
+                    <div class="rightcontent">
+                        <img src="{% static 'crm/img/content.png' %}" alt="">
+                    </div>
+                </div>
+                <div class="rightimgs">
+                    <div class="topimgs">
+                        <img src="{% static 'crm/img/content.png' %}" alt="">
+                        <img src="{% static 'crm/img/content.png' %}" alt="">
+                    </div>
+                    <div class="bottomimgs">
+                        <img src="{% static 'crm/img/content.png' %}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div role="tabpanel" class="tab-pane" id="third">
+            <div class="aboutdoctors">
+                <div class="aboutdoc">
+                    <div class="leftcontent">
+                        <h2>Санжар Абдылдаев</h2>
+                        <p>Информация</p>
+                    </div>
+                    <div class="rightcontent">
+                        <img src="{% static 'crm/img/content.png' %}" alt="">
+                    </div>
+                </div>
+                <div class="rightimgs">
+                    <div class="topimgs">
+                        <img src="{% static 'crm/img/content.png' %}" alt="">
+                        <img src="{% static 'crm/img/content.png' %}" alt="">
+                    </div>
+                    <div class="bottomimgs">
+                        <img src="{% static 'crm/img/content.png' %}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1>Что говорят наши клиенты</h1>
+    <hr>
+    <div class="clients"></div>
+</div>
+
+
+<div class="contacts">
+    <div class="social">
+        <h1>Следите за нами</h1>
+        <div class="contactlist">
+            <ul class="listleft">
+                <li id="facebook">
+                    <a href="">www.facebook.com</a>
+                </li>
+                <li id="twitter">
+                    <a href="">www.twitter.com</a>
+                </li>
+                <li id="instagram">
+                    <a href="">www.instagram.com</a>
+                </li>
+                <li id="youtube">
+                    <a href="">www.youtube.com</a>
+                </li>
+                <li id="vimeo">
+                    <a href="">www.vimeo.com</a>
+                </li>
+            </ul>
+            <ul class="listright">
+                <li id="address">
+                    <a href="">Адрес</a>
+                </li>
+                <li id="phone">
+                    <a href="">+996ХХХХХХХХХ</a>
+                </li>
+                <li id="email">
+                    <a href="">email@email.com</a>
+                </li>
+                <li id="site">
+                    <a href="">www.ali-dent.kg</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="address">
+        <img src="{% static 'crm/img/map2.png' %}" alt="">
+        <img src="{% static 'crm/img/map1.png' %}" alt="">
+    </div>
+</div>
+<div class="footer">
+    <div class="footer-nav">
+        <a href="">Главная</a>
+        <a href="">Галерея</a>
+        <a href="">Контакты</a>
+    </div>
+</div>
+
+
+</body>
+</html>

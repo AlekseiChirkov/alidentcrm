@@ -38,7 +38,7 @@ class Service(models.Model):
         verbose_name_plural = "Услуги"
 
     def __str__(self):
-        return self.name
+        return f"{self.name}, {self.price} сом"
 
 
 class Stock(models.Model):
@@ -64,24 +64,18 @@ class Day(models.Model):
         return self.day
 
 
-class Stage(models.Model):
-    status = models.CharField(verbose_name="Статус", max_length=64)
-
-    class Meta:
-        verbose_name = "Статус"
-        verbose_name_plural = "Статусы"
-
-    def __str__(self):
-        return self.status
-
-
 class Appointment(models.Model):
+    STATUS_CHOICES = (
+        ('Активен', 'Активен'),
+        ('Завершен', 'Завершен'),
+        ('Приостановлен', 'Приостановлен')
+    )
     name = models.CharField(verbose_name='Имя', max_length=64)
     surname = models.CharField(verbose_name='Фамилия', max_length=64)
     time = models.DateTimeField(verbose_name='Время')
-    doctor = models.ForeignKey(Staff, on_delete=models.CASCADE, default=None)
+    doctor = models.ForeignKey(Staff, verbose_name='Врач', on_delete=models.CASCADE, default=None)
     total_price = models.DecimalField(verbose_name='Сумма', max_digits=10, decimal_places=2, default=0)
-    status = models.ForeignKey(Stage, verbose_name='Статус', on_delete=models.CASCADE, default=None)
+    status = models.CharField(verbose_name='Статус', max_length=64, choices=STATUS_CHOICES)
     appointment_income = models.ForeignKey('Income', verbose_name='Доход с записи', on_delete=models.CASCADE,
                                            default=None, null=True, blank=True)
     service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE, default=None)
@@ -174,4 +168,3 @@ class Expense(models.Model):
 
     def __str__(self):
         return '%s %s %s %s %s' % (self.name, self.description, self.price, self.service, self.date)
-

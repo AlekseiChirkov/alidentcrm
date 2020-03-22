@@ -1,0 +1,651 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+a:active{
+    font-weight: 900;
+}
+
+
+
+/*Navbar*/
+.navbar{
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    height: 10vh;
+    align-content: center;
+}
+.logo{
+    width: 200px;
+    height: 50px;
+    margin: 30px 150px;
+}
+.logo img {
+    width: 100%;
+    height: 100%;
+}
+.nav{
+    margin: 10px 150px;
+    width: 50%;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    justify-content: space-around;
+    align-items: center;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    padding-left: 50px;
+}
+.nav a{
+    color: #323232;
+    font-family: 'Montserrat', sans-serif;
+}
+.nav a:hover{
+    color: #BB2667;
+}
+#appointment{
+    font-family: 'Montserrat' sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    background: #BB2667;
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.13);
+    border-radius: 36px;
+    border: none;
+    width: 100px;
+    height: 34px;
+    color: white;
+}
+@media screen and (max-width: 1700px){
+    .navbar{
+        display: block;
+        justify-content: center;
+    }
+    .logo{
+        margin: 0 auto;
+    }
+    .nav{
+        margin: 0 auto;
+    }
+}
+
+
+
+
+
+/*Content*/
+.content{
+    width: 100%;
+    height: 60vh;
+    padding: 0 8%;
+    padding-top: 20px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    background: linear-gradient(0deg, #F6FAFB, #F6FAFB), radial-gradient(87.33% 251.41% at 69.43% 109.2%, #37B1CE 0%, #0F77A0 48.7%, #004C8B 99.52%);
+    box-shadow: 0px 5px 73px rgba(0, 0, 0, 0.09);
+}
+.content-left{
+    padding: 100px 0;
+    width: 40%;
+}
+.content-left h1{
+    width: 474px;
+    height: 156px;
+    left: 221px;
+    top: 261px;
+
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 60px;
+    line-height: 108.5%;
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #323232;
+}
+.content-left p{
+    font-family: 'Lato', sans-serif;
+    font-style: normal;
+    font-size: 18px;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+
+    color: #646464;
+}
+.content-right{
+    width: 810px;
+    height: 536px;
+}
+
+
+
+/*Appointment*/
+.appointment{
+    display: flex;
+    width: 100%;
+    height: 30vh;
+    background: linear-gradient(0deg, #F6FAFB, #F6FAFB), radial-gradient(87.33% 251.41% at 69.43% 109.2%, #37B1CE 0%, #0F77A0 48.7%, #004C8B 99.52%);
+}
+.appointment-left{
+    background-color: white;
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 39%;
+    margin-left: 10%;
+}
+.appointment-left h2{
+    width: 589px;
+    height: 58px;
+
+    font-family: 'Montserrat' sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 29px;
+
+    display: flex;
+    align-items: center;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+
+    color: #323232;
+}
+.appointment-left hr{
+    width: 103px;
+    height: 0px;
+    border: 2px solid #323232;
+}
+.appointment-left p{
+    width: 501px;
+    height: 46px;
+    padding-top: 30px;
+
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 26px;
+
+    display: flex;
+    align-items: center;
+
+    color: #990033;
+}
+.appointmentbtn{
+    display: flex;
+    justify-content: space-around;
+}
+#leftbtn{
+    width: 150px;
+    height: 40px;
+    text-align: center;
+
+    background: #950032;
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.13);
+    border-radius: 36px;
+    border: none;
+
+    font-family: 'Montserrat' sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    align-items: center;
+
+    color: #FFFFFF;
+}
+#or{
+    padding-top: 10px;
+    width: 37px;
+    height: 30px;
+
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 26px;
+
+    display: flex;
+    align-items: center;
+
+    color: #990033;
+}
+.appointmentbtn{
+    margin-top: 50px;
+}
+.nestedbtn{
+    display: flex;
+    width: 320px;
+    height: 40px;
+    align-items: center;
+    text-align: center;
+    
+    border: 4px solid #950032;
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.13);
+    border-radius: 36px;
+}
+#whitebtn{
+    width: 150px;
+    height: 26px;
+    margin-left: 30px;
+
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 26px;
+
+    display: flex;
+    align-items: center;
+
+    color: #323232;
+}
+#pinkbtn{
+    margin-left: 50px;
+    width: 178px;
+    height: 40px;
+
+    background: #950032;
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.13);
+    border-radius: 36px;
+    
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 26px;
+
+    display: flex;
+    align-items: center;
+
+    color: #FDFDFD;
+}
+.appointment-right{
+    background-color: white;
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 40%;
+    margin-left: 1%;
+}
+.appointment-right h2{
+    width: 589px;
+    height: 58px;
+
+    font-family: 'Montserrat' sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 29px;
+
+    display: flex;
+    align-items: center;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+
+    color: #323232;
+}
+.appointment-right hr{
+    width: 103px;
+    height: 0px;
+    border: 2px solid #323232;
+}
+
+
+
+/*About us*/
+.about-us{
+    padding: 5% 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(0deg, #F6FAFB, #F6FAFB), radial-gradient(87.33% 251.41% at 69.43% 109.2%, #37B1CE 0%, #0F77A0 48.7%, #004C8B 99.52%);
+}
+.about{
+    width: 30%;
+}
+.about h3{
+    width: 105px;
+    height: 24px;
+    left: 221px;
+    top: 1345px;
+
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 24px;
+
+    /* identical to box height, or 75% */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.9px;
+
+    color: #323232;
+}
+.about h2{
+    width: 465px;
+    height: 55px;
+    left: 221px;
+    top: 1433px;
+
+    font-family: 'Montserrat' sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 29px;
+
+    /* or 97% */
+    display: flex;
+    align-items: center;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+
+    margin-top: 50px;
+    color: #323232;
+}
+.about hr{
+    width: 103px;
+    height: 0px;
+    border: 2px solid #323232;
+}
+.about h4{
+    width: 501px;
+    height: 46px;
+    left: 220px;
+    top: 1544px;
+
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 26px;
+
+    /* or 118% */
+    display: flex;
+    align-items: center;
+
+    margin-top: 30px;
+    color: #323232;
+}
+.about p{
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+
+    /* or 162% */
+    display: flex;
+    align-items: center;
+
+    margin-top: 30px;
+    color: #646464;
+}
+.gallery{
+    width: 45%;
+    margin-left: 5%;
+}
+.mainimg img{
+    width: 100%;
+    height: 370px;
+    background: #FFFFFF;
+}
+.secondaryimg{
+    display: flex;
+    margin-top: 20px;
+    margin-left: 15px;
+    width: 100%;
+}
+.secondaryimg img{
+    width: 30%;
+    height: 132px;
+    margin-right: 31px;
+}
+
+
+
+/*Our doctors*/
+.doctors{
+    width: 100%;
+    height: 120vh;
+    background: rgba(157, 0, 28, 0.82);
+}
+.doctors h1{
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 108.5%;
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #FFFFFF;
+    margin-left: 10%;
+    padding-top: 1%;
+}
+.doctors hr{
+    width: 103px;
+    border: 2px solid #E5E5E5;
+    margin-left: 10%;
+}
+.doctorsimg{
+    padding: 10px 0;
+    margin-left: 10%;
+    display: flex;
+}
+.nav{
+    margin: 0;
+    padding: 0;
+}
+.nav a{
+    padding: 0;
+    margin: 0;
+}
+.nav li{
+    padding: 0;
+    width: 10%;
+}
+.doctorsimg img{
+    width: 80px;
+    height: 80px;
+    background: #FFF;
+    border: 3px solid white;
+    border-radius: 100px;
+    margin-right: 10px;
+}
+.aboutdoctors{
+    display: flex;
+    justify-content: space-around;
+    margin-left: 10%;
+}
+.aboutdoc{
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+}
+.leftcontent{
+    width: 70%;
+    background: #FFFFFF;
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.25);
+}
+.leftcontent h2{
+    height: 35px;
+
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 108.5%;
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-left: 10px;
+
+    color: #323232;
+}
+.leftcontent p{
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 108.5%;
+    margin-left: 10px;
+
+    /* identical to box height, or 26px */
+    display: flex;
+    align-items: center;
+
+    color: #646464;
+}
+.rightcontent{
+    width: 50%;
+}
+.rightcontent img{
+    width: 100%;
+    height: 100%;
+    background: url(.jpg), #FFFFFF;
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.13);
+}
+.rightimgs{
+    width: 30%;
+}
+.topimgs{
+    display: flex;
+}
+.topimgs img{
+    width: 156px;
+    height: 212px;
+    margin-left: 20px;
+}
+.bottomimgs{
+    margin-left: 20px;
+    margin-top: 25px;
+}
+.bottomimgs img{
+    width: 330px;
+    height: 250px;
+}
+
+
+
+/*Contacts*/
+.contacts{
+    background: #323232;
+    display: flex;
+    justify-content: space-around;
+}
+.address img{
+    width: 465px;
+    height: 350px;
+    padding: 10px;
+}
+.social h1{
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 108.5%;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+    padding-top: 10%;
+}
+.contactlist{
+    display: flex;
+    padding: 0;
+    margin: 0;
+    width: 213px;
+    height: 30px;
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+}
+.contactlist a{
+    color: #BDC3C7;
+}
+#facebook{
+    list-style-image: url(img/fb.png);
+}
+#twitter{
+    list-style-image: url(img/tw.png);
+}
+#instagram{
+    list-style-image: url(img/inst.png);
+}
+#youtube{
+    list-style-image: url(img/yt.png);
+}
+#vimeo{
+    list-style-image: url(img/vim.png);
+}
+#address{
+    list-style-image: url(img/gps.png);
+}
+#phone{
+    list-style-image: url(img/phone.png);
+}
+#email{
+    list-style-image: url(img/mail.png);
+}
+#site{
+    list-style-image: url(img/site.png);
+}
+.listleft{
+    margin-left: 20%;
+}
+.listright{
+    margin-left: 40%;
+}
+.listright li{
+    margin-top: 20px;
+}
+.address{
+    padding-left: 100px;
+}
+.footer{
+    height: 15vh;
+    background: #323232;
+}
+.footer-nav{
+    display: flex;
+    justify-content: center;
+    background: #FFF;
+    height: 10vh;
+    align-items: center;
+}
+.footer-nav a{
+    width: 78px;
+    height: 12px;
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: flex-end;
+    text-align: center;
+    color: #323232
+}
+.footer-nav a:active{
+    font-weight: 900;
+}
+
+
+/*
+div{
+    border: 1px solid blue;
+}
+*/

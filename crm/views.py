@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.shortcuts import render
 from rest_framework import status, viewsets
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -7,6 +8,10 @@ from rest_framework.response import Response
 from users.permissions import IsStaffOrAuthenticatedReadOnly
 from .serializers import *
 from .models import *
+
+
+def home(request):
+    return render(request, 'crm/index.html')
 
 
 class StaffViewSet(viewsets.ModelViewSet):
@@ -149,36 +154,6 @@ class DayViewSet(viewsets.ModelViewSet):
             raise Http404
         else:
             day.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-class StageViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
-    queryset = Stage.objects.all()
-    serializer_class = StageSerializer
-
-    def get(self):
-        stage = self.queryset.all()
-        serializer = self.serializer_class(stage, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def delete(self, request):
-        pk = request.data.get('id', None)
-        if pk is None:
-            raise ParseError('role_id is required')
-
-        try:
-            stage = self.queryset.get(id=pk)
-        except Stage.DoesNotExist:
-            raise Http404
-        else:
-            stage.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
 
