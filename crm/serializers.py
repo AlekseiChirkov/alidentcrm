@@ -5,7 +5,7 @@ from users.serializers import *
 class StaffSerializer(serializers.ModelSerializer):
     class Meta:
         model = Staff
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'phone', 'birthday', 'email']
 
 
 class ServiceSerializer(serializers.ModelSerializer):

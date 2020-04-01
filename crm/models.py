@@ -7,6 +7,9 @@ from users.models import MyUser
 
 class Staff(models.Model):
     name = models.CharField(verbose_name='Ф.И.О.', max_length=128)
+    phone = models.CharField(verbose_name='Телефон', max_length=16)
+    birthday = models.DateField(verbose_name='Дата рождения')
+    email = models.EmailField()
 
     class Meta:
         verbose_name = "Персонал"
@@ -20,7 +23,10 @@ class Staff(models.Model):
 def make_doctor(sender, instance, created, **kwargs):
     if instance.category == 'Doctor':
         staff = Staff.objects.create(
-            name=instance.name+' '+instance.surname+' '+instance.patronymic
+            name=instance.name+' '+instance.surname+' '+instance.patronymic,
+            phone=instance.username,
+            birthday=instance.birthday,
+            email=instance.email
         )
         print(staff.name)
         staff.save()
