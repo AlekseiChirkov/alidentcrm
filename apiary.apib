@@ -66,10 +66,36 @@ AliDent is a stomatology clinic
                 "patronymic": null,
                 "birthday": null
             }
+
+
+
+## Staff collection [/crm/staff/]
+
+### List All Staff [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: /crm/staff/
             
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "name": "Alexis Sanchez Sanchez",
+                    "phone": "0999129557",
+                    "birthday": "1998-11-10",
+                    "email": "doc@mail.ru"
+                }
+            ]
+
+
+
 ## User login [/rest-auth/login/]
 
-### List All Categories [POST]
+### Login [POST]
 + Request (application/json)
 
     + Headers
@@ -106,7 +132,7 @@ AliDent is a stomatology clinic
         
 ## Appointments [/api/appointments/]
 
-### List All Users [GET]
+### List All Appointments [GET]
 
 + Response 200 (application/json)
 
@@ -118,38 +144,27 @@ AliDent is a stomatology clinic
 
             [
                 {
-                    "name": "Евгений",
-                    "surname": "Киселев",
-                    "time": "2020-03-05T11:30:06+06:00",
+                    "name": "Алекей",
+                    "surname": "Чирков",
+                    "time": "2020-03-12T18:00:00+06:00",
                     "doctor": {
                         "id": 1,
-                        "staff": {
-                            "username": "0559129557",
-                            "email": "tektonik_boy98@mail.ru",
-                            "name": "Алексей",
-                            "surname": "Чирков",
-                            "patronymic": "Николаевич",
-                            "birthday": "1998-11-10"
-                        }
-                    },
-                    "status": {
-                        "id": 1,
-                        "status": "Активен"
+                        "name": "Alexis Sanchez Sanchez",
+                        "phone": "0999129557",
+                        "birthday": "1998-11-10",
+                        "email": "doc@mail.ru"
                     },
                     "service": {
-                        "id": 1,
-                        "category": {
-                            "id": 1,
-                            "name": "Удаление"
-                        },
                         "code": 1.1,
-                        "name": "Удаление коренного зуба",
-                        "price": "2000.00"
-                    }
+                        "name": "Анестезия верхней челюсти",
+                        "price": "1000.00",
+                        "category": 1
+                    },
+                    "status": "Активен"
                 }
             ]
 
-### List All Appointments [POST]
+### Create Appointmnet [POST]
 + Request (application/json)
 
     + Headers
@@ -163,31 +178,9 @@ AliDent is a stomatology clinic
                     "name": "Евгений",
                     "surname": "Киселев",
                     "time": "2020-03-05T11:30:06+06:00",
-                    "doctor": {
-                        "id": 1,
-                        "staff": {
-                            "username": "0559129557",
-                            "email": "tektonik_boy98@mail.ru",
-                            "name": null,
-                            "surname": null,
-                            "patronymic": null,
-                            "birthday": null
-                        }
-                    },
-                    "status": {
-                        "id": 1,
-                        "status": "Активен"
-                    },
-                    "service": {
-                        "id": 1,
-                        "category": {
-                            "id": 1,
-                            "name": "Удаление"
-                        },
-                        "code": 1.1,
-                        "name": "Удаление коренного зуба",
-                        "price": "2000.00"
-                    }
+                    "doctor": 1,
+                    "status": "Активен"
+                    "service": 1,
                 }
             ]
             
@@ -201,81 +194,17 @@ AliDent is a stomatology clinic
 
             [
                 {
-                    "name": "Евгений",
-                    "surname": "Киселев",
-                    "time": "2020-03-05T11:30:06+06:00",
-                    "doctor": {
-                        "id": 1,
-                        "staff": {
-                            "username": "0559129557",
-                            "email": "tektonik_boy98@mail.ru",
-                            "name": null,
-                            "surname": null,
-                            "patronymic": null,
-                            "birthday": null
-                        }
-                    },
-                    "status": {
-                        "id": 1,
-                        "status": "Активен"
-                    },
-                    "service": {
-                        "id": 1,
-                        "category": {
-                            "id": 1,
-                            "name": "Удаление"
-                        },
-                        "code": 1.1,
-                        "name": "Удаление коренного зуба",
-                        "price": "2000.00"
-                    }
-                }
-            ]
-        
-        
-        
-           
-## Users-Categories Collection [/crm/users-categories/]
-
-### List All Categories [GET]
-
-+ Response 200 (application/json)
-
-    + Headers
-    
-            Location: /crm/users-categories/
-            
-    + Body
-
-            [
-                {
-                    "id": 2,
-                    "name": "Врач",
+                    "name": "Алекей",
+                    "surname": "Чирков",
+                    "time": "2020-03-12T18:00:00+06:00",
+                    "doctor": 1,
+                    "service": 1,
+                    "status": "Активен"
                 }
             ]
 
-### Create a New User-Category [POST]
 
-+ Request (application/json)
-
-        {
-            "name": "Врач",
-        }
-
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /crm/users-categories/2
-
-    + Body
-
-            {
-                "id": 2,
-                "name": "Врач",
-            }
-            
-            
+        
 
 ## Service Category Collection [/crm/service-categories/]
 
@@ -296,26 +225,6 @@ AliDent is a stomatology clinic
                 }
             ]
 
-### Create a New Service-Category [POST]
-
-+ Request (application/json)
-
-        {
-            "name": "Удаление",
-        }
-
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /crm/service-categories/2
-
-    + Body
-
-            {
-                "id": 2,
-                "name": "Удаление",
-            }
 
 
 ## Service Collection [/crm/services/]
@@ -334,57 +243,15 @@ AliDent is a stomatology clinic
                 {
                     {
                         "id": 1,
-                        "category": {
-                            "id": 1,
-                            "name": "Удаление"
-                        },
                         "code": 1.1,
                         "name": "Удаление коренного зуба",
                         "price": "2000.00"
+                        "category": 1
                     }
                 }
             ]
             
 
-### Create a New Service [POST]
-
-+ Request (application/json)
-
-        {
-            {
-                "id": 1,
-                "category": {
-                    "id": 1,
-                    "name": "Удаление"
-                },
-                "code": 1.1,
-                "name": "Удаление коренного зуба",
-                "price": "2000.00"
-            }
-        }
-
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /crm/services/1
-
-    + Body
-
-            {
-                {
-                    "id": 1,
-                    "category": {
-                        "id": 1,
-                        "name": "Удаление"
-                    },
-                    "code": 1.1,
-                    "name": "Удаление коренного зуба",
-                    "price": "2000.00"
-                }
-            }
-            
-            
 
 ## Work Days Collection [/crm/days/]
 
@@ -403,30 +270,9 @@ AliDent is a stomatology clinic
                     "day": "Понедельник"
                 }
             ]
-            
 
-### Create a New Days [POST]
 
-+ Request (application/json)
 
-        {
-            "day": "Понедельник"
-        }
-
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /crm/days/1
-
-    + Body
-
-            {
-                "day": "Понедельник"
-            }
-            
-            
-            
 ## Stocks Collection [/crm/stocks/]
 
 ### List All Stocks [GET]
