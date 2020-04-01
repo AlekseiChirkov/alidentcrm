@@ -1,24 +1,22 @@
-from rest_framework import serializers
-
-from users.serializers import MyUserSerializer
 from .models import *
+from users.serializers import *
 
 
 class StaffSerializer(serializers.ModelSerializer):
     class Meta:
         model = Staff
-        fields = ['staff']
-
-
-class ServiceCategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ServiceCategory
-        fields = '__all__'
+        fields = ['id', 'name']
 
 
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
+        exclude = ('id', )
+
+
+class ServiceCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceCategory
         fields = '__all__'
 
 
@@ -37,7 +35,23 @@ class DaySerializer(serializers.ModelSerializer):
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
-        fields = ['name', 'surname', 'time', 'doctor', 'status', 'service']
+        fields = ['name', 'surname', 'time', 'doctor', 'service', 'status']
+
+    # def create(self, validated_data):
+    #     service_data = validated_data.pop('service')
+    #     service = Service.objects.create(**service_data)
+    #     appointment = Appointment.objects.create(service=service, **validated_data)
+    #
+    #     return appointment
+
+
+class AppointmentSerializerReadable(serializers.ModelSerializer):
+    doctor = StaffSerializer()
+    service = ServiceSerializer()
+
+    class Meta:
+        model = Appointment
+        fields = ['name', 'surname', 'time', 'doctor', 'service', 'status']
 
 
 class ChequeSerializer(serializers.ModelSerializer):

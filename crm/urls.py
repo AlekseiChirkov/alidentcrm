@@ -19,6 +19,6 @@ router.register('expenses', views.ExpenseViewSet)
 
 urlpatterns = [
     path('crm/', include(router.urls)),
-    path('', views.home, name='home')
+    path('', views.home, name='home'),
     # path('send/', user_view.email_to_clients),
 ]

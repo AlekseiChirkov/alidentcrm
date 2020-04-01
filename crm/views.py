@@ -1,11 +1,11 @@
 from django.http import Http404
 from django.shortcuts import render
 from rest_framework import status, viewsets
+from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from users.permissions import IsStaffOrAuthenticatedReadOnly
 from .serializers import *
 from .models import *
 
@@ -161,9 +161,9 @@ class AppointmentViewSet(viewsets.ModelViewSet):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
 
-    def get(self):
+    def list(self, request, *args, **kwargs):
         appointment = self.queryset.all()
-        serializer = self.serializer_class(appointment, many=True)
+        serializer = AppointmentSerializerReadable(appointment, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):

@@ -6,14 +6,24 @@ from users.models import MyUser
 
 
 class Staff(models.Model):
-    staff = models.ForeignKey(MyUser, verbose_name='Персонал', on_delete=models.CASCADE, default=None)
+    name = models.CharField(verbose_name='Ф.И.О.', max_length=128)
 
     class Meta:
         verbose_name = "Персонал"
         verbose_name_plural = "Персонал"
 
     def __str__(self):
-        return str(self.staff)
+        return str(self.name)
+
+
+@receiver(post_save, sender=MyUser)
+def make_doctor(sender, instance, created, **kwargs):
+    if instance.category == 'Doctor':
+        staff = Staff.objects.create(
+            name=instance.name+' '+instance.surname+' '+instance.patronymic
+        )
+        print(staff.name)
+        staff.save()
 
 
 class ServiceCategory(models.Model):
@@ -72,7 +82,7 @@ class Appointment(models.Model):
     )
     name = models.CharField(verbose_name='Имя', max_length=64)
     surname = models.CharField(verbose_name='Фамилия', max_length=64)
-    time = models.DateTimeField(verbose_name='Время')
+    time = models.DateTimeField(verbose_name='Время', null=True)
     doctor = models.ForeignKey(Staff, verbose_name='Врач', on_delete=models.CASCADE, default=None)
     total_price = models.DecimalField(verbose_name='Сумма', max_digits=10, decimal_places=2, default=0)
     status = models.CharField(verbose_name='Статус', max_length=64, choices=STATUS_CHOICES)

@@ -16,7 +16,7 @@ class AppointmentInline(admin.TabularInline):
 
 
 class StaffAdmin(admin.ModelAdmin):
-    list_display = ['staff']
+    list_display = ['name']
 
     class Meta:
         model = Staff
