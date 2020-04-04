@@ -8,16 +8,24 @@ class StaffSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'phone', 'birthday', 'email']
 
 
-class ServiceSerializer(serializers.ModelSerializer):
+class ClientSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Service
-        exclude = ('id', )
+        model = Client
+        fields = ['id', 'name', 'phone', 'birthday', 'email']
 
 
 class ServiceCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceCategory
         fields = '__all__'
+
+
+class ServiceSerializer(serializers.ModelSerializer):
+    category = ServiceCategorySerializer()
+
+    class Meta:
+        model = Service
+        exclude = ('id', )
 
 
 class StockSerializer(serializers.ModelSerializer):
@@ -37,13 +45,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
         model = Appointment
         fields = ['name', 'surname', 'time', 'doctor', 'service', 'status']
 
-    # def create(self, validated_data):
-    #     service_data = validated_data.pop('service')
-    #     service = Service.objects.create(**service_data)
-    #     appointment = Appointment.objects.create(service=service, **validated_data)
-    #
-    #     return appointment
-
 
 class AppointmentSerializerReadable(serializers.ModelSerializer):
     doctor = StaffSerializer()
@@ -54,13 +55,21 @@ class AppointmentSerializerReadable(serializers.ModelSerializer):
         fields = ['name', 'surname', 'time', 'doctor', 'service', 'status']
 
 
-class ChequeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cheque
-        fields = '__all__'
-
-
 class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expense
+        fields = '__all__'
+
+
+class ReportSerializer(serializers.ModelSerializer):
+    service = ServiceSerializer()
+
+    class Meta:
+        model = Report
+        fields = '__all__'
+
+
+class IncomeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Income
         fields = '__all__'

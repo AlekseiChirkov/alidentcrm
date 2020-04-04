@@ -1,4 +1,6 @@
 from django.db import models
+from solo.models import SingletonModel
+from django.db.models import Count, Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -21,15 +23,42 @@ class Staff(models.Model):
 
 @receiver(post_save, sender=MyUser)
 def make_doctor(sender, instance, created, **kwargs):
-    if instance.category == 'Doctor':
+    if instance.category == 'Персонал':
         staff = Staff.objects.create(
-            name=instance.name+' '+instance.surname+' '+instance.patronymic,
+            name=instance.name + ' ' + instance.surname + ' ' + instance.patronymic,
             phone=instance.username,
             birthday=instance.birthday,
             email=instance.email
         )
         print(staff.name)
         staff.save()
+
+
+class Client(models.Model):
+    name = models.CharField(verbose_name='Ф.И.О.', max_length=128)
+    phone = models.CharField(verbose_name='Телефон', max_length=16)
+    birthday = models.DateField(verbose_name='Дата рождения')
+    email = models.EmailField()
+
+    class Meta:
+        verbose_name = "Клиент"
+        verbose_name_plural = "Клиенты"
+
+    def __str__(self):
+        return str(self.name)
+
+
+@receiver(post_save, sender=MyUser)
+def make_doctor(sender, instance, created, **kwargs):
+    if instance.category == 'Клиент':
+        client = Client.objects.create(
+            name=instance.name + ' ' + instance.surname + ' ' + instance.patronymic,
+            phone=instance.username,
+            birthday=instance.birthday,
+            email=instance.email
+        )
+        print(client.name)
+        client.save()
 
 
 class ServiceCategory(models.Model):
@@ -44,9 +73,9 @@ class ServiceCategory(models.Model):
 
 
 class Service(models.Model):
-    code = models.FloatField(verbose_name='Кодировка')
+    code = models.FloatField(verbose_name='Кодировка', unique=True)
     name = models.CharField(verbose_name='Услуга', max_length=128)
-    category = models.ForeignKey(ServiceCategory, verbose_name='Категория',  on_delete=models.CASCADE, default=None)
+    category = models.ForeignKey(ServiceCategory, verbose_name='Категория', on_delete=models.CASCADE, default=None)
     price = models.DecimalField(verbose_name='Цена', max_digits=10, decimal_places=2, default=0)
 
     class Meta:
@@ -84,10 +113,12 @@ class Appointment(models.Model):
     STATUS_CHOICES = (
         ('Активен', 'Активен'),
         ('Завершен', 'Завершен'),
-        ('Приостановлен', 'Приостановлен')
+        ('Приостановлен', 'Приостановлен'),
+        ('Отменен', 'Отменен')
     )
     name = models.CharField(verbose_name='Имя', max_length=64)
     surname = models.CharField(verbose_name='Фамилия', max_length=64)
+    phone = models.CharField(verbose_name='Телефон клиента', max_length=64)
     time = models.DateTimeField(verbose_name='Время', null=True)
     doctor = models.ForeignKey(Staff, verbose_name='Врач', on_delete=models.CASCADE, default=None)
     total_price = models.DecimalField(verbose_name='Сумма', max_digits=10, decimal_places=2, default=0)
@@ -101,86 +132,132 @@ class Appointment(models.Model):
         verbose_name_plural = "Записи"
 
     def __str__(self):
-        return '%s %s %s %s' % (
-            self.name, self.surname, self.time, self.time
+        return '%s %s %s' % (
+            self.name, self.surname, self.time
         )
 
-
-class Income(models.Model):
-    cheque = models.ForeignKey(Appointment, verbose_name='Чек', on_delete=models.CASCADE, default=None, null=True, blank=True)
-    date = models.DateField(verbose_name='Дата', auto_now_add=True)
-    total_income = models.DecimalField(verbose_name='Доход', max_digits=10, decimal_places=2, default=0)
-
-    class Meta:
-        verbose_name = "Доход"
-        verbose_name_plural = "Доходы"
-
-    def __str__(self):
-        return "%s %s" % (self.date, self.total_income)
-
-
-@receiver(post_save, sender=Appointment)
-def income_adder(sender, instance, created, **kwargs):
-    # if created:
-    income, created = Income.objects.get_or_create()
-    income.total_income += instance.total_price
-    print(income.total_income)
-    income.save()
-
-
-class Cheque(models.Model):
-    appointment = models.ForeignKey(Appointment, verbose_name='Запись', on_delete=models.CASCADE, default=None)
-    service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE, default=None)
-    count = models.IntegerField(verbose_name='Количество', default=1)
-    price_per = models.DecimalField(verbose_name='Цена за одну услугу', max_digits=10, decimal_places=2, default=0)
-    total_price = models.DecimalField(verbose_name='Всего', max_digits=10, decimal_places=2, default=0)
-    stock = models.ForeignKey(Stock, verbose_name='Акция', on_delete=models.CASCADE, default=None, null=True, blank=True)
-
-    class Meta:
-        verbose_name = "Чек"
-        verbose_name_plural = "Чеки"
-
-    def __str__(self):
-        return self.service.name
-
     def save(self, *args, **kwargs):
-        price_per_serv = self.service.price
-        self.price_per = price_per_serv
-        self.total_price = self.count * price_per_serv
-        if self.stock:
-            discount = float(self.stock.percentage) * 0.01
-            percentage = float(self.total_price) * discount
-            self.total_price = float(self.total_price) - percentage
-
-        super(Cheque, self).save(*args, **kwargs)
-
-
-def service_post_save(sender, instance, created, **kwargs):
-    appointment = instance.appointment
-    all_services = Cheque.objects.filter(appointment=appointment)
-
-    appointment_total_price = 0
-    for item in all_services:
-        appointment_total_price += item.total_price
-
-    instance.appointment.total_price = appointment_total_price
-    instance.appointment.save(force_update=True)
-
-
-post_save.connect(service_post_save, sender=Cheque)
+        price = self.service.price
+        self.total_price = price
+        super(Appointment, self).save(*args, **kwargs)
 
 
 class Expense(models.Model):
     name = models.CharField(verbose_name='Название', max_length=64)
-    expense_category = models.CharField(verbose_name='Категория расхода', max_length=64)
-    description = models.TextField(verbose_name='Примечания', max_length=512)
-    price = models.DecimalField(verbose_name='Стоимость', max_digits=10, decimal_places=2)
-    service = models.ManyToManyField(Service, verbose_name='Услуга', default=None)
-    date = models.DateField()
+    category = models.CharField(verbose_name='Категория расхода', max_length=64)
+    description = models.CharField(verbose_name='Описание', max_length=128)
+    service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE)
+    price = models.DecimalField(verbose_name='Стоимость (сом)', max_digits=10, decimal_places=2)
+    date = models.DateField(verbose_name='Дата')
 
     class Meta:
         verbose_name = "Расход"
         verbose_name_plural = "Расходы"
 
     def __str__(self):
-        return '%s %s %s %s %s' % (self.name, self.description, self.price, self.service, self.date)
+        return '%s %s %s %s %s %s' % (
+            self.name, self.category, self.description, self.service, self.price, self.date
+        )
+
+
+class Report(models.Model):
+    service = models.ForeignKey(Service, verbose_name='Название услуги', on_delete=models.CASCADE)
+    count = models.IntegerField(verbose_name='Записей за день')
+    price = models.DecimalField(verbose_name='Сумма', max_digits=10, decimal_places=2)
+    date = models.DateField(verbose_name='Дата отчета', auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Отчет"
+        verbose_name_plural = "Отчеты"
+
+    def __str__(self):
+        return '%s %s %s %s' % (self.service, self.count, self.price, self.date)
+
+
+@receiver(post_save, sender=Appointment)
+def make_report(sender, instance, created, **kwargs):
+    qs = Appointment.objects.values('service', 'service__report__date').\
+        annotate(count=Count('name'), sum=Sum('service__price'))
+    for service in qs:
+        serv = Service.objects.get(id=service['service'])
+        try:
+            report = Report.objects.get(date=service['service__report__date'], service=serv)
+        except Report.DoesNotExist:
+            Report.objects.create(service=serv,
+                                  count=service['count'],
+                                  price=service['sum'], )
+            continue
+        report.count = service['count']
+        report.price = service['sum']
+        report.save()
+
+
+class Income(SingletonModel):
+    finished = models.IntegerField(verbose_name='Завершенных записей', default=0)
+    canceled = models.IntegerField(verbose_name='Отмененных записей', default=0)
+    amount = models.DecimalField(verbose_name='Общий доход', max_digits=10, decimal_places=2, default=0)
+    expense = models.DecimalField(verbose_name='Общий расход', max_digits=10, decimal_places=2, default=0)
+    ratio = models.DecimalField(verbose_name='Соотношение', max_digits=10, decimal_places=2, default=0)
+
+    class Meta:
+        verbose_name = "Доход"
+        verbose_name_plural = "Доходы"
+
+    def __str__(self):
+        return "%s %s %s %s %s" % (
+            self.finished, self.canceled, self.amount, self.expense, self.ratio
+        )
+
+
+@receiver(post_save, sender=Appointment)
+def create_report_with_count(sender, instance, created, **kwargs):
+    finished_appointments = Appointment.objects.filter(status='Завершен')
+    finished = len(finished_appointments)
+    canceled_appointments = Appointment.objects.filter(status='Отменен')
+    canceled = len(canceled_appointments)
+
+    expense = 0
+    amount = 0
+    if instance.status == 'Завершен':
+        expense_qs = Expense.objects.values('price')
+        for item in expense_qs:
+            expense += item['price']
+
+        amount += instance.total_price
+
+    income = Income.get_solo()
+    if instance.status == 'Завершен':
+        income.finished += finished
+    if instance.status == 'Завершен':
+        income.canceled += canceled
+    income.amount += amount
+    income.expense += expense
+    income.ratio = income.amount - income.expense
+    income.save()
+
+
+    # finished_appointments = Appointment.objects.filter(status='Завершен').annotate(count=Count('status'))
+    # finished = len(finished_appointments)
+    # canceled_appointments = Appointment.objects.filter(status='Отменен').annotate(count=Count('status'))
+    # canceled = len(canceled_appointments)
+    #
+    # amount = 0
+    # expense = 0
+    #
+    # if instance.status == 'Завершен':
+    #     total_price_qs = Appointment.objects.values('total_price')
+    #     for item in total_price_qs:
+    #         amount += item['total_price']
+    #
+    #     expense_qs = Expense.objects.values('price')
+    #     for item in expense_qs:
+    #         expense += item['price']
+    #
+    # income = Income.objects.get_or_create(
+    #     finished=finished,
+    #     canceled=canceled,
+    #     amount=amount,
+    #     expense=expense,
+    #     ratio=amount-expense
+    # )
+    # income.save()

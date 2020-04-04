@@ -63,6 +63,9 @@ INSTALLED_APPS = [
     # apps
     'crm.apps.CrmConfig',
     'users.apps.UsersConfig',
+
+    # django-solo
+    'solo',
 ]
 
 SITE_ID = 1

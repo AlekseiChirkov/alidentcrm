@@ -1,18 +1,7 @@
 from django.contrib import admin
+from solo.admin import SingletonModelAdmin
 
 from .models import *
-
-
-class ChequeInline(admin.TabularInline):
-    model = Cheque
-    fields = ('service', 'count', 'price_per', 'total_price', 'stock')
-    extra = 0
-
-
-class AppointmentInline(admin.TabularInline):
-    model = Appointment
-    fields = ('name', 'surname', 'day', 'time', 'total_price')
-    extra = 0
 
 
 class StaffAdmin(admin.ModelAdmin):
@@ -20,6 +9,13 @@ class StaffAdmin(admin.ModelAdmin):
 
     class Meta:
         model = Staff
+
+
+class ClientAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+    class Meta:
+        model = Client
 
 
 class ServiceCategoryAdmin(admin.ModelAdmin):
@@ -52,27 +48,11 @@ class DayAdmin(admin.ModelAdmin):
 
 class AppointmentAdmin(admin.ModelAdmin):
     list_display = ['name', 'surname', 'time', 'doctor', 'total_price', 'status', 'service']
-    inlines = [ChequeInline]
     exclude = ['appointment_income']
     readonly_fields = ('total_price',)
 
     class Meta:
         model = Appointment
-
-
-class IncomeAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Income._meta.fields]
-    inlines = [AppointmentInline]
-
-    class Meta:
-        model = Income
-
-
-class ChequeAdmin(admin.ModelAdmin):
-    list_display = ['appointment', 'service', 'count', 'price_per', 'total_price', 'stock']
-
-    class Meta:
-        model = Cheque
 
 
 class ExpenseAdmin(admin.ModelAdmin):
@@ -82,12 +62,27 @@ class ExpenseAdmin(admin.ModelAdmin):
         model = Expense
 
 
+class ReportAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in Report._meta.fields]
+
+    class Meta:
+        model = Report
+
+
+class IncomeAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in Income._meta.fields]
+
+    class Meta:
+        model = Income
+
+
 admin.site.register(Staff, StaffAdmin)
+admin.site.register(Client, ClientAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
 admin.site.register(Day, DayAdmin)
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(ServiceCategory, ServiceCategoryAdmin)
-admin.site.register(Cheque, ChequeAdmin)
 admin.site.register(Stock, StockAdmin)
 admin.site.register(Expense, ExpenseAdmin)
-admin.site.register(Income, IncomeAdmin)
+admin.site.register(Report, ReportAdmin)
+admin.site.register(Income, SingletonModelAdmin)

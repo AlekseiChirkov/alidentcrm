@@ -32,9 +32,9 @@ class MyUserManager(BaseUserManager):
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
     USER_TYPES = (
-        ('Owner', 'Owner'),
-        ('Doctor', 'Doctor'),
-        ('Client', 'Client')
+        ('Владелец', 'Владелец'),
+        ('Персонал', 'Персонал'),
+        ('Клиент', 'Клиент')
     )
     name = models.CharField(verbose_name='Имя', max_length=64, null=True, blank=True)
     surname = models.CharField(verbose_name='Фамилия', max_length=64, null=True, blank=True)

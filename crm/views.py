@@ -15,7 +15,6 @@ def home(request):
 
 
 class StaffViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
 
@@ -32,6 +31,29 @@ class StaffViewSet(viewsets.ModelViewSet):
         try:
             user = self.queryset.get(id=pk)
         except Staff.DoesNotExist:
+            raise Http404
+        else:
+            user.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+
+class ClientViewSet(viewsets.ModelViewSet):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+    def get(self):
+        user = self.queryset.all()
+        serializer = self.serializer_class(user, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request):
+        pk = request.data.get('id', None)
+        if pk is None:
+            raise ParseError('role_id is required')
+
+        try:
+            user = self.queryset.get(id=pk)
+        except Client.DoesNotExist:
             raise Http404
         else:
             user.delete()
@@ -76,25 +98,6 @@ class ServiceViewSet(viewsets.ModelViewSet):
         service = self.queryset.all()
         serializer = self.serializer_class(service, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # def post(self, request):
-    #     serializer = self.serializer_class(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save()
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #
-    # def delete(self, request):
-    #     pk = request.data.get('id', None)
-    #     if pk is None:
-    #         raise ParseError('role_id is required')
-    #
-    #     try:
-    #         service = self.queryset.get(id=pk)
-    #     except Service.DoesNotExist:
-    #         raise Http404
-    #     else:
-    #         service.delete()
-    #         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class StockViewSet(viewsets.ModelViewSet):
@@ -186,36 +189,6 @@ class AppointmentViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class ChequeViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
-    queryset = Cheque.objects.all()
-    serializer_class = ChequeSerializer
-
-    def get(self):
-        cheque = self.queryset.all()
-        serializer = self.serializer_class(cheque, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def delete(self, request):
-        pk = request.data.get('id', None)
-        if pk is None:
-            raise ParseError('role_id is required')
-
-        try:
-            cheque = self.queryset.get(id=pk)
-        except Cheque.DoesNotExist:
-            raise Http404
-        else:
-            cheque.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-
 class ExpenseViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = Expense.objects.all()
@@ -243,4 +216,52 @@ class ExpenseViewSet(viewsets.ModelViewSet):
             raise Http404
         else:
             expense.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        
+class ReportViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    queryset = Report.objects.all()
+    serializer_class = ReportSerializer
+
+    def get(self):
+        report = self.queryset.all()
+        serializer = self.serializer_class(report, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request):
+        pk = request.data.get('id', None)
+        if pk is None:
+            raise ParseError('role_id is required')
+
+        try:
+            report = self.queryset.get(id=pk)
+        except Report.DoesNotExist:
+            raise Http404
+        else:
+            report.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+
+class IncomeViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    queryset = Income.objects.all()
+    serializer_class = IncomeSerializer
+
+    def get(self):
+        income = self.queryset.all()
+        serializer = self.serializer_class(income, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request):
+        pk = request.data.get('id', None)
+        if pk is None:
+            raise ParseError('role_id is required')
+
+        try:
+            income = self.queryset.get(id=pk)
+        except Income.DoesNotExist:
+            raise Http404
+        else:
+            income.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
