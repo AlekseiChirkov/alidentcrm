@@ -49,7 +49,7 @@ class Client(models.Model):
 
 
 @receiver(post_save, sender=MyUser)
-def make_doctor(sender, instance, created, **kwargs):
+def make_client(sender, instance, created, **kwargs):
     if instance.category == 'Клиент':
         client = Client.objects.create(
             name=instance.name + ' ' + instance.surname + ' ' + instance.patronymic,
