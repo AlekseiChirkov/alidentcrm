@@ -105,9 +105,9 @@ class StockViewSet(viewsets.ModelViewSet):
     queryset = Stock.objects.all()
     serializer_class = StockSerializer
 
-    def get(self):
+    def list(self, request, *args, **kwargs):
         stock = self.queryset.all()
-        serializer = self.serializer_class(stock, many=True)
+        serializer = StockSerializerReadable(stock, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
@@ -194,9 +194,9 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
 
-    def get(self):
+    def list(self, request, *args, **kwargs):
         expense = self.queryset.all()
-        serializer = self.serializer_class(expense, many=True)
+        serializer = ExpenseSerializerReadable(expense, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):

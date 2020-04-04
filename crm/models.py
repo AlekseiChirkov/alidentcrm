@@ -216,13 +216,8 @@ def create_report_with_count(sender, instance, created, **kwargs):
     canceled_appointments = Appointment.objects.filter(status='Отменен')
     canceled = len(canceled_appointments)
 
-    expense = 0
     amount = 0
     if instance.status == 'Завершен':
-        expense_qs = Expense.objects.values('price')
-        for item in expense_qs:
-            expense += item['price']
-
         amount += instance.total_price
 
     income = Income.get_solo()
@@ -231,33 +226,17 @@ def create_report_with_count(sender, instance, created, **kwargs):
     if instance.status == 'Завершен':
         income.canceled += canceled
     income.amount += amount
-    income.expense += expense
-    income.ratio = income.amount - income.expense
     income.save()
 
 
-    # finished_appointments = Appointment.objects.filter(status='Завершен').annotate(count=Count('status'))
-    # finished = len(finished_appointments)
-    # canceled_appointments = Appointment.objects.filter(status='Отменен').annotate(count=Count('status'))
-    # canceled = len(canceled_appointments)
-    #
-    # amount = 0
-    # expense = 0
-    #
-    # if instance.status == 'Завершен':
-    #     total_price_qs = Appointment.objects.values('total_price')
-    #     for item in total_price_qs:
-    #         amount += item['total_price']
-    #
-    #     expense_qs = Expense.objects.values('price')
-    #     for item in expense_qs:
-    #         expense += item['price']
-    #
-    # income = Income.objects.get_or_create(
-    #     finished=finished,
-    #     canceled=canceled,
-    #     amount=amount,
-    #     expense=expense,
-    #     ratio=amount-expense
-    # )
-    # income.save()
+@receiver(post_save, sender=Expense)
+def create_report_with_count(sender, instance, created, **kwargs):
+    expense = 0
+    expense_qs = Expense.objects.values('price')
+    for item in expense_qs:
+        expense += item['price']
+
+    income = Income.get_solo()
+    income.expense += expense
+    income.ratio = income.amount - income.expense
+    income.save()

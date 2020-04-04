@@ -34,6 +34,14 @@ class StockSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class StockSerializerReadable(serializers.ModelSerializer):
+    service = ServiceSerializer()
+
+    class Meta:
+        model = Stock
+        fields = '__all__'
+
+
 class DaySerializer(serializers.ModelSerializer):
     class Meta:
         model = Day
@@ -56,6 +64,14 @@ class AppointmentSerializerReadable(serializers.ModelSerializer):
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Expense
+        fields = '__all__'
+
+
+class ExpenseSerializerReadable(serializers.ModelSerializer):
+    service = ServiceSerializer()
+
     class Meta:
         model = Expense
         fields = '__all__'
