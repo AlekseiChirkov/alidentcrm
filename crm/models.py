@@ -198,6 +198,7 @@ class Income(SingletonModel):
     amount = models.DecimalField(verbose_name='Общий доход', max_digits=10, decimal_places=2, default=0)
     expense = models.DecimalField(verbose_name='Общий расход', max_digits=10, decimal_places=2, default=0)
     ratio = models.DecimalField(verbose_name='Соотношение', max_digits=10, decimal_places=2, default=0)
+    clients = models.IntegerField(verbose_name='Всего клиентов', default=0)
 
     class Meta:
         verbose_name = "Доход"
@@ -223,20 +224,25 @@ def create_report_with_count(sender, instance, created, **kwargs):
     income = Income.get_solo()
     if instance.status == 'Завершен':
         income.finished += finished
-    if instance.status == 'Завершен':
+    if instance.status == 'Отменен':
         income.canceled += canceled
     income.amount += amount
+    income.ratio = income.amount - income.expense
     income.save()
 
 
 @receiver(post_save, sender=Expense)
-def create_report_with_count(sender, instance, created, **kwargs):
-    expense = 0
-    expense_qs = Expense.objects.values('price')
-    for item in expense_qs:
-        expense += item['price']
-
+def add_expense_to_report(sender, instance, created, **kwargs):
     income = Income.get_solo()
-    income.expense += expense
+    income.expense += instance.price
     income.ratio = income.amount - income.expense
+    income.save()
+
+
+@receiver(post_save, sender=Client)
+def count_new_clients(sender, instance, created, **kwargs):
+    clients = Client.objects.count()
+    print(clients)
+    income = Income.get_solo()
+    income.clients = clients
     income.save()
