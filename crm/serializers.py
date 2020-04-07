@@ -60,7 +60,7 @@ class AppointmentSerializerReadable(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ['name', 'surname', 'time', 'doctor', 'service', 'status']
+        fields = ['name', 'surname', 'time', 'phone', 'doctor', 'service', 'status']
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
