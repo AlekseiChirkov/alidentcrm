@@ -30,7 +30,6 @@ def make_doctor(sender, instance, created, **kwargs):
             birthday=instance.birthday,
             email=instance.email
         )
-        print(staff.name)
         staff.save()
 
 
@@ -57,7 +56,6 @@ def make_client(sender, instance, created, **kwargs):
             birthday=instance.birthday,
             email=instance.email
         )
-        print(client.name)
         client.save()
 
 
@@ -87,7 +85,6 @@ class Service(models.Model):
 
 
 class Stock(models.Model):
-    service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE, default=None)
     percentage = models.IntegerField(verbose_name='Скидка в %')
 
     class Meta:
@@ -95,7 +92,7 @@ class Stock(models.Model):
         verbose_name_plural = "Акции"
 
     def __str__(self):
-        return '%s %s' % (self.service, self.percentage)
+        return '%s' % self.percentage
 
 
 class Day(models.Model):
@@ -176,7 +173,7 @@ class Report(models.Model):
 
 @receiver(post_save, sender=Appointment)
 def make_report(sender, instance, created, **kwargs):
-    qs = Appointment.objects.values('service', 'service__report__date').\
+    qs = Appointment.objects.values('service', 'service__report__date'). \
         annotate(count=Count('name'), sum=Sum('service__price'))
     for service in qs:
         serv = Service.objects.get(id=service['service'])
@@ -199,6 +196,7 @@ class Income(SingletonModel):
     expense = models.DecimalField(verbose_name='Общий расход', max_digits=10, decimal_places=2, default=0)
     ratio = models.DecimalField(verbose_name='Соотношение', max_digits=10, decimal_places=2, default=0)
     clients = models.IntegerField(verbose_name='Всего клиентов', default=0)
+    avg_cheque = models.DecimalField(verbose_name='Средний чек', max_digits=10, decimal_places=2, default=0)
 
     class Meta:
         verbose_name = "Доход"
@@ -223,11 +221,12 @@ def create_report_with_count(sender, instance, created, **kwargs):
 
     income = Income.get_solo()
     if instance.status == 'Завершен':
-        income.finished += finished
+        income.finished = finished
     if instance.status == 'Отменен':
-        income.canceled += canceled
+        income.canceled = canceled
     income.amount += amount
     income.ratio = income.amount - income.expense
+    income.avg_cheque = income.amount / income.finished
     income.save()
 
 
@@ -242,7 +241,42 @@ def add_expense_to_report(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Client)
 def count_new_clients(sender, instance, created, **kwargs):
     clients = Client.objects.count()
-    print(clients)
     income = Income.get_solo()
     income.clients = clients
     income.save()
+
+
+class Cheque(models.Model):
+    client = models.CharField(verbose_name='Клиент', max_length=128)
+    service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE)
+    price = models.DecimalField(verbose_name='Цена', max_digits=10, decimal_places=2, blank=True, null=True)
+    date = models.DateField(verbose_name='Дата', auto_now_add=True)
+    stock = models.IntegerField(verbose_name='Скидка', blank=True, null=True, default=0)
+    amount = models.DecimalField(verbose_name='Общая сумма', max_digits=10, decimal_places=2, blank=True, null=True)
+
+    def __str__(self):
+        return f'Чек: {self.client}'
+
+    class Meta:
+        verbose_name = 'Чек'
+        verbose_name_plural = 'Чеки'
+
+    def save(self, *args, **kwargs):
+        stock_value = self.stock * 0.01
+        stock = float(self.price) * stock_value
+        amount = float(self.price) - stock
+        self.amount = amount
+        super(Cheque, self).save(*args, **kwargs)
+
+
+@receiver(post_save, sender=Appointment)
+def create_cheque(sender, instance, created, **kwargs):
+    stock = 0
+    if instance.status == 'Завершен':
+        cheque = Cheque.objects.create(
+            client=instance.name + ' ' + instance.surname,
+            service=instance.service,
+            price=instance.total_price,
+            stock=stock
+        )
+        cheque.save()

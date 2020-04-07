@@ -76,6 +76,13 @@ class IncomeAdmin(admin.ModelAdmin):
         model = Income
 
 
+class ChequeAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in Cheque._meta.fields]
+
+    class Meta:
+        model = Cheque
+
+
 admin.site.register(Staff, StaffAdmin)
 admin.site.register(Client, ClientAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
@@ -86,3 +93,4 @@ admin.site.register(Stock, StockAdmin)
 admin.site.register(Expense, ExpenseAdmin)
 admin.site.register(Report, ReportAdmin)
 admin.site.register(Income, SingletonModelAdmin)
+admin.site.register(Cheque, ChequeAdmin)

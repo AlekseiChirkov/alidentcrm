@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render
 from rest_framework import status, viewsets
-from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -244,11 +244,13 @@ class ReportViewSet(viewsets.ModelViewSet):
         
 
 class IncomeViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAdminUser,)
     queryset = Income.objects.all()
     serializer_class = IncomeSerializer
 
     def get(self):
+        user = MyUser.objects.values('category')
+        print(user)
         income = self.queryset.all()
         serializer = self.serializer_class(income, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -35,8 +35,6 @@ class StockSerializer(serializers.ModelSerializer):
 
 
 class StockSerializerReadable(serializers.ModelSerializer):
-    service = ServiceSerializer()
-
     class Meta:
         model = Stock
         fields = '__all__'
