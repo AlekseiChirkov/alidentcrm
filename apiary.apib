@@ -19,15 +19,13 @@ AliDent is a stomatology clinic
 
             [
                 {
-                    "id": 1,
-                    "last_login": "2020-02-23T19:24:03.365819+06:00",
-                    "name": "",
-                    "surname": "",
-                    "patronymic": "",
-                    "birthday": null,
-                    "phone": "0559129557",
+                    "username": "0559129557",
                     "email": "tektonik_boy98@mail.ru",
-                    "category": null
+                    "name": "Алекей",
+                    "surname": "Чирков",
+                    "patronymic": "Николаевич",
+                    "birthday": "2020-04-04",
+                    "category": "Персонал"
                 }
             ]
 
@@ -45,8 +43,8 @@ AliDent is a stomatology clinic
                 {
                     "username": "0559129557",
                     "email": "tektonik_boy98@mail.ru",
-                    "password1": "Aleksissanchez98",
-                    "password2": "Aleksissanchez98"
+                    "password1": "Admin123",
+                    "password2": "Admin123"
                 }
             ]
 
@@ -93,6 +91,30 @@ AliDent is a stomatology clinic
 
 
 
+## Clients collection [/crm/clients/]
+
+### List All Staff [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: /crm/clients/
+            
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "name": "Alexis Sanchez Sanchez",
+                    "phone": "0999129557",
+                    "birthday": "2020-04-04",
+                    "email": "kingdoom_98@mail.ru"
+                }
+            ]
+
+
+
 ## User login [/rest-auth/login/]
 
 ### Login [POST]
@@ -127,82 +149,6 @@ AliDent is a stomatology clinic
                     "password": "Aleksissanchez98"
                 }
             ]
-        
-        
-        
-## Appointments [/api/appointments/]
-
-### List All Appointments [GET]
-
-+ Response 200 (application/json)
-
-    + Headers
-    
-            Location: /crm/appointments/
-            
-    + Body
-
-            [
-                {
-                    "name": "Алекей",
-                    "surname": "Чирков",
-                    "time": "2020-03-12T18:00:00+06:00",
-                    "doctor": {
-                        "id": 1,
-                        "name": "Alexis Sanchez Sanchez",
-                        "phone": "0999129557",
-                        "birthday": "1998-11-10",
-                        "email": "doc@mail.ru"
-                    },
-                    "service": {
-                        "code": 1.1,
-                        "name": "Анестезия верхней челюсти",
-                        "price": "1000.00",
-                        "category": 1
-                    },
-                    "status": "Активен"
-                }
-            ]
-
-### Create Appointmnet [POST]
-+ Request (application/json)
-
-    + Headers
-    
-            Location: /crm/appointments/
-    
-    + Body
-
-            [
-                {
-                    "name": "Евгений",
-                    "surname": "Киселев",
-                    "time": "2020-03-05T11:30:06+06:00",
-                    "doctor": 1,
-                    "status": "Активен"
-                    "service": 1,
-                }
-            ]
-            
-+ Response 200 (application/json)
-
-    + Headers
-    
-            Location: /crm/appointments/1
-            
-    + Body
-
-            [
-                {
-                    "name": "Алекей",
-                    "surname": "Чирков",
-                    "time": "2020-03-12T18:00:00+06:00",
-                    "doctor": 1,
-                    "service": 1,
-                    "status": "Активен"
-                }
-            ]
-
 
         
 
@@ -241,16 +187,69 @@ AliDent is a stomatology clinic
 
             [
                 {
-                    {
+                    "category": {
                         "id": 1,
+                        "name": "Анестезия"
+                    },
+                    "code": 1.1,
+                    "name": "Анестезия верхней челюсти",
+                    "price": "1000.00"
+                }
+            ]
+
+
+
+
+## Stocks Collection [/crm/stocks/]
+
+### List All Stocks [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: api/stocks/
+            
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "service": {
+                        "category": {
+                            "id": 1,
+                            "name": "Анестезия"
+                        },
                         "code": 1.1,
-                        "name": "Удаление коренного зуба",
-                        "price": "2000.00"
-                        "category": 1
-                    }
+                        "name": "Анестезия верхней челюсти",
+                        "price": "1000.00"
+                    },
+                    "percentage": 10
                 }
             ]
             
+
+### Create a New Stock [POST]
+
++ Request (application/json)
+
+        {
+            "service": 1,
+            "percentage": 15
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /crm/stock/1
+
+    + Body
+
+            {
+                "service": 1,
+                "percentage": 15
+            }
 
 
 ## Work Days Collection [/crm/days/]
@@ -271,79 +270,111 @@ AliDent is a stomatology clinic
                 }
             ]
 
-
-
-## Stocks Collection [/crm/stocks/]
-
-### List All Stocks [GET]
-
-+ Response 200 (application/json)
-
-    + Headers
-    
-            Location: api/stocks/
-            
-    + Body
-
-            [
-                {
-                    "id": 1,
-                    "service": {
-                        "id": 1,
-                        "category": {
-                            "id": 1,
-                            "name": "Удаление"
-                        },
-                        "code": 1.1,
-                        "name": "Удаление коренного зуба",
-                        "price": "2000.00"
-                    },
-                    "percentage": 15
-                }
-            ]
-            
-
-### Create a New Stock [POST]
+### Create a New Day [POST]
 
 + Request (application/json)
 
         {
-            "service": {
-                "id": 1,
-                "category": {
-                    "id": 1,
-                    "name": "Удаление"
-                },
-                "code": 1.1,
-                "name": "Удаление коренного зуба",
-                "price": "2000.00"
-            },
-            "percentage": 15
+            "day": "Понедельник"
         }
 
 + Response 201 (application/json)
 
     + Headers
 
-            Location: /crm/stock/1
+            Location: /crm/day/1
 
     + Body
-
-            {
-                "id": 1,
-                "service": {
+    
+            [    
+                {  
                     "id": 1,
-                    "category": {
-                        "id": 1,
-                        "name": "Удаление"
-                    },
-                    "code": 1.1,
-                    "name": "Удаление коренного зуба",
-                    "price": "2000.00"
-                },
-                "percentage": 15
-            }
+                    "day": "Понедельник"
+                }
+            ]
+
+
+
+## Appointments [/api/appointments/]
+
+### List All Appointments [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: /crm/appointments/
             
+    + Body
+
+            [
+                {
+                    "name": "Алекей",
+                    "surname": "Чирков",
+                    "time": "2020-04-05T18:47:42+06:00",
+                    "phone": "0559129557",
+                    "doctor": {
+                        "id": 1,
+                        "name": "Алекей Чирков Николаевич",
+                        "phone": "0559129557",
+                        "birthday": "2020-04-05",
+                        "email": "tektonik_boy98@mail.ru"
+                    },
+                    "service": {
+                        "category": {
+                            "id": 1,
+                            "name": "Анестезия"
+                        },
+                        "code": 1.1,
+                        "name": "Анестезия верхней челюсти",
+                        "price": "500.00"
+                    },
+                    "status": "Завершен"
+                }
+            ]
+
+
+
+### Create Appointmnet [POST]
++ Request (application/json)
+
+    + Headers
+    
+            Location: /crm/appointments/
+    
+    + Body
+
+            [
+                {
+                    "name": "Евгений",
+                    "surname": "Киселев",
+                    "time": "2020-03-05T11:30:06+06:00",
+                    "doctor": 1,
+                    "service": 1,
+                    "status": "Активен"
+                }
+            ]
+            
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: /crm/appointments/1
+            
+    + Body
+
+            [
+                {
+                    "name": "Алекей",
+                    "surname": "Чирков",
+                    "time": "2020-03-12T18:00:00+06:00",
+                    "doctor": 1,
+                    "service": 1,
+                    "status": "Активен"
+                }
+            ]   
+
+
 
 
 ## Statuses Collection [/crm/status/]
@@ -386,3 +417,129 @@ AliDent is a stomatology clinic
                 "id": 1,
                 "status": "Активен"
             }
+
+
+
+
+## Expense Collection [/crm/expenses/]
+
+### List All Expenses [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: /crm/expenses/
+            
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "service": {
+                        "category": {
+                            "id": 1,
+                            "name": "Анестезия"
+                        },
+                        "code": 1.1,
+                        "name": "Анестезия верхней челюсти",
+                        "price": "1000.00"
+                    },
+                    "name": "Анестетик",
+                    "category": "Препараты",
+                    "description": "Описание",
+                    "price": "200.00",
+                    "date": "1998-11-10"
+                }
+            ]
+            
+
+### Create a New Expense [POST]
+
++ Request (application/json)
+
+        {
+            "name": "Анестетик",
+            "category": "Препараты",
+            "description": "Описание",
+            "price": "200.00",
+            "date": "1998-11-10",
+            "service": 1
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /crm/expenses/1
+
+    + Body
+
+            {
+                "id": 1,
+                "name": "Анестетик",
+                "category": "Препараты",
+                "description": "Описание",
+                "price": "200.00",
+                "date": "1998-11-10",
+                "service": 1
+            }
+
+
+
+## Report Collection [/crm/reports/]
+
+### List All Reports [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: /crm/reports/
+            
+    + Body
+
+            [
+                {
+                    "id": 4,
+                    "service": {
+                        "category": {
+                            "id": 1,
+                            "name": "Анестезия"
+                        },
+                        "code": 1.1,
+                        "name": "Анестезия верхней челюсти",
+                        "price": "1000.00"
+                    },
+                    "count": 1,
+                    "price": "1000.00",
+                    "date": "2020-04-04"
+                }
+            ]
+
+
+
+## Income Collection [/crm/incomes/]
+
+### List All Incomes [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: /crm/incomes/
+            
+    + Body
+
+            [
+                {
+                    "id": 1,
+                    "finished": 4,
+                    "canceled": 2,
+                    "amount": "2000.00",
+                    "expense": "700.00",
+                    "ratio": "1300.00",
+                    "clients": 4,
+                    "avg_cheque": "500.00"
+                }
+            ]
