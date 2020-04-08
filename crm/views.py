@@ -35,7 +35,7 @@ class StaffViewSet(viewsets.ModelViewSet):
         else:
             user.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        
+
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
@@ -217,8 +217,8 @@ class ExpenseViewSet(viewsets.ModelViewSet):
         else:
             expense.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        
-        
+
+
 class ReportViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = Report.objects.all()
@@ -241,7 +241,7 @@ class ReportViewSet(viewsets.ModelViewSet):
         else:
             report.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        
+
 
 class IncomeViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
@@ -266,4 +266,34 @@ class IncomeViewSet(viewsets.ModelViewSet):
             raise Http404
         else:
             income.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ChequeViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    queryset = Cheque.objects.all()
+    serializer_class = ChequeSerializer
+
+    def list(self, request, *args, **kwargs):
+        cheque = self.queryset.all()
+        serializer = ChequeSerializerReadable(cheque, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def delete(self, request):
+        pk = request.data.get('id', None)
+        if pk is None:
+            raise ParseError('role_id is required')
+
+        try:
+            cheque = self.queryset.get(id=pk)
+        except Expense.DoesNotExist:
+            raise Http404
+        else:
+            cheque.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)

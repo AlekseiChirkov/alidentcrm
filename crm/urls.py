@@ -17,6 +17,7 @@ router.register('appointments', views.AppointmentViewSet)
 router.register('expenses', views.ExpenseViewSet)
 router.register('reports', views.ReportViewSet)
 router.register('incomes', views.IncomeViewSet)
+router.register('cheques', views.ChequeViewSet)
 
 
 urlpatterns = [

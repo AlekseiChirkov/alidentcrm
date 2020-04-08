@@ -87,3 +87,17 @@ class IncomeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Income
         fields = '__all__'
+
+
+class ChequeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cheque
+        fields = '__all__'
+
+
+class ChequeSerializerReadable(serializers.ModelSerializer):
+    service = ServiceSerializer()
+
+    class Meta:
+        model = Cheque
+        fields = '__all__'
