@@ -8,6 +8,7 @@ from rest_framework.response import Response
 
 from .serializers import *
 from .models import *
+from .filters import CustomSearchFilter
 
 
 def home(request):
@@ -220,6 +221,10 @@ class ExpenseViewSet(viewsets.ModelViewSet):
 
 
 class ReportViewSet(viewsets.ModelViewSet):
+    filter_backends = (CustomSearchFilter, )
+    search_fields = ['date']
+    ordering_fields = '__all__'
+    filterset_fields = ['date']
     permission_classes = (IsAuthenticated,)
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
@@ -270,7 +275,7 @@ class IncomeViewSet(viewsets.ModelViewSet):
 
 
 class ChequeViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAdminUser,)
     queryset = Cheque.objects.all()
     serializer_class = ChequeSerializer
 

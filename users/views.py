@@ -1,6 +1,5 @@
 from django.http import Http404
 from django.conf import settings
-from django.shortcuts import redirect
 from django.core.mail import send_mail
 from rest_framework import status, viewsets
 from rest_framework.response import Response
@@ -49,7 +48,7 @@ class MyUserViewSet(viewsets.ModelViewSet):
     def delete(self, request):
         pk = request.data.get('id', None)
         if pk is None:
-            raise ParseError('role_id is required')
+            raise ParseError('id is required')
 
         try:
             user = self.queryset.get(id=pk)

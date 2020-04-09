@@ -78,6 +78,7 @@ class IncomeAdmin(admin.ModelAdmin):
 
 class ChequeAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Cheque._meta.fields]
+    readonly_fields = ('price', 'amount')
 
     class Meta:
         model = Cheque

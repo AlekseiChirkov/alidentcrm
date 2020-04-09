@@ -27,7 +27,7 @@ urlpatterns = [
     # API urls
     path('', include('crm.urls')),
 
-    # rest-framework urls
+    # rest-framework and registration/login urls
     path('rest-framework/', include('rest_framework.urls')),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
