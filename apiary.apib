@@ -519,6 +519,37 @@ AliDent is a stomatology clinic
 
 
 
+## Report Filters [/crm/reports/?search=2020-04-05]
+
+### Search Reports With Date [GET]
+
++ Response 200 (application/json)
+    
+   + Headers
+
+            Location: /crm/reports/?search=2020-04-05
+
+   + Body
+   
+            [
+                {
+                    "id": 1,
+                    "service": {
+                        "category": {
+                            "id": 1,
+                            "name": "Анестезия"
+                        },
+                        "code": 1.1,
+                        "name": "Анестезия верхней челюсти",
+                        "price": "500.00"
+                    },
+                    "count": 7,
+                    "price": "3500.00",
+                    "date": "2020-04-05"
+                }
+            ]
+
+
 ## Income Collection [/crm/incomes/]
 
 ### List All Incomes [GET]
