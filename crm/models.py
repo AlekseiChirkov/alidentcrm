@@ -3,6 +3,7 @@ from solo.models import SingletonModel
 from django.db.models import Count, Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from decimal import Decimal
 
 from users.models import MyUser
 
@@ -189,6 +190,42 @@ def make_report(sender, instance, created, **kwargs):
         report.save()
 
 
+class Cheque(models.Model):
+    client = models.CharField(verbose_name='Клиент', max_length=128)
+    service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE)
+    price = models.DecimalField(verbose_name='Цена', max_digits=10, decimal_places=2, default=0)
+    date = models.DateField(verbose_name='Дата', auto_now_add=True)
+    stock = models.IntegerField(verbose_name='Скидка', blank=True, null=True, default=0)
+    amount = models.DecimalField(verbose_name='Общая сумма', max_digits=10, decimal_places=2, default=0)
+
+    def __str__(self):
+        return f'Чек: {self.client}'
+
+    class Meta:
+        verbose_name = 'Чек'
+        verbose_name_plural = 'Чеки'
+
+    def save(self, *args, **kwargs):
+        stock_value = self.stock * 0.01
+        stock = float(self.price) * stock_value
+        amount = float(self.price) - stock
+        self.amount = amount
+        super(Cheque, self).save(*args, **kwargs)
+
+
+@receiver(post_save, sender=Appointment)
+def create_cheque(sender, instance, created, **kwargs):
+    stock = 0
+    if instance.status == 'Завершен':
+        cheque = Cheque.objects.create(
+            client=instance.name + ' ' + instance.surname,
+            service=instance.service,
+            price=instance.total_price,
+            stock=stock
+        )
+        cheque.save()
+
+
 class Income(SingletonModel):
     finished = models.IntegerField(verbose_name='Завершенных записей', default=0)
     canceled = models.IntegerField(verbose_name='Отмененных записей', default=0)
@@ -197,6 +234,7 @@ class Income(SingletonModel):
     ratio = models.DecimalField(verbose_name='Соотношение', max_digits=10, decimal_places=2, default=0)
     clients = models.IntegerField(verbose_name='Всего клиентов', default=0)
     avg_cheque = models.DecimalField(verbose_name='Средний чек', max_digits=10, decimal_places=2, default=0)
+    stocks = models.DecimalField(verbose_name='Скидок на сумму', max_digits=10, decimal_places=2, default=0)
 
     class Meta:
         verbose_name = "Доход"
@@ -225,7 +263,7 @@ def create_report_with_count(sender, instance, created, **kwargs):
     if instance.status == 'Отменен':
         income.canceled = canceled
     income.amount += amount
-    income.ratio = income.amount - income.expense
+    income.ratio = income.amount - income.expense - income.stocks
     income.avg_cheque = income.amount / income.finished
     income.save()
 
@@ -246,37 +284,13 @@ def count_new_clients(sender, instance, created, **kwargs):
     income.save()
 
 
-class Cheque(models.Model):
-    client = models.CharField(verbose_name='Клиент', max_length=128)
-    service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE)
-    price = models.DecimalField(verbose_name='Цена', max_digits=10, decimal_places=2, blank=True, null=True)
-    date = models.DateField(verbose_name='Дата', auto_now_add=True)
-    stock = models.IntegerField(verbose_name='Скидка', blank=True, null=True, default=0)
-    amount = models.DecimalField(verbose_name='Общая сумма', max_digits=10, decimal_places=2, blank=True, null=True)
-
-    def __str__(self):
-        return f'Чек: {self.client}'
-
-    class Meta:
-        verbose_name = 'Чек'
-        verbose_name_plural = 'Чеки'
-
-    def save(self, *args, **kwargs):
-        stock_value = self.stock * 0.01
-        stock = float(self.price) * stock_value
-        amount = float(self.price) - stock
-        self.amount = amount
-        super(Cheque, self).save(*args, **kwargs)
-
-
-@receiver(post_save, sender=Appointment)
-def create_cheque(sender, instance, created, **kwargs):
-    stock = 0
-    if instance.status == 'Завершен':
-        cheque = Cheque.objects.create(
-            client=instance.name + ' ' + instance.surname,
-            service=instance.service,
-            price=instance.total_price,
-            stock=stock
-        )
-        cheque.save()
+@receiver(post_save, sender=Cheque)
+def count_stock_amount(sender, instance, created, **kwargs):
+    income = Income.get_solo()
+    stocks = 0
+    if instance.stock:
+        price = instance.price
+        amount = instance.amount
+        stocks += float(price) - float(amount)
+    income.stocks += Decimal(stocks)
+    income.save()
