@@ -13,6 +13,8 @@ class Staff(models.Model):
     phone = models.CharField(verbose_name='Телефон', max_length=16)
     birthday = models.DateField(verbose_name='Дата рождения')
     email = models.EmailField()
+    experience = models.IntegerField(verbose_name='Опыт работы', blank=True, null=True)
+    specialization = models.CharField(verbose_name='Специализация', max_length=64, blank=True, null=True)
 
     class Meta:
         verbose_name = "Персонал"
