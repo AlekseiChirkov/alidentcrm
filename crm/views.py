@@ -191,7 +191,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
 
 class ExpenseViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
 
@@ -221,13 +221,13 @@ class ExpenseViewSet(viewsets.ModelViewSet):
 
 
 class ReportViewSet(viewsets.ModelViewSet):
+    # permission_classes = (IsAuthenticated,)
+    queryset = Report.objects.all()
+    serializer_class = ReportSerializer
     filter_backends = (CustomSearchFilter, )
     search_fields = ['date']
     ordering_fields = '__all__'
     filterset_fields = ['date']
-    permission_classes = (IsAuthenticated,)
-    queryset = Report.objects.all()
-    serializer_class = ReportSerializer
 
     def get(self):
         report = self.queryset.all()
