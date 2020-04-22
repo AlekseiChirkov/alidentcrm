@@ -18,13 +18,19 @@ class ChoiceField(serializers.Field):
 class MyUserSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
     category = serializers.ChoiceField(choices=MyUser.USER_TYPES)
+    token = serializers.CharField(max_length=256, read_only=True)
 
     class Meta:
         model = MyUser
-        fields = ['id', 'username', 'email', 'password', 'password2', 'name', 'surname', 'patronymic', 'birthday', 'category']
+        fields = [
+            'id', 'username', 'email', 'password', 'password2',
+            'name', 'surname', 'patronymic', 'birthday', 'category', 'token']
         extra_kwargs = {
             'password': {'write_only': True}
         }
+
+    # def create(self, validated_data):
+    #     return MyUser.objects.create_user(**validated_data)
 
     def save(self):
         account = MyUser(

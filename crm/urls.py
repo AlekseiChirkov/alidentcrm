@@ -6,7 +6,7 @@ from users import views as user_view
 
 
 router = routers.DefaultRouter()
-router.register('users', user_view.MyUserViewSet)
+# router.register('users', user_view.MyUserViewSet)
 router.register('staff', views.StaffViewSet)
 router.register('clients', views.ClientViewSet)
 router.register('service-categories', views.ServiceCategoryViewSet)
@@ -23,5 +23,5 @@ router.register('cheques', views.ChequeViewSet)
 urlpatterns = [
     path('crm/', include(router.urls)),
     path('', views.home, name='home'),
-    # path('send/', user_view.email_to_clients),
+    path('crm/users/', user_view.RegistrationAPIView.as_view()),
 ]

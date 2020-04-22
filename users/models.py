@@ -1,5 +1,9 @@
-from django.db import models
+import jwt
+
+from django.conf import settings
+from datetime import datetime, timedelta
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.db import models
 
 
 class MyUserManager(BaseUserManager):
@@ -63,8 +67,20 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
             self.name, self.surname, self.patronymic,
         )
 
+    @property
+    def token(self):
+        return self._generate_jwt_token()
+
     def has_perm(self, perm, obj=None):
         return self.is_admin
 
     def has_module_perms(self, app_label):
         return True
+
+    def _generate_jwt_token(self):
+        dt = datetime.now() + timedelta(days=60)
+        token = jwt.encode({
+            'id': self.pk,
+            'exp': int(dt.strftime('%s'))
+        }, settings.SECRET_KEY, algorithm='HS256')
+        return token.decode('utf-8')
