@@ -5,29 +5,8 @@ HOST: https://polls.apiblueprint.org/
 
 AliDent is a stomatology clinic
 
-## Users collection [/crm/users/]
+## Users Registration [/crm/users/]
 
-### List All Users [GET]
-
-+ Response 200 (application/json)
-
-    + Headers
-    
-            Location: /crm/users/
-            
-    + Body
-
-            [
-                {
-                    "username": "0559129557",
-                    "email": "tektonik_boy98@mail.ru",
-                    "name": "Алекей",
-                    "surname": "Чирков",
-                    "patronymic": "Николаевич",
-                    "birthday": "2020-04-04",
-                    "category": "Персонал"
-                }
-            ]
 
 ### Register a New User [POST]
 
@@ -40,11 +19,16 @@ AliDent is a stomatology clinic
     + Body
 
             [
-                {
-                    "username": "0559129557",
-                    "email": "tektonik_boy98@mail.ru",
-                    "password1": "Admin123",
-                    "password2": "Admin123"
+                 {
+                    "username": "0129234343557",
+                    "email": "doasdasdccom@mail.ru",
+                    "password": "Admin12345678",
+                    "password2": "Admin12345678",
+                    "name": "Санжар",
+                    "surname": "Абдылдаев",
+                    "patronymic": "Уланбекович",
+                    "birthday": "2020-04-13",
+                    "category": "Клиент"
                 }
             ]
 
@@ -57,12 +41,10 @@ AliDent is a stomatology clinic
     + Body
 
             {
-                "username": "0559129557",
-                "email": "tektonik_boy98@mail.ru",
-                "name": null,
-                "surname": null,
-                "patronymic": null,
-                "birthday": null
+                "response": "Successfully registered a new user",
+                "email": "doasdasdccom@mail.ru",
+                "username": "0129234343557",
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTAsImV4cCI6MTU5MjcxNzEyMn0.Ibm60gpJyJijdfYBkfCcM7k1Vxw5a0ic8GiK6IkLrPA"
             }
 
 
