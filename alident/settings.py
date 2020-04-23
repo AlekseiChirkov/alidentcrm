@@ -93,7 +93,11 @@ REST_FRAMEWORK = {
 APPEND_SLASH = False
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = ['*']
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:8000',
+)
 
 
 ROOT_URLCONF = 'alident.urls'
