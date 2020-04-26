@@ -25,7 +25,7 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Service
-        exclude = ('id', )
+        fields = '__all__'
 
 
 class StockSerializer(serializers.ModelSerializer):
