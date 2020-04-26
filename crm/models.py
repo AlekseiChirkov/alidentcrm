@@ -27,13 +27,14 @@ class Staff(models.Model):
 @receiver(post_save, sender=MyUser)
 def make_doctor(sender, instance, created, **kwargs):
     if instance.category == 'Персонал':
-        staff = Staff.objects.create(
-            name=instance.name + ' ' + instance.surname + ' ' + instance.patronymic,
-            phone=instance.username,
-            birthday=instance.birthday,
-            email=instance.email
-        )
-        staff.save()
+        if created:
+            staff = Staff.objects.create(
+                name=instance.name + ' ' + instance.surname + ' ' + instance.patronymic,
+                phone=instance.username,
+                birthday=instance.birthday,
+                email=instance.email
+            )
+            staff.save()
 
 
 class Client(models.Model):
@@ -53,13 +54,14 @@ class Client(models.Model):
 @receiver(post_save, sender=MyUser)
 def make_client(sender, instance, created, **kwargs):
     if instance.category == 'Клиент':
-        client = Client.objects.create(
-            name=instance.name + ' ' + instance.surname + ' ' + instance.patronymic,
-            phone=instance.username,
-            birthday=instance.birthday,
-            email=instance.email
-        )
-        client.save()
+        if created:
+            client = Client.objects.create(
+                name=instance.name + ' ' + instance.surname + ' ' + instance.patronymic,
+                phone=instance.username,
+                birthday=instance.birthday,
+                email=instance.email
+            )
+            client.save()
 
 
 class ServiceCategory(models.Model):
