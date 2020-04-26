@@ -49,7 +49,7 @@ class DaySerializer(serializers.ModelSerializer):
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
-        fields = ['name', 'surname', 'time', 'doctor', 'service', 'status']
+        fields = ['name', 'surname', 'phone', 'time', 'doctor', 'service', 'status']
 
 
 class AppointmentSerializerReadable(serializers.ModelSerializer):
