@@ -268,7 +268,10 @@ def create_report_with_count(sender, instance, created, **kwargs):
         income.canceled = canceled
     income.amount += amount
     income.ratio = income.amount - income.expense - income.stocks
-    income.avg_cheque = income.amount / income.finished
+    try:
+        income.avg_cheque = float(income.amount) / float(income.finished)
+    except ZeroDivisionError:
+        print("Division by 0")
     income.save()
 
 
