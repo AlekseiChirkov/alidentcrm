@@ -249,7 +249,7 @@ class ReportViewSet(viewsets.ModelViewSet):
 
 
 class IncomeViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAdminUser,)
+    # permission_classes = (IsAdminUser,)
     queryset = Income.objects.all()
     serializer_class = IncomeSerializer
 
