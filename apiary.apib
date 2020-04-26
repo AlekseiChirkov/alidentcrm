@@ -99,22 +99,21 @@ AliDent is a stomatology clinic
 
 
 
-## User login [/rest-auth/login/]
+## User login [/crm/login/]
 
 ### Login [POST]
 + Request (application/json)
 
     + Headers
     
-            Location: /rest-auth/login/
+            Location: /crm/login/
     
     + Body
 
             [
                 {
                     "username": "0559129557",
-                    "email": "tektonik_boy98@mail.ru"
-                    "password": "Aleksissanchez98"
+                    "password": "Admin123"
                 }
             ]
             
@@ -122,15 +121,15 @@ AliDent is a stomatology clinic
 
     + Headers
     
-            Location: /rest-auth/login/
+            Location: /crm/login/
             
     + Body
 
             [
                 {
                     "username": "0559129557",
-                    "email": "tektonik_boy98@mail.ru"
-                    "password": "Aleksissanchez98"
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkzMDgwNTk4fQ.9zGsY3Q3zHTW8u5ojo95fDTpl0R6DHkXtQfOhR211lk",
+                    "is_staff": true
                 }
             ]
 
