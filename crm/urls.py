@@ -24,4 +24,5 @@ urlpatterns = [
     path('crm/', include(router.urls)),
     path('', views.home, name='home'),
     path('crm/users/', user_view.RegistrationAPIView.as_view()),
+    path('crm/login/', user_view.LoginAPIView.as_view()),
 ]

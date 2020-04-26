@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from django.contrib.auth import authenticate
+
 
 from .models import MyUser
 
@@ -29,9 +31,6 @@ class MyUserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
 
-    # def create(self, validated_data):
-    #     return MyUser.objects.create_user(**validated_data)
-
     def save(self):
         account = MyUser(
             email=self.validated_data['email'],
@@ -50,3 +49,30 @@ class MyUserSerializer(serializers.ModelSerializer):
         account.set_password(password)
         account.save()
         return account
+
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=64)
+    password = serializers.CharField(max_length=64, write_only=True)
+    token = serializers.CharField(max_length=256, read_only=True)
+    is_staff = serializers.BooleanField(read_only=True)
+
+    def validate(self, data):
+        username = data.get('username', None)
+        password = data.get('password', None)
+        if username is None:
+            raise serializers.ValidationError('Username is required')
+        if password is None:
+            raise serializers.ValidationError('Password is required')
+        user = authenticate(username=username, password=password)
+        if user is None:
+            raise serializers.ValidationError('User with this username or '
+                                              'password does not exist')
+        if not user.is_active:
+            raise serializers.ValidationError('This user has been deactivated')
+
+        return {
+            'username': user.username,
+            'token': user.token,
+            'is_staff': user.is_staff
+        }
