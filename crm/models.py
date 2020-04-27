@@ -12,7 +12,7 @@ class Staff(models.Model):
     name = models.CharField(verbose_name='Ф.И.О.', max_length=128)
     phone = models.CharField(verbose_name='Телефон', max_length=16)
     birthday = models.DateField(verbose_name='Дата рождения')
-    email = models.EmailField()
+    email = models.EmailField(blank=True, null=True)
     experience = models.IntegerField(verbose_name='Опыт работы', blank=True, null=True)
     specialization = models.CharField(verbose_name='Специализация', max_length=64, blank=True, null=True)
 
@@ -41,7 +41,7 @@ class Client(models.Model):
     name = models.CharField(verbose_name='Ф.И.О.', max_length=128)
     phone = models.CharField(verbose_name='Телефон', max_length=16)
     birthday = models.DateField(verbose_name='Дата рождения')
-    email = models.EmailField()
+    email = models.EmailField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Клиент"

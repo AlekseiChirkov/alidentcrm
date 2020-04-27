@@ -45,7 +45,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     patronymic = models.CharField(verbose_name='Отчество', max_length=64, null=True, blank=True)
     birthday = models.DateField(verbose_name='Дата рождения', null=True, blank=True)
     username = models.CharField(verbose_name='Телефон', max_length=64, unique=True)
-    email = models.EmailField(verbose_name='Email', max_length=64, unique=True)
+    email = models.EmailField(verbose_name='Email', max_length=64, unique=True, blank=True, null=True)
     category = models.CharField(verbose_name='Категория пользователя', choices=USER_TYPES, max_length=64, blank=True,
                                 null=True)
     is_admin = models.BooleanField(verbose_name='Администратор', default=False)
