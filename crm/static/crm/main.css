@@ -8,68 +8,163 @@
 a:active{
     font-weight: 900;
 }
-
-
-
-/*Navbar*/
-.navbar{
-    display: flex;
-    justify-content: space-around;
-    background-color: white;
-    height: 10vh;
-    align-content: center;
+li{
+    list-style-type: none;
 }
-.logo{
-    width: 200px;
-    height: 50px;
-    margin: 30px 150px;
+
+.contain{
+    max-width: 1600px;
+    margin: 0 auto;
 }
-.logo img {
+.header{
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 50;
+}
+.header:before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    z-index: 2;
 }
-.nav{
-    margin: 10px 150px;
-    width: 50%;
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
+.header__body{
+    position: relative;
+    display: flex;
     justify-content: space-around;
+    height: 160px;
     align-items: center;
-    font-weight: bold;
-    font-size: 16px;
-    font-family: 'Montserrat', sans-serif;
-    padding-left: 50px;
 }
-.nav a{
-    color: #323232;
-    font-family: 'Montserrat', sans-serif;
+.header__logo{
+    flex: 0 0 150px;
+    overflow: hidden;
+    position: relative;
+    z-index: 3;
 }
-.nav a:hover{
-    color: #BB2667;
+.header__logo img{
+    max-width: 100%;
 }
-#appointment{
-    font-family: 'Montserrat' sans-serif;
+.header__burger{
+    display: none;
+}
+.header__menu{
+    padding-top: 15px;
+}
+.header__list{
+    display: flex;
+    position: relative;
+    z-index: 2;
+}
+.header__list li{
+    list-style: none;
+    margin:  0 0 0 15px;
+}
+.header__link{
+    font-family: 'Lato', sans-serif;
     font-style: normal;
-    font-weight: 600;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: flex-end;
+    text-align: center;
+    color: #323232;
+    padding-top: 10px;
+}
+.header__link:hover{
+    color: red;
+}
+.open-button{
+    width: 128px;
+    height: 34px;
     background: #BB2667;
     box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.13);
     border-radius: 36px;
     border: none;
-    width: 100px;
-    height: 34px;
     color: white;
 }
-@media screen and (max-width: 1700px){
-    .navbar{
+@media(max-width: 767px){
+    body.lock{
+        overflow: hidden; 
+    }
+    .header__body{
+        height: 100px;
+        z-index: 2;
+    }
+    .header__logo{
+        flex: 0 0 80px;
+    }
+    .header__burger{
+        display: flex;
+        width: 30px;
+        height: 20px;
+        position: relative;
+        z-index: 3;
+    }
+    .header__burger span{
+        position: absolute;
+        background-color: #BB2667;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        top: 9px;
+        transition: all 0.3s ease 0s;
+    }
+    .header__burger:before,
+    .header__burger:after{
+        content: '';
+        background-color: #BB2667;
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        left: 0;
+        transition: all 0.3s ease 0s;
+    }
+    .header__burger:before{
+        top: 0;
+    }
+    .header__burger:after{
+        bottom: 0;
+    }
+    .header__burger.active:before{
+        transform: rotate(45deg);
+        top: 9px;
+    }
+    .header__burger.active:after{
+        transform: rotate(-45deg);
+        bottom: 9px;
+    }
+    .header__burger.active span{
+        transform: scale(0);
+    }
+    .header__menu{
+        position: fixed;
+        overflow: auto;
+        top: -100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        padding: 110px 10px 20px 10px;
+        transition: all 0.3s ease 0s;
+    }
+    .header__menu.active{
+        top: 0;
+    }
+    .header__list{
         display: block;
-        justify-content: center;
     }
-    .logo{
-        margin: 0 auto;
+    .header__list li{
+        margin: 40px;
     }
-    .nav{
-        margin: 0 auto;
+    .header__link{
+        font-size: 24px;
+    }
+    .form-popup{
+        z-index: 3;
     }
 }
 
@@ -80,10 +175,8 @@ a:active{
 /*Content*/
 .content{
     width: 100%;
-    height: 60vh;
-    padding: 0 8%;
-    padding-top: 20px;
     margin: 0 auto;
+    padding-top: 10px;
     display: flex;
     justify-content: space-around;
     background: linear-gradient(0deg, #F6FAFB, #F6FAFB), radial-gradient(87.33% 251.41% at 69.43% 109.2%, #37B1CE 0%, #0F77A0 48.7%, #004C8B 99.52%);
@@ -125,6 +218,43 @@ a:active{
     width: 810px;
     height: 536px;
 }
+@media screen and (max-width: 1600px){
+    .content{
+        flex-direction: column;
+        padding: 50px auto;
+        text-align: center;
+    }
+    .content-left{
+        width: 100%;
+        text-align: center;
+    }
+    .content-left h1{
+        width: 100%;
+        justify-content: center;
+    }
+    .content-left p{
+        justify-content: center;
+    }
+    .content-right{
+        width: 100%;
+        padding: 0 10%;
+        justify-content: center;
+    }
+}
+@media screen and (max-width: 767px){
+    .content h1{
+        margin-bottom: 100px;
+    }
+    .content-right{
+        width: 100%;
+        height: 300px;
+    }
+    .content-right img{
+        width: 100%;
+        height: 200px;
+    }
+}
+
 
 
 
@@ -132,7 +262,7 @@ a:active{
 .appointment{
     display: flex;
     width: 100%;
-    height: 30vh;
+    height: 100%;
     background: linear-gradient(0deg, #F6FAFB, #F6FAFB), radial-gradient(87.33% 251.41% at 69.43% 109.2%, #37B1CE 0%, #0F77A0 48.7%, #004C8B 99.52%);
 }
 .appointment-left{
@@ -216,7 +346,6 @@ a:active{
 
     display: flex;
     align-items: center;
-
     color: #990033;
 }
 .appointmentbtn{
@@ -298,6 +427,79 @@ a:active{
     height: 0px;
     border: 2px solid #323232;
 }
+@media screen and (max-width: 1600px){
+    .appointment{
+        flex-direction: column;
+        text-align: center;
+    }
+    .appointment-left{
+        width: 80%;
+        height: 100%;
+        padding: 50px 0 25px 0;
+    }
+    .appointment hr, h2, p{
+        margin: 10px auto;
+    }
+    .appointment-right{
+        display: none;
+    }
+    .appointmentbtn{
+        flex-direction: column;
+    }
+     #leftbtn{
+        margin: 0 auto;
+    }
+    #or{
+        margin: 0 auto;
+    }
+    .nestedbtn{
+        margin: 20px auto;
+    }
+}
+@media screen and (max-width: 767px){
+    .appointment{
+        flex-direction: column;
+        text-align: center;
+    }
+    .appointment-left{
+        width: 80%;
+        height: 100%;
+        padding: 50px 0 25px 0;
+    }
+    .appointment-left h2{
+        font-size: 22px;
+        width: 100%;
+    }
+    .appointment hr{
+        margin: 30px auto;
+    }
+    .appointment p{
+        font-size: 16px;
+        width: 100%;
+        margin-top: 20px;
+    }
+    .appointmentbtn{
+        flex-direction: column;
+    }
+    #leftbtn{
+        margin: 0 auto;
+    }
+    #or{
+        margin: 0 auto;
+    }
+    .nestedbtn{
+        margin-top: 10px;
+        width: 100%;
+        padding: 23px 0;
+    }
+    #pinkbtn{
+        height: 50px;
+        margin-left: 0;
+        padding: 0 5px;
+    }
+}
+
+
 
 
 
@@ -323,12 +525,9 @@ a:active{
     font-weight: bold;
     font-size: 32px;
     line-height: 24px;
-
-    /* identical to box height, or 75% */
     display: flex;
     align-items: center;
     letter-spacing: 0.9px;
-
     color: #323232;
 }
 .about h2{
@@ -336,19 +535,14 @@ a:active{
     height: 55px;
     left: 221px;
     top: 1433px;
-
     font-family: 'Montserrat' sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 30px;
     line-height: 29px;
-
-    /* or 97% */
-    display: flex;
     align-items: center;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-
     margin-top: 50px;
     color: #323232;
 }
@@ -362,17 +556,12 @@ a:active{
     height: 46px;
     left: 220px;
     top: 1544px;
-
     font-family: 'Lato' sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 22px;
     line-height: 26px;
-
-    /* or 118% */
-    display: flex;
     align-items: center;
-
     margin-top: 30px;
     color: #323232;
 }
@@ -382,11 +571,7 @@ a:active{
     font-weight: 600;
     font-size: 16px;
     line-height: 26px;
-
-    /* or 162% */
-    display: flex;
     align-items: center;
-
     margin-top: 30px;
     color: #646464;
 }
@@ -410,13 +595,85 @@ a:active{
     height: 132px;
     margin-right: 31px;
 }
+@media screen and (max-width: 1600px){
+    .about-us{
+        flex-direction: column;
+        width: 100%;
+        padding: 50px 10%;
+        text-align: center;
+    }
+    .about-us h3{
+        font-size: 24px;
+    }
+    .about-us h2{
+        width: 100%;
+        font-size: 22px;
+    }
+    .about-us hr{
+        margin-top: 30px;
+    }
+    .about{
+        width: 100%;
+    }
+    .about h3, h4, hr, h2{
+        margin: 0 auto;
+        text-align: center;
+    }
+    .gallery{
+        width: 100%;
+        padding-right: 20px;
+    }
+    .mainimg img{
+        width: 90%;
+        height: 100%;
+    }
+    .secondaryimg{
+        display: none;
+    }
+}
+@media screen and (max-width: 767px){
+    .about-us{
+        flex-direction: column;
+        width: 100%;
+        padding: 20px 10%;
+        text-align: center;
+    }
+    .about-us h3{
+        font-size: 24px;
+    }
+    .about-us h2{
+        width: 100%;
+        font-size: 22px;
+    }
+    .about-us hr{
+        margin-top: 30px;
+    }
+    .about-us h3, h2, h4, hr, p{
+        margin: 0 auto;
+    }
+    .about{
+        width: 100%;
+    }
+    .gallery{
+        width: 100%;
+        padding-right: 20px;
+    }
+    .mainimg img{
+        width: 100%;
+        height: 100%;
+    }
+    .secondaryimg{
+        display: none;
+    }
+}
+
 
 
 
 /*Our doctors*/
 .doctors{
     width: 100%;
-    height: 120vh;
+    height: 100%;
     background: rgba(157, 0, 28, 0.82);
 }
 .doctors h1{
@@ -425,11 +682,9 @@ a:active{
     font-weight: bold;
     font-size: 32px;
     line-height: 108.5%;
-
     display: flex;
     align-items: center;
     text-align: center;
-
     color: #FFFFFF;
     margin-left: 10%;
     padding-top: 1%;
@@ -438,6 +693,7 @@ a:active{
     width: 103px;
     border: 2px solid #E5E5E5;
     margin-left: 10%;
+    margin-bottom: 0;
 }
 .doctorsimg{
     padding: 10px 0;
@@ -448,13 +704,16 @@ a:active{
     margin: 0;
     padding: 0;
 }
+.nav-tabs{
+    border: none !important;
+}
 .nav a{
     padding: 0;
     margin: 0;
 }
 .nav li{
     padding: 0;
-    width: 10%;
+    /*    width: 10%;*/
 }
 .doctorsimg img{
     width: 80px;
@@ -481,7 +740,6 @@ a:active{
 }
 .leftcontent h2{
     height: 35px;
-
     font-family: 'Lato' sans-serif;
     font-style: normal;
     font-weight: 600;
@@ -491,7 +749,6 @@ a:active{
     align-items: center;
     margin-top: 20px;
     margin-left: 10px;
-
     color: #323232;
 }
 .leftcontent p{
@@ -501,11 +758,8 @@ a:active{
     font-size: 24px;
     line-height: 108.5%;
     margin-left: 10px;
-
-    /* identical to box height, or 26px */
     display: flex;
     align-items: center;
-
     color: #646464;
 }
 .rightcontent{
@@ -536,6 +790,48 @@ a:active{
     width: 330px;
     height: 250px;
 }
+@media screen and (max-width: 1600px){
+    .aboutdoc{
+        width: 100%;
+        flex-direction: column;
+    }
+    .leftcontent{
+        width: 90%;
+    }
+    .leftcontent p{
+        margin-top: 20px;
+    }
+    .rightcontent{
+        width: 90%;
+    }
+    .rightimgs{
+        display: none;
+    }
+}
+@media screen and (max-width: 992px){
+    .aboutdoc{
+        width: 100%;
+        flex-direction: column;
+    }
+    .leftcontent{
+        width: 90%;
+    }
+    .leftcontent p{
+        margin-top: 20px;
+    }
+    .rightcontent{
+        width: 90%;
+    }
+    .rightimgs{
+        display: none;
+    }
+}
+@media screen and (max-width: 767px){
+    .rightimgs{
+        display: none;
+    }
+}
+
 
 
 
@@ -543,7 +839,14 @@ a:active{
 .contacts{
     background: #323232;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+}
+.contacts h1{
+    width: 100%;
+    justify-content: center;
 }
 .address img{
     width: 465px;
@@ -558,59 +861,37 @@ a:active{
     line-height: 108.5%;
     display: flex;
     align-items: center;
+    justify-content: center;
     color: #FFFFFF;
-    padding-top: 10%;
+    padding-top: 50px;
 }
 .contactlist{
-    display: flex;
-    padding: 0;
-    margin: 0;
-    width: 213px;
-    height: 30px;
     font-family: 'Lato' sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
-    line-height: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+.contactlist ul:last-child{
+    margin-left: 100px;
 }
 .contactlist a{
     color: #BDC3C7;
 }
-#facebook{
-    list-style-image: url(img/fb.png);
+.contactlist li { 
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
 }
-#twitter{
-    list-style-image: url(img/tw.png);
-}
-#instagram{
-    list-style-image: url(img/inst.png);
-}
-#youtube{
-    list-style-image: url(img/yt.png);
-}
-#vimeo{
-    list-style-image: url(img/vim.png);
-}
-#address{
-    list-style-image: url(img/gps.png);
-}
-#phone{
-    list-style-image: url(img/phone.png);
-}
-#email{
-    list-style-image: url(img/mail.png);
-}
-#site{
-    list-style-image: url(img/site.png);
-}
-.listleft{
-    margin-left: 20%;
-}
-.listright{
-    margin-left: 40%;
-}
-.listright li{
-    margin-top: 20px;
+.contactlist li i{
+    color: white;
+    margin-right: 10px;
 }
 .address{
     padding-left: 100px;
@@ -642,10 +923,116 @@ a:active{
 .footer-nav a:active{
     font-weight: 900;
 }
-
-
-/*
-div{
-    border: 1px solid blue;
+@media screen and (max-width: 1600px){
+    .contacts{
+        width: 100%;
+        text-align: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .contactlist{
+        width: 100%;
+        padding-right: 200px;
+        margin-right: 100px;
+    }
+    .social h1{
+        width: 100%;
+        justify-content: center;
+    }
+    .address{
+        height: 400px;
+        margin-right: 100px;
+    }
+    .listleft{
+        margin-right: 10px;
+    }
 }
-*/
+@media screen and (max-width: 1200px){
+    .address{
+        display: none;
+    }
+}
+@media screen and (max-width: 992px){
+    .contactlist ul:last-child{
+        margin-left: 0;
+    }
+    .contactlist{
+        width: 100%;
+        padding-right: 0;
+        margin-right: 100px;
+    }
+}
+@media screen and (max-width: 767px){
+    .contactlist{
+        flex-direction: column;
+        margin: 0 auto;
+        width: 100%;
+    }
+}
+
+
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+.form-container .apply {
+  background-color: green;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+@media screen and (max-width: 1200px){
+
+}
+@media screen and (max-width: 992px){
+
+}
+@media screen and (max-width: 767px){
+
+}

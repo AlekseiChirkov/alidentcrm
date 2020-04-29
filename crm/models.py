@@ -90,6 +90,8 @@ class Service(models.Model):
 
 
 class Stock(models.Model):
+    title = models.CharField(verbose_name='Заголовок', max_length=64)
+    description = models.CharField(verbose_name='Описание', max_length=256)
     percentage = models.IntegerField(verbose_name='Скидка в %')
 
     class Meta:

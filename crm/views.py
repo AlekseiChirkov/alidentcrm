@@ -1,5 +1,6 @@
 from django.http import Http404
 from django.shortcuts import render
+from django.contrib.sites.shortcuts import get_current_site
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAdminUser
 from rest_framework.exceptions import ParseError
@@ -8,11 +9,18 @@ from rest_framework.response import Response
 
 from .serializers import *
 from .models import *
+from .forms import AppointmentForm
 from .filters import CustomSearchFilter
 
 
 def home(request):
-    return render(request, 'crm/index.html')
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = AppointmentForm()
+    return render(request, 'crm/index.html', {'form': form})
 
 
 class StaffViewSet(viewsets.ModelViewSet):
