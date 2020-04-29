@@ -619,6 +619,9 @@ li{
         margin: 0 auto;
         text-align: center;
     }
+    .about h4{
+        width: 100%;
+    }
     .gallery{
         width: 100%;
         padding-right: 20px;
