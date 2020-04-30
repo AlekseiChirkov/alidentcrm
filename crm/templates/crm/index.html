@@ -71,12 +71,12 @@
 
 <div class="form-popup" id="myForm">
     <form action="" class="form-container">
-        <h1>Запись к врачу</h1>
+        <h1>Записаться на прием</h1>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn apply">Записаться</button>
-            <button type="submit" class="btn cancel" onclick="closeForm()">Закрыть</button>
+            <button type="submit" formmethod="post" class="btn apply">Записаться</button>
+            <button type="" class="btn cancel" onclick="closeForm()">Закрыть</button>
         </form>
     </form>
 </div>

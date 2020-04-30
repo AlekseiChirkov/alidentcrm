@@ -126,7 +126,7 @@ class Appointment(models.Model):
     time = models.DateTimeField(verbose_name='Время', null=True)
     doctor = models.ForeignKey(Staff, verbose_name='Врач', on_delete=models.CASCADE, default=None)
     total_price = models.DecimalField(verbose_name='Сумма', max_digits=10, decimal_places=2, default=0)
-    status = models.CharField(verbose_name='Статус', max_length=64, choices=STATUS_CHOICES)
+    status = models.CharField(verbose_name='Статус', max_length=64, choices=STATUS_CHOICES, default='Активен')
     appointment_income = models.ForeignKey('Income', verbose_name='Доход с записи', on_delete=models.CASCADE,
                                            default=None, null=True, blank=True)
     service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE, default=None)

@@ -1,6 +1,6 @@
 from django.http import Http404
-from django.shortcuts import render
-from django.contrib.sites.shortcuts import get_current_site
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAdminUser
 from rest_framework.exceptions import ParseError
@@ -17,7 +17,17 @@ def home(request):
     if request.method == 'POST':
         form = AppointmentForm(request.POST)
         if form.is_valid():
-            form.save()
+            appointment = form.save(commit=False)
+            appointment.name = form.cleaned_data["name"]
+            appointment.surname = form.cleaned_data["surname"]
+            appointment.phone = form.cleaned_data["phone"]
+            appointment.time = form.cleaned_data["time"]
+            appointment.service = form.cleaned_data["service"]
+            appointment.doctor = form.cleaned_data["doctor"]
+            # appointment.status = form.cleaned_data["status"]
+            appointment.save()
+            messages.success(request, "Successfully added appointment")
+            return redirect('')
     else:
         form = AppointmentForm()
     return render(request, 'crm/index.html', {'form': form})
