@@ -348,7 +348,7 @@ def create_report_with_count(sender, instance, created, **kwargs):
             if instance.status == 'Отменен' and instance.date == today:
                 report.canceled = canceled
             report.amount += amount
-            report.ratio = report.amount - report.expense - report.stocks
+            report.ratio = report.amount - report.expense
             try:
                 report.avg_cheque = float(report.amount) / float(report.finished)
             except ZeroDivisionError:
