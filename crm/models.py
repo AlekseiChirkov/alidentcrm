@@ -327,7 +327,7 @@ class DailyReport(models.Model):
 
 
 @receiver(post_save, sender=Appointment)
-def create_report_with_count(sender, instance, created, **kwargs):
+def create_daily_report_with_count(sender, instance, created, **kwargs):
     finished_appointments = Appointment.objects.filter(status='Завершен')
     finished = len(finished_appointments)
     canceled_appointments = Appointment.objects.filter(status='Отменен')
@@ -357,7 +357,7 @@ def create_report_with_count(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Expense)
-def add_expense_to_report(sender, instance, created, **kwargs):
+def add_expense_to_daily_report(sender, instance, created, **kwargs):
     today = datetime.now().date()
     report_day = DailyReport.objects.values('date')
     if report_day != today:
@@ -370,7 +370,7 @@ def add_expense_to_report(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Client)
-def count_new_clients(sender, instance, created, **kwargs):
+def count_new_clients_in_daily_report(sender, instance, created, **kwargs):
     today = datetime.now().date()
     report_day = DailyReport.objects.values('date')
     if report_day != today:
