@@ -8,7 +8,9 @@
 a:active{
     font-weight: 900;
 }
-
+li{
+    list-style-type: none;
+}
 
 .contain{
     max-width: 1600px;
@@ -173,16 +175,15 @@ a:active{
 /*Content*/
 .content{
     width: 100%;
-    margin: 0 auto;
     padding-top: 10px;
     display: flex;
-    justify-content: space-around;
     background: linear-gradient(0deg, #F6FAFB, #F6FAFB), radial-gradient(87.33% 251.41% at 69.43% 109.2%, #37B1CE 0%, #0F77A0 48.7%, #004C8B 99.52%);
     box-shadow: 0px 5px 73px rgba(0, 0, 0, 0.09);
 }
 .content-left{
     padding: 100px 0;
     width: 40%;
+    margin-left: 10%;
 }
 .content-left h1{
     width: 474px;
@@ -209,22 +210,22 @@ a:active{
     line-height: 22px;
     display: flex;
     align-items: center;
-
     color: #646464;
 }
 .content-right{
-    width: 810px;
+    width: 760px;
     height: 536px;
 }
 @media screen and (max-width: 1600px){
     .content{
         flex-direction: column;
-        padding: 50px auto;
+        padding: 0 auto;
         text-align: center;
     }
     .content-left{
-        width: 100%;
+        width: 80%;
         text-align: center;
+        padding: 25px 0;
     }
     .content-left h1{
         width: 100%;
@@ -232,21 +233,30 @@ a:active{
     }
     .content-left p{
         justify-content: center;
+        width: 80%;
     }
     .content-right{
         width: 100%;
-        padding: 0 20%;
+        padding: 0 10%;
         justify-content: center;
     }
 }
-@media screen and (max-width: 1200px){
-
-}
-@media screen and (max-width: 992px){
-
-}
 @media screen and (max-width: 767px){
-
+    .content h1{
+        margin-bottom: 50px;
+        font-size: 50px;
+    }
+    .content-left p{
+        font-size: 16px;
+    }
+    .content-right{
+        width: 100%;
+        height: 300px;
+    }
+    .content-right img{
+        width: 100%;
+        height: 200px;
+    }
 }
 
 
@@ -256,7 +266,7 @@ a:active{
 .appointment{
     display: flex;
     width: 100%;
-    height: 30vh;
+    height: 100%;
     background: linear-gradient(0deg, #F6FAFB, #F6FAFB), radial-gradient(87.33% 251.41% at 69.43% 109.2%, #37B1CE 0%, #0F77A0 48.7%, #004C8B 99.52%);
 }
 .appointment-left{
@@ -421,14 +431,76 @@ a:active{
     height: 0px;
     border: 2px solid #323232;
 }
-@media screen and (max-width: 1200px){
-
-}
-@media screen and (max-width: 992px){
-
+@media screen and (max-width: 1600px){
+    .appointment{
+        flex-direction: column;
+        text-align: center;
+    }
+    .appointment-left{
+        width: 80%;
+        height: 100%;
+        padding: 50px 0 25px 0;
+    }
+    .appointment hr, h2, p{
+        margin: 10px auto;
+    }
+    .appointment-right{
+        display: none;
+    }
+    .appointmentbtn{
+        flex-direction: column;
+    }
+     #leftbtn{
+        margin: 0 auto;
+    }
+    #or{
+        margin: 0 auto;
+    }
+    .nestedbtn{
+        margin: 20px auto;
+    }
 }
 @media screen and (max-width: 767px){
-    
+    .appointment{
+        flex-direction: column;
+        text-align: center;
+    }
+    .appointment-left{
+        width: 80%;
+        height: 100%;
+        padding: 50px 0 25px 0;
+    }
+    .appointment-left h2{
+        font-size: 22px;
+        width: 100%;
+    }
+    .appointment hr{
+        margin: 30px auto;
+    }
+    .appointment p{
+        font-size: 16px;
+        width: 100%;
+        margin-top: 20px;
+    }
+    .appointmentbtn{
+        flex-direction: column;
+    }
+    #leftbtn{
+        margin: 0 auto;
+    }
+    #or{
+        margin: 0 auto;
+    }
+    .nestedbtn{
+        margin-top: 10px;
+        width: 100%;
+        padding: 23px 0;
+    }
+    #pinkbtn{
+        height: 50px;
+        margin-left: 0;
+        padding: 0 5px;
+    }
 }
 
 
@@ -472,7 +544,6 @@ a:active{
     font-weight: bold;
     font-size: 30px;
     line-height: 29px;
-    display: flex;
     align-items: center;
     letter-spacing: 1.5px;
     text-transform: uppercase;
@@ -494,7 +565,6 @@ a:active{
     font-weight: 600;
     font-size: 22px;
     line-height: 26px;
-    display: flex;
     align-items: center;
     margin-top: 30px;
     color: #323232;
@@ -505,7 +575,6 @@ a:active{
     font-weight: 600;
     font-size: 16px;
     line-height: 26px;
-    display: flex;
     align-items: center;
     margin-top: 30px;
     color: #646464;
@@ -530,23 +599,84 @@ a:active{
     height: 132px;
     margin-right: 31px;
 }
-@media screen and (max-width: 1200px){
-
-}
-@media screen and (max-width: 992px){
-
+@media screen and (max-width: 1600px){
+    .about-us{
+        flex-direction: column;
+        width: 100%;
+        padding: 50px 10%;
+        text-align: center;
+    }
+    .about-us h3{
+        font-size: 24px;
+    }
+    .about-us h2{
+        width: 100%;
+        font-size: 22px;
+    }
+    .about{
+        width: 100%;
+    }
+    .about h3, h4, hr, h2{
+        margin: 0 auto;
+        text-align: center;
+    }
+    .about h4{
+        width: 100%;
+    }
+    .gallery{
+        width: 100%;
+        padding-right: 20px;
+    }
+    .mainimg img{
+        width: 90%;
+        height: 100%;
+    }
+    .secondaryimg{
+        display: none;
+    }
 }
 @media screen and (max-width: 767px){
-    
+    .about-us{
+        flex-direction: column;
+        width: 100%;
+        padding: 20px 10%;
+        text-align: center;
+    }
+    .about-us h3{
+        font-size: 24px;
+    }
+    .about-us h2{
+        width: 100%;
+        font-size: 22px;
+    }
+    .about-us h3, h2, h4, hr, p{
+        margin: 0 auto;
+    }
+    .about-us hr{
+        margin-top: 60px;
+    }
+    .about{
+        width: 100%;
+    }
+    .gallery{
+        width: 100%;
+        padding-right: 20px;
+    }
+    .mainimg img{
+        width: 100%;
+        height: 100%;
+    }
+    .secondaryimg{
+        display: none;
+    }
 }
-
 
 
 
 /*Our doctors*/
 .doctors{
     width: 100%;
-    height: 120vh;
+    height: 100%;
     background: rgba(157, 0, 28, 0.82);
 }
 .doctors h1{
@@ -566,6 +696,7 @@ a:active{
     width: 103px;
     border: 2px solid #E5E5E5;
     margin-left: 10%;
+    margin-bottom: 0;
 }
 .doctorsimg{
     padding: 10px 0;
@@ -576,13 +707,16 @@ a:active{
     margin: 0;
     padding: 0;
 }
+.nav-tabs{
+    border: none !important;
+}
 .nav a{
     padding: 0;
     margin: 0;
 }
 .nav li{
     padding: 0;
-    width: 10%;
+    /*    width: 10%;*/
 }
 .doctorsimg img{
     width: 80px;
@@ -659,14 +793,46 @@ a:active{
     width: 330px;
     height: 250px;
 }
-@media screen and (max-width: 1200px){
-
+@media screen and (max-width: 1600px){
+    .aboutdoc{
+        width: 100%;
+        flex-direction: column;
+    }
+    .leftcontent{
+        width: 90%;
+    }
+    .leftcontent p{
+        margin-top: 20px;
+    }
+    .rightcontent{
+        width: 90%;
+    }
+    .rightimgs{
+        display: none;
+    }
 }
 @media screen and (max-width: 992px){
-
+    .aboutdoc{
+        width: 100%;
+        flex-direction: column;
+    }
+    .leftcontent{
+        width: 90%;
+    }
+    .leftcontent p{
+        margin-top: 20px;
+    }
+    .rightcontent{
+        width: 90%;
+    }
+    .rightimgs{
+        display: none;
+    }
 }
 @media screen and (max-width: 767px){
-    
+    .rightimgs{
+        display: none;
+    }
 }
 
 
@@ -698,6 +864,7 @@ a:active{
     line-height: 108.5%;
     display: flex;
     align-items: center;
+    justify-content: center;
     color: #FFFFFF;
     padding-top: 50px;
 }
@@ -706,60 +873,28 @@ a:active{
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
-    line-height: 30px;
-    display: flex;
-    justify-content: center;
-    padding: 0 20%;
-}
-.contactlist ul{
-    padding-left: 100px;
-}
-
-.listleft li {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
+    width: 100%;
 }
-/*.listright li {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-}*/
-
+.contactlist ul:last-child{
+    margin-left: 100px;
+}
 .contactlist a{
     color: #BDC3C7;
 }
-#facebook{
-    background: url(img/fb.png);
+.contactlist li { 
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
 }
-#twitter{
-    background: url(img/tw.png);
-}
-#instagram{
-    background: url(img/inst.png);
-}
-#youtube{
-    background: url(img/yt.png);
-}
-#vimeo{
-    background: url(img/vim.png);
-}
-#address{
-    list-style-image: url(img/gps.png);
-}
-#phone{
-    list-style-image: url(img/phone.png);
-}
-#email{
-    list-style-image: url(img/mail.png);
-}
-#site{
-    list-style-image: url(img/site.png);
-}
-.listright li{
-    margin-top: 20px;
+.contactlist li i{
+    color: white;
+    margin-right: 10px;
 }
 .address{
     padding-left: 100px;
@@ -803,9 +938,6 @@ a:active{
         padding-right: 200px;
         margin-right: 100px;
     }
-    .social{
-        height: 400px;
-    }
     .social h1{
         width: 100%;
         justify-content: center;
@@ -814,6 +946,9 @@ a:active{
         height: 400px;
         margin-right: 100px;
     }
+    .listleft{
+        margin-right: 10px;
+    }
 }
 @media screen and (max-width: 1200px){
     .address{
@@ -821,103 +956,72 @@ a:active{
     }
 }
 @media screen and (max-width: 992px){
+    .contactlist ul:last-child{
+        margin-left: 0;
+    }
     .contactlist{
         width: 100%;
-        padding-right: 200px;
+        padding-right: 0;
         margin-right: 100px;
     }
 }
 @media screen and (max-width: 767px){
-    #facebook{
-        background: url(img/fb.png);
+    .contactlist{
+        flex-direction: column;
+        margin: 0 auto;
+        width: 100%;
+        font-size: 18px;
     }
-    #twitter{
-        background: url(img/tw.png);
-    }
-    #instagram{
-        background: url(img/inst.png);
-    }
-    #youtube{
-        background: url(img/yt.png);
-    }
-    #vimeo{
-        background: url(img/vim.png);
-    }
-    #address{
-        list-style-image: url(img/gps.png);
-    }
-    #phone{
-        list-style-image: url(img/phone.png);
-    }
-    #email{
-        list-style-image: url(img/mail.png);
-    }
-    #site{
-        list-style-image: url(img/site.png);
-    }
-}
-@media screen and (max-width: 320px){
-
 }
 
 
 
 /* The popup form - hidden by default */
 .form-popup {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  right: 15px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
+    display: none;
+    position: fixed;
+    z-index: 9;
+    background: #FFFFFF;
+    border-radius: 8px;
 }
 
 /* Add styles to the form container */
 .form-container {
-  max-width: 300px;
-  padding: 10px;
-  background-color: white;
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+    background: #FFF;
+    border-radius: 8px;
 }
-
-/* Full-width input fields */
-.form-container {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
+.form-container h1{
+    font-family: 'Lato' sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 32px;
+    text-align: center;
+    color: #686868;
 }
-
+.form-container input, select{
+    background: #DAF5FD;
+    border: 2px solid #8ACBDC;
+    border-radius: 8px;
+}
 /* When the inputs get focus, do something */
 .form-container input[type=text]:focus, .form-container input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
+    background-color: #ddd;
+    outline: none;
 }
-
-/* Set a style for the submit/login button */
+/* Set a style for the submit button */
 .form-container .btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom:10px;
-  opacity: 0.8;
-}
-
-.form-container .apply {
-  background-color: green;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
+    background: linear-gradient(0deg, #950032, #950032), #FFFFFF;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+    opacity: 0.8;
 }
 @media screen and (max-width: 1200px){
 
@@ -926,5 +1030,27 @@ a:active{
 
 }
 @media screen and (max-width: 767px){
-    
+    .form-container {
+        line-height: 1.2;
+        max-width: 300px;
+        padding: 0;
+        margin: 0;
+        background-color: white;
+        background: #FFF;
+        border-radius: 8px;
+    }   
+    .form-container input, select{
+        background: #DAF5FD;
+        border: 2px solid #8ACBDC;
+        border-radius: 8px;
+        margin-bottom: 0;
+        padding: 0;
+        max-width: 200px;
+    }
+    .form-container .btn {
+        background: linear-gradient(0deg, #950032, #950032), #FFFFFF;
+        color: white;
+        cursor: pointer;
+        width: 100%;
+    }
 }
