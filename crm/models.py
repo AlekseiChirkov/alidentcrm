@@ -1,8 +1,10 @@
+from datetime import datetime
+
 from django.db import models
-from solo.models import SingletonModel
 from django.db.models import Count, Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from solo.models import SingletonModel
 from decimal import Decimal
 
 from users.models import MyUser
@@ -15,6 +17,7 @@ class Staff(models.Model):
     email = models.EmailField(blank=True, null=True)
     experience = models.IntegerField(verbose_name='Опыт работы', blank=True, null=True)
     specialization = models.CharField(verbose_name='Специализация', max_length=64, blank=True, null=True)
+    date = models.DateField(verbose_name='Дата регистрации', auto_now=True)
 
     class Meta:
         verbose_name = "Персонал"
@@ -42,6 +45,7 @@ class Client(models.Model):
     phone = models.CharField(verbose_name='Телефон', max_length=16)
     birthday = models.DateField(verbose_name='Дата рождения')
     email = models.EmailField(blank=True, null=True)
+    date = models.DateField(verbose_name='Дата создания', auto_now=True)
 
     class Meta:
         verbose_name = "Клиент"
@@ -93,6 +97,7 @@ class Stock(models.Model):
     title = models.CharField(verbose_name='Заголовок', max_length=64)
     description = models.CharField(verbose_name='Описание', max_length=256)
     percentage = models.IntegerField(verbose_name='Скидка в %')
+    date = models.DateField(verbose_name='Дата создания', auto_now=True)
 
     class Meta:
         verbose_name = "Акция"
@@ -130,6 +135,7 @@ class Appointment(models.Model):
     appointment_income = models.ForeignKey('Income', verbose_name='Доход с записи', on_delete=models.CASCADE,
                                            default=None, null=True, blank=True)
     service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE, default=None)
+    date = models.DateField(verbose_name='Дата создания', auto_now=True)
 
     class Meta:
         verbose_name = "Запись"
@@ -152,7 +158,7 @@ class Expense(models.Model):
     description = models.CharField(verbose_name='Описание', max_length=128)
     service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE)
     price = models.DecimalField(verbose_name='Стоимость (сом)', max_digits=10, decimal_places=2)
-    date = models.DateField(verbose_name='Дата')
+    date = models.DateField(verbose_name='Дата создания', auto_now=True)
 
     class Meta:
         verbose_name = "Расход"
@@ -200,7 +206,7 @@ class Cheque(models.Model):
     client = models.CharField(verbose_name='Клиент', max_length=128)
     service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE)
     price = models.DecimalField(verbose_name='Цена', max_digits=10, decimal_places=2, default=0)
-    date = models.DateField(verbose_name='Дата', auto_now_add=True)
+    date = models.DateField(verbose_name='Дата чека', auto_now_add=True)
     stock = models.IntegerField(verbose_name='Скидка', blank=True, null=True, default=0)
     amount = models.DecimalField(verbose_name='Общая сумма', max_digits=10, decimal_places=2, default=0)
 
@@ -303,3 +309,74 @@ def count_stock_amount(sender, instance, created, **kwargs):
         stocks += float(price) - float(amount)
     income.stocks += Decimal(stocks)
     income.save()
+
+
+class DailyReport(models.Model):
+    finished = models.IntegerField(verbose_name='Завершенных записей', default=0)
+    canceled = models.IntegerField(verbose_name='Отмененных записей', default=0)
+    amount = models.DecimalField(verbose_name='Общий доход', max_digits=10, decimal_places=2, default=0)
+    expense = models.DecimalField(verbose_name='Общий расход', max_digits=10, decimal_places=2, default=0)
+    ratio = models.DecimalField(verbose_name='Соотношение доход/расход', max_digits=10, decimal_places=2, default=0)
+    avg_cheque = models.DecimalField(verbose_name='Средний чек', max_digits=10, decimal_places=2, default=0)
+    clients = models.IntegerField(verbose_name='Новых клиентов', default=0)
+    date = models.DateField(verbose_name='Дата отчета', auto_now=True)
+
+    class Meta:
+        verbose_name = 'Отчет за день'
+        verbose_name_plural = 'Отчеты по дням'
+
+
+@receiver(post_save, sender=Appointment)
+def create_report_with_count(sender, instance, created, **kwargs):
+    finished_appointments = Appointment.objects.filter(status='Завершен')
+    finished = len(finished_appointments)
+    canceled_appointments = Appointment.objects.filter(status='Отменен')
+    canceled = len(canceled_appointments)
+    today = datetime.now().date()
+
+    amount = 0
+    if instance.status == 'Завершен' and instance.date == today:
+        amount += instance.total_price
+
+    report_day = DailyReport.objects.values('date')
+    print(report_day)
+    if report_day != today:
+        if created:
+            report, created = DailyReport.objects.get_or_create(date=today)
+            if instance.status == 'Завершен' and instance.date == today:
+                report.finished = finished
+            if instance.status == 'Отменен' and instance.date == today:
+                report.canceled = canceled
+            report.amount += amount
+            report.ratio = report.amount - report.expense - report.stocks
+            try:
+                report.avg_cheque = float(report.amount) / float(report.finished)
+            except ZeroDivisionError:
+                print("Division by 0")
+            report.save()
+
+
+@receiver(post_save, sender=Expense)
+def add_expense_to_report(sender, instance, created, **kwargs):
+    today = datetime.now().date()
+    report_day = DailyReport.objects.values('date')
+    if report_day != today:
+        if created:
+            report, created = DailyReport.objects.get_or_create(date=today)
+            if instance.date == today:
+                report.expense += instance.price
+                report.ratio = report.amount - report.expense
+                report.save()
+
+
+@receiver(post_save, sender=Client)
+def count_new_clients(sender, instance, created, **kwargs):
+    today = datetime.now().date()
+    report_day = DailyReport.objects.values('date')
+    if report_day != today:
+        if created:
+            report, created = DailyReport.objects.get_or_create(date=today)
+            if instance.date == today:
+                clients = Client.objects.filter(date=today).count()
+                report.clients = clients
+                report.save()

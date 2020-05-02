@@ -24,7 +24,6 @@ def home(request):
             appointment.time = form.cleaned_data["time"]
             appointment.service = form.cleaned_data["service"]
             appointment.doctor = form.cleaned_data["doctor"]
-            # appointment.status = form.cleaned_data["status"]
             appointment.save()
             messages.success(request, "Successfully added appointment")
             return redirect('')

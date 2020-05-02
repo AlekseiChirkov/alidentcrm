@@ -1,18 +1,20 @@
 from django.contrib import admin
+from django.db.models.functions import Trunc
+from django.db.models import DateTimeField, Min, Max
 from solo.admin import SingletonModelAdmin
 
 from .models import *
 
 
 class StaffAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = [field.name for field in Staff._meta.fields]
 
     class Meta:
         model = Staff
 
 
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = [field.name for field in Client._meta.fields]
 
     class Meta:
         model = Client
@@ -84,6 +86,14 @@ class ChequeAdmin(admin.ModelAdmin):
         model = Cheque
 
 
+class DailyReportAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in DailyReport._meta.fields]
+    # readonly_fields = '__all__'
+
+    class Meta:
+        model = DailyReport
+
+
 admin.site.register(Staff, StaffAdmin)
 admin.site.register(Client, ClientAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
@@ -95,3 +105,4 @@ admin.site.register(Expense, ExpenseAdmin)
 admin.site.register(Report, ReportAdmin)
 admin.site.register(Income, SingletonModelAdmin)
 admin.site.register(Cheque, ChequeAdmin)
+admin.site.register(DailyReport, DailyReportAdmin)
