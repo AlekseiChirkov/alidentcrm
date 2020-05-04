@@ -49,7 +49,7 @@ class DayAdmin(admin.ModelAdmin):
 
 
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ['name', 'surname', 'time', 'doctor', 'total_price', 'status', 'service']
+    list_display = ['name', 'surname', 'time', 'doctor', 'total_price', 'status', 'service', 'date']
     exclude = ['appointment_income']
     readonly_fields = ('total_price',)
 
@@ -71,8 +71,10 @@ class ReportAdmin(admin.ModelAdmin):
         model = Report
 
 
-class IncomeAdmin(admin.ModelAdmin):
+class IncomeAdmin(SingletonModelAdmin):
     list_display = [field.name for field in Income._meta.fields]
+    readonly_fields = ('finished', 'canceled', 'amount', 'expense',
+                       'ratio', 'clients', 'avg_cheque', 'stocks', 'amount_stocks')
 
     class Meta:
         model = Income
@@ -103,6 +105,6 @@ admin.site.register(ServiceCategory, ServiceCategoryAdmin)
 admin.site.register(Stock, StockAdmin)
 admin.site.register(Expense, ExpenseAdmin)
 admin.site.register(Report, ReportAdmin)
-admin.site.register(Income, SingletonModelAdmin)
+admin.site.register(Income, IncomeAdmin)
 admin.site.register(Cheque, ChequeAdmin)
 admin.site.register(DailyReport, DailyReportAdmin)

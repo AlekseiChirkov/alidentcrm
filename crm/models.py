@@ -135,6 +135,7 @@ class Appointment(models.Model):
     appointment_income = models.ForeignKey('Income', verbose_name='Доход с записи', on_delete=models.CASCADE,
                                            default=None, null=True, blank=True)
     service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE, default=None)
+    stock = models.ForeignKey(Stock, verbose_name='Акция', on_delete=models.CASCADE, default=None)
     date = models.DateField(verbose_name='Дата создания', auto_now=True)
 
     class Meta:
@@ -207,7 +208,7 @@ class Cheque(models.Model):
     service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE)
     price = models.DecimalField(verbose_name='Цена', max_digits=10, decimal_places=2, default=0)
     date = models.DateField(verbose_name='Дата чека', auto_now_add=True)
-    stock = models.IntegerField(verbose_name='Скидка', blank=True, null=True, default=0)
+    stock = models.ForeignKey(Stock, verbose_name='Скидка', on_delete=models.CASCADE, blank=True, null=True, default=None)
     amount = models.DecimalField(verbose_name='Общая сумма', max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
@@ -218,22 +219,22 @@ class Cheque(models.Model):
         verbose_name_plural = 'Чеки'
 
     def save(self, *args, **kwargs):
-        stock_value = self.stock * 0.01
-        stock = float(self.price) * stock_value
-        amount = float(self.price) - stock
-        self.amount = amount
-        super(Cheque, self).save(*args, **kwargs)
+        if self.stock:
+            stock_value = self.stock.percentage * 0.01
+            stock = float(self.price) * stock_value
+            amount = float(self.price) - stock
+            self.amount = amount
+            super(Cheque, self).save(*args, **kwargs)
 
 
 @receiver(post_save, sender=Appointment)
 def create_cheque(sender, instance, created, **kwargs):
-    stock = 0
     if instance.status == 'Завершен':
         cheque = Cheque.objects.create(
             client=instance.name + ' ' + instance.surname,
             service=instance.service,
             price=instance.total_price,
-            stock=stock
+            stock=instance.stock
         )
         cheque.save()
 
@@ -247,14 +248,15 @@ class Income(SingletonModel):
     clients = models.IntegerField(verbose_name='Всего клиентов', default=0)
     avg_cheque = models.DecimalField(verbose_name='Средний чек', max_digits=10, decimal_places=2, default=0)
     stocks = models.DecimalField(verbose_name='Скидок на сумму', max_digits=10, decimal_places=2, default=0)
+    amount_stocks = models.DecimalField(verbose_name='Доход с учетом скидок', max_digits=10, decimal_places=2, default=0)
 
     class Meta:
         verbose_name = "Доход"
         verbose_name_plural = "Доходы"
 
     def __str__(self):
-        return "%s %s %s %s %s" % (
-            self.finished, self.canceled, self.amount, self.expense, self.ratio
+        return "%s %s %s %s %s %s" % (
+            self.finished, self.canceled, self.amount, self.expense, self.ratio, self.amount_stocks
         )
 
 
@@ -276,6 +278,7 @@ def create_report_with_count(sender, instance, created, **kwargs):
         income.canceled = canceled
     income.amount += amount
     income.ratio = income.amount - income.expense - income.stocks
+    income.amount_stocks = income.amount - income.stocks
     try:
         income.avg_cheque = float(income.amount) / float(income.finished)
     except ZeroDivisionError:
@@ -319,6 +322,9 @@ class DailyReport(models.Model):
     ratio = models.DecimalField(verbose_name='Соотношение доход/расход', max_digits=10, decimal_places=2, default=0)
     avg_cheque = models.DecimalField(verbose_name='Средний чек', max_digits=10, decimal_places=2, default=0)
     clients = models.IntegerField(verbose_name='Новых клиентов', default=0)
+    stocks = models.DecimalField(verbose_name='Скидок на сумму', max_digits=10, decimal_places=2, default=0)
+    amount_stocks = models.DecimalField(verbose_name='Доход с учетом скидок', max_digits=10, decimal_places=2,
+                                        default=0)
     date = models.DateField(verbose_name='Дата отчета', auto_now=True)
 
     class Meta:
@@ -339,16 +345,20 @@ def create_daily_report_with_count(sender, instance, created, **kwargs):
         amount += instance.total_price
 
     report_day = DailyReport.objects.values('date')
-    print(report_day)
+    print(today)
     if report_day != today:
         if created:
             report, created = DailyReport.objects.get_or_create(date=today)
-            if instance.status == 'Завершен' and instance.date == today:
-                report.finished = finished
-            if instance.status == 'Отменен' and instance.date == today:
-                report.canceled = canceled
+            if instance.date == today:
+                if instance.status == 'Завершен':
+                    finished = Appointment.objects.filter(date=today).count()
+                    report.finished = finished
+                if instance.status == 'Отменен':
+                    canceled = Appointment.objects.filter(date=today).count()
+                    report.canceled = canceled
             report.amount += amount
             report.ratio = report.amount - report.expense
+            report.amount_stocks = report.amount - report.stocks
             try:
                 report.avg_cheque = float(report.amount) / float(report.finished)
             except ZeroDivisionError:
@@ -379,4 +389,20 @@ def count_new_clients_in_daily_report(sender, instance, created, **kwargs):
             if instance.date == today:
                 clients = Client.objects.filter(date=today).count()
                 report.clients = clients
+                report.save()
+
+
+@receiver(post_save, sender=Cheque)
+def count_stock_amount_for_daily_report(sender, instance, created, **kwargs):
+    today = datetime.now().date()
+    report_day = DailyReport.objects.values('date')
+    stocks = 0
+    if report_day != today:
+        if created:
+            report, created = DailyReport.objects.get_or_create(date=today)
+            if instance.stock and instance.date == today:
+                price = instance.price
+                amount = instance.amount
+                stocks += float(price) - float(amount)
+                report.stocks += Decimal(stocks)
                 report.save()
