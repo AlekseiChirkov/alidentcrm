@@ -49,7 +49,7 @@ class DayAdmin(admin.ModelAdmin):
 
 
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ['name', 'surname', 'time', 'doctor', 'total_price', 'status', 'service', 'date']
+    list_display = ['name', 'surname', 'time', 'doctor', 'total_price', 'status', 'service', 'date', 'stock']
     exclude = ['appointment_income']
     readonly_fields = ('total_price',)
 

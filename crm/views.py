@@ -26,7 +26,7 @@ def home(request):
             appointment.doctor = form.cleaned_data["doctor"]
             appointment.save()
             messages.success(request, "Successfully added appointment")
-            return redirect('')
+            return redirect('/')
     else:
         form = AppointmentForm()
     return render(request, 'crm/index.html', {'form': form})

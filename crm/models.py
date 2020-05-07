@@ -135,7 +135,7 @@ class Appointment(models.Model):
     appointment_income = models.ForeignKey('Income', verbose_name='Доход с записи', on_delete=models.CASCADE,
                                            default=None, null=True, blank=True)
     service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE, default=None)
-    stock = models.ForeignKey(Stock, verbose_name='Акция', on_delete=models.CASCADE, default=None)
+    stock = models.ForeignKey(Stock, verbose_name='Акция', on_delete=models.CASCADE, default=None, blank=True, null=True)
     date = models.DateField(verbose_name='Дата создания', auto_now=True)
 
     class Meta:
