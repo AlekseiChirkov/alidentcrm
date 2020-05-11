@@ -15,8 +15,8 @@ class Staff(models.Model):
     phone = models.CharField(verbose_name='Телефон', max_length=16)
     birthday = models.DateField(verbose_name='Дата рождения')
     email = models.EmailField(blank=True, null=True)
-    experience = models.IntegerField(verbose_name='Опыт работы', blank=True, null=True)
-    specialization = models.CharField(verbose_name='Специализация', max_length=64, blank=True, null=True)
+    experience = models.IntegerField(verbose_name='Опыт работы', blank=True, null=True, default=0)
+    specialization = models.CharField(verbose_name='Специализация', max_length=64, blank=True, null=True, default=None)
     date = models.DateField(verbose_name='Дата регистрации', auto_now=True)
 
     class Meta:
@@ -149,7 +149,12 @@ class Appointment(models.Model):
 
     def save(self, *args, **kwargs):
         price = self.service.price
-        self.total_price = price
+        if self.stock:
+            stock = self.stock.percentage * 0.01
+            stock_price = Decimal(price) - Decimal(price) * Decimal(stock)
+            self.total_price = Decimal(stock_price)
+        else:
+            self.total_price = price
         super(Appointment, self).save(*args, **kwargs)
 
 
@@ -233,7 +238,7 @@ def create_cheque(sender, instance, created, **kwargs):
         cheque = Cheque.objects.create(
             client=instance.name + ' ' + instance.surname,
             service=instance.service,
-            price=instance.total_price,
+            price=instance.service.price,
             stock=instance.stock
         )
         cheque.save()
@@ -342,7 +347,7 @@ def create_daily_report_with_count(sender, instance, created, **kwargs):
 
     amount = 0
     if instance.status == 'Завершен' and instance.date == today:
-        amount += instance.total_price
+        amount += instance.service.price
 
     report_day = DailyReport.objects.values('date')
     print(today)
