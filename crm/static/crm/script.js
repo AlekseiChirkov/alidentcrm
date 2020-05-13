@@ -12,3 +12,10 @@ $(document).ready(function(){
 		$('body').toggleClass('lock');
 	})
 });
+
+
+$(function(){
+	$("#datetimepicker1").datetimepicker({
+		format: 'DD/MM/YYYY HH:mm',
+	});
+});

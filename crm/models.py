@@ -128,7 +128,7 @@ class Appointment(models.Model):
     name = models.CharField(verbose_name='Имя', max_length=64)
     surname = models.CharField(verbose_name='Фамилия', max_length=64)
     phone = models.CharField(verbose_name='Телефон клиента', max_length=64)
-    time = models.DateTimeField(verbose_name='Время', null=True)
+    time = models.DateTimeField(verbose_name='Время', null=True, help_text='Формат: ')
     doctor = models.ForeignKey(Staff, verbose_name='Врач', on_delete=models.CASCADE, default=None)
     total_price = models.DecimalField(verbose_name='Сумма', max_digits=10, decimal_places=2, default=0)
     status = models.CharField(verbose_name='Статус', max_length=64, choices=STATUS_CHOICES, default='Активен')

@@ -183,6 +183,8 @@ CRONJOBS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
+DATETIME_FORMAT = 'd-m-Y H:i'
+
 LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'Asia/Bishkek'
