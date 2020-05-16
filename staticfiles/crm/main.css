@@ -728,13 +728,11 @@ li{
 }
 .aboutdoctors{
     display: flex;
-    justify-content: space-around;
     margin-left: 10%;
 }
 .aboutdoc{
     display: flex;
-    justify-content: space-between;
-    width: 70%;
+    width: 90%;
 }
 .leftcontent{
     width: 70%;
@@ -758,7 +756,7 @@ li{
     font-family: 'Lato' sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 18px;
     line-height: 108.5%;
     margin-left: 10px;
     display: flex;
@@ -766,7 +764,7 @@ li{
     color: #646464;
 }
 .rightcontent{
-    width: 50%;
+    width: 80%;
 }
 .rightcontent img{
     width: 100%;
@@ -987,7 +985,7 @@ li{
 
 /* Add styles to the form container */
 .form-container {
-    max-width: 300px;
+    max-width: 320px;
     padding: 10px;
     background-color: white;
     background: #FFF;
@@ -1006,7 +1004,9 @@ li{
     background: #DAF5FD;
     border: 2px solid #8ACBDC;
     border-radius: 8px;
+    width: 270px;
 }
+
 /* When the inputs get focus, do something */
 .form-container input[type=text]:focus, .form-container input[type=password]:focus {
     background-color: #ddd;
