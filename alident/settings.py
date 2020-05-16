@@ -18,18 +18,16 @@ from decouple import config
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = '(20_!&b8qa!jx($gskf1$)u(yo$0^tmbn8$l)+zqf8u#as*#ec'  # config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool, default=True)
+DEBUG = False  # config('DEBUG', cast=bool, default=True)
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -89,7 +87,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-
 APPEND_SLASH = False
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -98,7 +95,6 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:3001',
     'http://localhost:8000',
 )
-
 
 ROOT_URLCONF = 'alident.urls'
 
@@ -119,7 +115,6 @@ TEMPLATES = [
 ]
 WSGI_APPLICATION = 'alident.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -132,9 +127,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASS'),
+            'NAME': 'alidentdb',  # config('DB_NAME'),
+            'USER': 'alex',  # config('DB_USER'),
+            'PASSWORD': 'Aleksissanchez98',  # config('DB_PASS'),
             'HOST': '127.0.0.1',
             'PORT': '5432',
         }
@@ -194,7 +189,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
