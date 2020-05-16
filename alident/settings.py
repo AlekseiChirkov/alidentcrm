@@ -27,7 +27,7 @@ SECRET_KEY = '(20_!&b8qa!jx($gskf1$)u(yo$0^tmbn8$l)+zqf8u#as*#ec'  # config('SEC
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False  # config('DEBUG', cast=bool, default=True)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['157.245.85.34']
 
 # Application definition
 
@@ -118,22 +118,22 @@ WSGI_APPLICATION = 'alident.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DEPLOY = False
-if DEPLOY:
-    DATABASES = {
-        'default': dj_database_url.config(default=config('DATABASE_URL'))
+# DEPLOY = False
+# if DEPLOY:
+#     DATABASES = {
+#         'default': dj_database_url.config(default=config('DATABASE_URL'))
+#     }
+# else:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'alidentdb',  # config('DB_NAME'),
+        'USER': 'alex',  # config('DB_USER'),
+        'PASSWORD': 'Aleksissanchez98',  # config('DB_PASS'),
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'alidentdb',  # config('DB_NAME'),
-            'USER': 'alex',  # config('DB_USER'),
-            'PASSWORD': 'Aleksissanchez98',  # config('DB_PASS'),
-            'HOST': '127.0.0.1',
-            'PORT': '5432',
-        }
-    }
+}
 
 AUTH_USER_MODEL = 'users.MyUser'
 
