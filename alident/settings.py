@@ -27,7 +27,7 @@ SECRET_KEY = '(20_!&b8qa!jx($gskf1$)u(yo$0^tmbn8$l)+zqf8u#as*#ec'  # config('SEC
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # config('DEBUG', cast=bool, default=True)
 
-ALLOWED_HOSTS = ['1167.172.153.186']
+ALLOWED_HOSTS = ['157.245.137.112']
 
 # Application definition
 
