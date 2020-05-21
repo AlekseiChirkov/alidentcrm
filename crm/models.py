@@ -80,7 +80,7 @@ class ServiceCategory(models.Model):
 
 
 class Service(models.Model):
-    code = models.FloatField(verbose_name='Кодировка', unique=True)
+    code = models.CharField(verbose_name='Кодировка', max_length=32, unique=True)
     name = models.CharField(verbose_name='Услуга', max_length=128)
     category = models.ForeignKey(ServiceCategory, verbose_name='Категория', on_delete=models.CASCADE, default=None)
     price = models.DecimalField(verbose_name='Цена', max_digits=10, decimal_places=2, default=0)
