@@ -12,7 +12,7 @@ $(document).ready(function(){
 		$('body').toggleClass('lock');
 	});
 	$("#id_time").datetimepicker({
-		format: 'd/m/Y h:i',
+		format: 'd/m/Y H:i',
 	});
 });
 

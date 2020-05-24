@@ -6,8 +6,10 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from solo.models import SingletonModel
 from decimal import Decimal
+from django.core.mail import send_mail
 
 from users.models import MyUser
+from alident import settings
 
 
 class Staff(models.Model):
@@ -156,6 +158,19 @@ class Appointment(models.Model):
         else:
             self.total_price = price
         super(Appointment, self).save(*args, **kwargs)
+
+
+@receiver(post_save, sender=Appointment)
+def send_email(sender, instance, created, **kwargs):
+    if created:
+        message = "У вас новая записть на прием, проверьте админ панель для полной информации."
+        subject = "Новая запись"
+        email_from = settings.EMAIL_HOST_USER
+        send_mail(subject, message, email_from, [
+            'ali_dent.kg@mail.ru',
+            'alidentclinic18@gmail.com',
+            'tektonik_boy98@mail.ru'
+        ])
 
 
 class Expense(models.Model):

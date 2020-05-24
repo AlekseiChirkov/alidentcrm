@@ -128,7 +128,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'alidentdb',  # config('DB_NAME'),
-        'USER': 'alex',  # config('DB_USER'),
+        'USER': 'postgres',  # config('DB_USER'),
         'PASSWORD': 'Aleksissanchez98',  # config('DB_PASS'),
         'HOST': '127.0.0.1',
         'PORT': '5432',
@@ -179,6 +179,10 @@ CRONJOBS = [
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 DATETIME_FORMAT = 'd-m-Y H:i'
+
+TIME_INPUT_FORMATS = [
+    '%H:%M'
+]
 
 LANGUAGE_CODE = 'ru'
 
