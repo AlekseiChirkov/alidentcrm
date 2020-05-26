@@ -799,11 +799,15 @@ li{
     .leftcontent{
         width: 90%;
     }
+    .leftcontent h2{
+        margin: 50px 0 50px 0;
+    }
     .leftcontent p{
         margin-top: 20px;
     }
     .rightcontent{
         width: 90%;
+        padding-bottom: 10px;
     }
     .rightimgs{
         display: none;
