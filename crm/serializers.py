@@ -49,7 +49,7 @@ class DaySerializer(serializers.ModelSerializer):
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
-        fields = ['name', 'surname', 'phone', 'time', 'doctor', 'service', 'status']
+        fields = ['name', 'surname', 'phone', 'time', 'doctor', 'service', 'service_title', 'status']
 
 
 class AppointmentSerializerReadable(serializers.ModelSerializer):
@@ -58,7 +58,7 @@ class AppointmentSerializerReadable(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ['name', 'surname', 'time', 'phone', 'doctor', 'service', 'status']
+        fields = ['name', 'surname', 'time', 'phone', 'doctor', 'service', 'service_title', 'status']
 
 
 class ExpenseSerializer(serializers.ModelSerializer):

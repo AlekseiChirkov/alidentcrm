@@ -92,7 +92,7 @@ class Service(models.Model):
         verbose_name_plural = "Услуги"
 
     def __str__(self):
-        return f"{self.name}, {self.price} сом"
+        return f"{self.code}, {self.name}, {self.price} сом"
 
 
 class Stock(models.Model):
@@ -130,14 +130,17 @@ class Appointment(models.Model):
     name = models.CharField(verbose_name='Имя', max_length=64)
     surname = models.CharField(verbose_name='Фамилия', max_length=64)
     phone = models.CharField(verbose_name='Телефон клиента', max_length=64)
-    time = models.DateTimeField(verbose_name='Время', null=True, help_text='Формат: ')
+    time = models.DateTimeField(verbose_name='Время', null=True)
     doctor = models.ForeignKey(Staff, verbose_name='Врач', on_delete=models.CASCADE, default=None)
     total_price = models.DecimalField(verbose_name='Сумма', max_digits=10, decimal_places=2, default=0)
     status = models.CharField(verbose_name='Статус', max_length=64, choices=STATUS_CHOICES, default='Активен')
     appointment_income = models.ForeignKey('Income', verbose_name='Доход с записи', on_delete=models.CASCADE,
                                            default=None, null=True, blank=True)
-    service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE, default=None)
-    stock = models.ForeignKey(Stock, verbose_name='Акция', on_delete=models.CASCADE, default=None, blank=True, null=True)
+    service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE,
+                                default=None, null=True, blank=True)
+    service_title = models.CharField(verbose_name='Услуга', max_length=256, blank=True, null=True)
+    stock = models.ForeignKey(Stock, verbose_name='Акция', on_delete=models.CASCADE,
+                              default=None, blank=True, null=True)
     date = models.DateField(verbose_name='Дата создания', auto_now=True)
 
     class Meta:
@@ -244,12 +247,14 @@ class Cheque(models.Model):
             stock = float(self.price) * stock_value
             amount = float(self.price) - stock
             self.amount = amount
-            super(Cheque, self).save(*args, **kwargs)
+        super(Cheque, self).save(*args, **kwargs)
 
 
 @receiver(post_save, sender=Appointment)
 def create_cheque(sender, instance, created, **kwargs):
+    print('OK')
     if instance.status == 'Завершен':
+        print('Finish')
         cheque = Cheque.objects.create(
             client=instance.name + ' ' + instance.surname,
             service=instance.service,
@@ -365,7 +370,6 @@ def create_daily_report_with_count(sender, instance, created, **kwargs):
         amount += instance.service.price
 
     report_day = DailyReport.objects.values('date')
-    print(today)
     if report_day != today:
         if created:
             report, created = DailyReport.objects.get_or_create(date=today)

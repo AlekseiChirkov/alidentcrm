@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAdminUser
 from rest_framework.exceptions import ParseError
@@ -319,3 +320,26 @@ class ChequeViewSet(viewsets.ModelViewSet):
         else:
             cheque.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UserAppointmentsViewSet(viewsets.ModelViewSet):
+    queryset = Appointment.objects.all()
+    serializer_class = AppointmentSerializerReadable
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['surname']
+
+    # def list(self, request, *args, **kwargs):
+    #     surname = request.query_params.get('surname', None)
+    #     if surname:
+    #         self.queryset = self.queryset.filter(surname=surname)
+    #
+    #     serializer = self.serializer_class(self.queryset, many=True)
+    #
+    #     return Response(serializer.data, status=200)
+
+
+class DoctorAppointmentsViewSet(viewsets.ModelViewSet):
+    queryset = Appointment.objects.all()
+    serializer_class = AppointmentSerializerReadable
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['doctor']

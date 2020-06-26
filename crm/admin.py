@@ -1,6 +1,4 @@
 from django.contrib import admin
-from django.db.models.functions import Trunc
-from django.db.models import DateTimeField, Min, Max
 from solo.admin import SingletonModelAdmin
 
 from .models import *
