@@ -558,3 +558,46 @@ AliDent is a stomatology clinic
                     "stocks": "150.00"
                 }
             ]
+
+## Appointment Search by Doctor [/crm/doctor-appointments/?doctor=1]
+
+### List Doctor's Appointmets [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+    
+            Location: /crm/doctor-appointments/
+            
+    + Body
+
+            [
+                {
+                    "name": "Aleksei",
+                    "surname": "Chirkov",
+                    "time": "2020-06-26T12:17:00+06:00",
+                    "phone": "996559129557",
+                    "doctor": {
+                        "id": 1,
+                        "name": "Aleksei",
+                        "phone": "996559129557",
+                        "birthday": "2020-06-26",
+                        "email": null,
+                        "experience": 0,
+                        "specialization": null,
+                        "date": "2020-06-26"
+                    },
+                    "service": {
+                        "id": 1,
+                        "category": {
+                            "id": 1,
+                            "name": "Category"
+                        },
+                        "code": "1.1",
+                        "name": "Service",
+                        "price": "100.00"
+                    },
+                    "service_title": "Titltelasd",
+                    "status": "Активен"
+                }
+            ]
