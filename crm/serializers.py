@@ -8,12 +8,6 @@ class StaffSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ClientSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Client
-        fields = ['id', 'name', 'phone', 'birthday', 'email']
-
-
 class ServiceCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceCategory
@@ -50,6 +44,12 @@ class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
         fields = ['name', 'surname', 'phone', 'time', 'doctor', 'service', 'service_title', 'status']
+
+
+class ClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = '__all__'
 
 
 class AppointmentSerializerReadable(serializers.ModelSerializer):
