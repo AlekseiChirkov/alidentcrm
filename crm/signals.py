@@ -139,15 +139,16 @@ def count_stock_amount_for_reports(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Appointment)
 def reports(sender, instance, *args, **kwargs):
     # Daily report
-
     today = datetime.now().date()
     finished_appointments = Appointment.objects.filter(status='Завершен', date=today)
     finished = len(finished_appointments)
     canceled_appointments = Appointment.objects.filter(status='Отменен', date=today)
     canceled = len(canceled_appointments)
+
     amount = 0
     if instance.is_added and instance.date == today:
         amount += instance.total_price
+
     report_day = DailyReport.objects.values('date')
     if report_day != today:
         if instance.is_added:
@@ -159,7 +160,6 @@ def reports(sender, instance, *args, **kwargs):
             report.save()
 
     # Income report
-
     finished_appointments = Appointment.objects.filter(status='Завершен')
     finished = len(finished_appointments)
     canceled_appointments = Appointment.objects.filter(status='Отменен')
