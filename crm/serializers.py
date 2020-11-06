@@ -34,12 +34,6 @@ class StockSerializerReadable(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class DaySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Day
-        fields = ['day']
-
-
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment

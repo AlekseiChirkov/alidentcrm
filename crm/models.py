@@ -1,15 +1,8 @@
-from datetime import datetime
-
 from django.db import models
-from django.db.models import Count, Sum
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from solo.models import SingletonModel
 from decimal import Decimal
-from django.core.mail import send_mail
 
 from users.models import MyUser
-from alident import settings
 
 
 class Staff(models.Model):
@@ -22,24 +15,11 @@ class Staff(models.Model):
     date = models.DateField(verbose_name='Дата регистрации', auto_now=True)
 
     class Meta:
-        verbose_name = "Персонал"
-        verbose_name_plural = "Персонал"
+        verbose_name = "Люди - Персонал"
+        verbose_name_plural = "Люди - Персонал"
 
     def __str__(self):
         return str(self.name)
-
-
-@receiver(post_save, sender=MyUser)
-def make_doctor(sender, instance, created, **kwargs):
-    if instance.category == 'Персонал':
-        if created:
-            staff = Staff.objects.create(
-                name=instance.name + ' ' + instance.surname + ' ' + instance.patronymic,
-                phone=instance.username,
-                birthday=instance.birthday,
-                email=instance.email
-            )
-            staff.save()
 
 
 class Client(models.Model):
@@ -50,32 +30,19 @@ class Client(models.Model):
     date = models.DateField(verbose_name='Дата создания', auto_now=True)
 
     class Meta:
-        verbose_name = "Клиент"
-        verbose_name_plural = "Клиенты"
+        verbose_name = "Люди - Клиент"
+        verbose_name_plural = "Люди - Клиенты"
 
     def __str__(self):
         return str(self.name)
-
-
-@receiver(post_save, sender=MyUser)
-def make_client(sender, instance, created, **kwargs):
-    if instance.category == 'Клиент':
-        if created:
-            client = Client.objects.create(
-                name=instance.name + ' ' + instance.surname + ' ' + instance.patronymic,
-                phone=instance.username,
-                birthday=instance.birthday,
-                email=instance.email
-            )
-            client.save()
 
 
 class ServiceCategory(models.Model):
     name = models.CharField(verbose_name='Название', max_length=128)
 
     class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
+        verbose_name = "Услуги - Категория"
+        verbose_name_plural = "Услуги - Категории"
 
     def __str__(self):
         return self.name
@@ -88,8 +55,8 @@ class Service(models.Model):
     price = models.DecimalField(verbose_name='Цена', max_digits=10, decimal_places=2, default=0)
 
     class Meta:
-        verbose_name = "Услуга"
-        verbose_name_plural = "Услуги"
+        verbose_name = "Услуги - Услуга"
+        verbose_name_plural = "Услуги - Услуги"
 
     def __str__(self):
         return f"{self.code}, {self.name}, {self.price} сом"
@@ -102,22 +69,11 @@ class Stock(models.Model):
     date = models.DateField(verbose_name='Дата создания', auto_now=True)
 
     class Meta:
-        verbose_name = "Акция"
-        verbose_name_plural = "Акции"
+        verbose_name = "Услуги - Акция"
+        verbose_name_plural = "Услуги - Акции"
 
     def __str__(self):
         return '%s' % self.percentage
-
-
-class Day(models.Model):
-    day = models.CharField(verbose_name='День недели', max_length=16)
-
-    class Meta:
-        verbose_name = "Рабочий день"
-        verbose_name_plural = "Рабочие дни"
-
-    def __str__(self):
-        return self.day
 
 
 class Appointment(models.Model):
@@ -138,14 +94,15 @@ class Appointment(models.Model):
                                            default=None, null=True, blank=True)
     service = models.ForeignKey(Service, verbose_name='Услуга', on_delete=models.CASCADE,
                                 default=None, null=True, blank=True)
-    service_title = models.CharField(verbose_name='Услуга', max_length=256, blank=True, null=True)
+    service_title = models.CharField(verbose_name='Описание врача', max_length=256, blank=True, null=True)
     stock = models.ForeignKey(Stock, verbose_name='Акция', on_delete=models.CASCADE,
                               default=None, blank=True, null=True)
-    date = models.DateField(verbose_name='Дата создания', auto_now=True)
+    date = models.DateField(verbose_name='Дата создания', auto_now_add=True)
+    is_added = models.BooleanField(verbose_name='Добавлено в отчет', default=False)
 
     class Meta:
-        verbose_name = "Запись"
-        verbose_name_plural = "Записи"
+        verbose_name = "Записи - Запись на прием"
+        verbose_name_plural = "Записи - Записи на прием"
 
     def __str__(self):
         return '%s %s %s' % (
@@ -153,27 +110,17 @@ class Appointment(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        price = self.service.price
-        if self.stock:
-            stock = self.stock.percentage * 0.01
-            stock_price = Decimal(price) - Decimal(price) * Decimal(stock)
-            self.total_price = Decimal(stock_price)
-        else:
-            self.total_price = price
+        if self.service:
+            price = self.service.price
+            if self.stock:
+                stock = self.stock.percentage * 0.01
+                stock_price = Decimal(price) - Decimal(price) * Decimal(stock)
+                self.total_price = Decimal(stock_price)
+            else:
+                self.total_price = price
+        if self.status == 'Завершен' and not self.is_added:
+            self.is_added = True
         super(Appointment, self).save(*args, **kwargs)
-
-
-@receiver(post_save, sender=Appointment)
-def send_email(sender, instance, created, **kwargs):
-    if created:
-        message = "У вас новая записть на прием, проверьте админ панель для полной информации."
-        subject = "Новая запись"
-        email_from = settings.EMAIL_HOST_USER
-        send_mail(subject, message, email_from, [
-            'ali_dent.kg@mail.ru',
-            'alidentclinic18@gmail.com',
-            'tektonik_boy98@mail.ru'
-        ])
 
 
 class Expense(models.Model):
@@ -185,8 +132,8 @@ class Expense(models.Model):
     date = models.DateField(verbose_name='Дата создания', auto_now=True)
 
     class Meta:
-        verbose_name = "Расход"
-        verbose_name_plural = "Расходы"
+        verbose_name = "Отчеты - Расход"
+        verbose_name_plural = "Отчеты - Расходы"
 
     def __str__(self):
         return '%s %s %s %s %s %s' % (
@@ -196,34 +143,16 @@ class Expense(models.Model):
 
 class Report(models.Model):
     service = models.ForeignKey(Service, verbose_name='Название услуги', on_delete=models.CASCADE)
-    count = models.IntegerField(verbose_name='Записей за день')
+    count = models.IntegerField(verbose_name='Записей за месяц')
     price = models.DecimalField(verbose_name='Сумма', max_digits=10, decimal_places=2)
     date = models.DateField(verbose_name='Дата отчета', auto_now_add=True)
 
     class Meta:
-        verbose_name = "Отчет"
-        verbose_name_plural = "Отчеты"
+        verbose_name = "Отчеты - Услуга"
+        verbose_name_plural = "Отчеты - Услуги"
 
     def __str__(self):
         return '%s %s %s %s' % (self.service, self.count, self.price, self.date)
-
-
-@receiver(post_save, sender=Appointment)
-def make_report(sender, instance, created, **kwargs):
-    qs = Appointment.objects.values('service', 'service__report__date'). \
-        annotate(count=Count('name'), sum=Sum('service__price'))
-    for service in qs:
-        serv = Service.objects.get(id=service['service'])
-        try:
-            report = Report.objects.get(date=service['service__report__date'], service=serv)
-        except Report.DoesNotExist:
-            Report.objects.create(service=serv,
-                                  count=service['count'],
-                                  price=service['sum'], )
-            continue
-        report.count = service['count']
-        report.price = service['sum']
-        report.save()
 
 
 class Cheque(models.Model):
@@ -238,8 +167,8 @@ class Cheque(models.Model):
         return f'Чек: {self.client}'
 
     class Meta:
-        verbose_name = 'Чек'
-        verbose_name_plural = 'Чеки'
+        verbose_name = 'Записи - Чек за прием'
+        verbose_name_plural = 'Записи - Чеки за прием'
 
     def save(self, *args, **kwargs):
         if self.stock:
@@ -247,21 +176,9 @@ class Cheque(models.Model):
             stock = float(self.price) * stock_value
             amount = float(self.price) - stock
             self.amount = amount
+        else:
+            self.amount = self.price
         super(Cheque, self).save(*args, **kwargs)
-
-
-@receiver(post_save, sender=Appointment)
-def create_cheque(sender, instance, created, **kwargs):
-    print('OK')
-    if instance.status == 'Завершен':
-        print('Finish')
-        cheque = Cheque.objects.create(
-            client=instance.name + ' ' + instance.surname,
-            service=instance.service,
-            price=instance.service.price,
-            stock=instance.stock
-        )
-        cheque.save()
 
 
 class Income(SingletonModel):
@@ -269,15 +186,14 @@ class Income(SingletonModel):
     canceled = models.IntegerField(verbose_name='Отмененных записей', default=0)
     amount = models.DecimalField(verbose_name='Общий доход', max_digits=10, decimal_places=2, default=0)
     expense = models.DecimalField(verbose_name='Общий расход', max_digits=10, decimal_places=2, default=0)
-    ratio = models.DecimalField(verbose_name='Соотношение', max_digits=10, decimal_places=2, default=0)
+    ratio = models.DecimalField(verbose_name='Чистая прибыль', max_digits=10, decimal_places=2, default=0)
     clients = models.IntegerField(verbose_name='Всего клиентов', default=0)
     avg_cheque = models.DecimalField(verbose_name='Средний чек', max_digits=10, decimal_places=2, default=0)
     stocks = models.DecimalField(verbose_name='Скидок на сумму', max_digits=10, decimal_places=2, default=0)
-    amount_stocks = models.DecimalField(verbose_name='Доход с учетом скидок', max_digits=10, decimal_places=2, default=0)
 
     class Meta:
-        verbose_name = "Доход"
-        verbose_name_plural = "Доходы"
+        verbose_name = "Отчеты - Доход"
+        verbose_name_plural = "Отчеты - Доходы"
 
     def __str__(self):
         return "%s %s %s %s %s %s" % (
@@ -285,148 +201,20 @@ class Income(SingletonModel):
         )
 
 
-@receiver(post_save, sender=Appointment)
-def create_report_with_count(sender, instance, created, **kwargs):
-    finished_appointments = Appointment.objects.filter(status='Завершен')
-    finished = len(finished_appointments)
-    canceled_appointments = Appointment.objects.filter(status='Отменен')
-    canceled = len(canceled_appointments)
-
-    amount = 0
-    if instance.status == 'Завершен':
-        amount += instance.total_price
-
-    income = Income.get_solo()
-    if instance.status == 'Завершен':
-        income.finished = finished
-    if instance.status == 'Отменен':
-        income.canceled = canceled
-    income.amount += amount
-    income.ratio = income.amount - income.expense - income.stocks
-    income.amount_stocks = income.amount - income.stocks
-    try:
-        income.avg_cheque = float(income.amount) / float(income.finished)
-    except ZeroDivisionError:
-        print("Division by 0")
-    income.save()
-
-
-@receiver(post_save, sender=Expense)
-def add_expense_to_report(sender, instance, created, **kwargs):
-    income = Income.get_solo()
-    income.expense += instance.price
-    income.ratio = income.amount - income.expense
-    income.save()
-
-
-@receiver(post_save, sender=Client)
-def count_new_clients(sender, instance, created, **kwargs):
-    clients = Client.objects.count()
-    income = Income.get_solo()
-    income.clients = clients
-    income.save()
-
-
-@receiver(post_save, sender=Cheque)
-def count_stock_amount(sender, instance, created, **kwargs):
-    income = Income.get_solo()
-    stocks = 0
-    if instance.stock:
-        price = instance.price
-        amount = instance.amount
-        stocks += float(price) - float(amount)
-    income.stocks += Decimal(stocks)
-    income.save()
-
-
 class DailyReport(models.Model):
     finished = models.IntegerField(verbose_name='Завершенных записей', default=0)
     canceled = models.IntegerField(verbose_name='Отмененных записей', default=0)
     amount = models.DecimalField(verbose_name='Общий доход', max_digits=10, decimal_places=2, default=0)
     expense = models.DecimalField(verbose_name='Общий расход', max_digits=10, decimal_places=2, default=0)
-    ratio = models.DecimalField(verbose_name='Соотношение доход/расход', max_digits=10, decimal_places=2, default=0)
+    ratio = models.DecimalField(verbose_name='Чистая прибыль', max_digits=10, decimal_places=2, default=0)
     avg_cheque = models.DecimalField(verbose_name='Средний чек', max_digits=10, decimal_places=2, default=0)
     clients = models.IntegerField(verbose_name='Новых клиентов', default=0)
     stocks = models.DecimalField(verbose_name='Скидок на сумму', max_digits=10, decimal_places=2, default=0)
-    amount_stocks = models.DecimalField(verbose_name='Доход с учетом скидок', max_digits=10, decimal_places=2,
-                                        default=0)
     date = models.DateField(verbose_name='Дата отчета', auto_now=True)
 
     class Meta:
-        verbose_name = 'Отчет за день'
-        verbose_name_plural = 'Отчеты по дням'
+        verbose_name = 'Отчеты - Отчет за день'
+        verbose_name_plural = 'Отчеты - Отчеты по дням'
 
 
-@receiver(post_save, sender=Appointment)
-def create_daily_report_with_count(sender, instance, created, **kwargs):
-    finished_appointments = Appointment.objects.filter(status='Завершен')
-    finished = len(finished_appointments)
-    canceled_appointments = Appointment.objects.filter(status='Отменен')
-    canceled = len(canceled_appointments)
-    today = datetime.now().date()
 
-    amount = 0
-    if instance.status == 'Завершен' and instance.date == today:
-        amount += instance.service.price
-
-    report_day = DailyReport.objects.values('date')
-    if report_day != today:
-        if created:
-            report, created = DailyReport.objects.get_or_create(date=today)
-            if instance.date == today:
-                if instance.status == 'Завершен':
-                    finished = Appointment.objects.filter(date=today).count()
-                    report.finished = finished
-                if instance.status == 'Отменен':
-                    canceled = Appointment.objects.filter(date=today).count()
-                    report.canceled = canceled
-            report.amount += amount
-            report.ratio = report.amount - report.expense
-            report.amount_stocks = report.amount - report.stocks
-            try:
-                report.avg_cheque = float(report.amount) / float(report.finished)
-            except ZeroDivisionError:
-                print("Division by 0")
-            report.save()
-
-
-@receiver(post_save, sender=Expense)
-def add_expense_to_daily_report(sender, instance, created, **kwargs):
-    today = datetime.now().date()
-    report_day = DailyReport.objects.values('date')
-    if report_day != today:
-        if created:
-            report, created = DailyReport.objects.get_or_create(date=today)
-            if instance.date == today:
-                report.expense += instance.price
-                report.ratio = report.amount - report.expense
-                report.save()
-
-
-@receiver(post_save, sender=Client)
-def count_new_clients_in_daily_report(sender, instance, created, **kwargs):
-    today = datetime.now().date()
-    report_day = DailyReport.objects.values('date')
-    if report_day != today:
-        if created:
-            report, created = DailyReport.objects.get_or_create(date=today)
-            if instance.date == today:
-                clients = Client.objects.filter(date=today).count()
-                report.clients = clients
-                report.save()
-
-
-@receiver(post_save, sender=Cheque)
-def count_stock_amount_for_daily_report(sender, instance, created, **kwargs):
-    today = datetime.now().date()
-    report_day = DailyReport.objects.values('date')
-    stocks = 0
-    if report_day != today:
-        if created:
-            report, created = DailyReport.objects.get_or_create(date=today)
-            if instance.stock and instance.date == today:
-                price = instance.price
-                amount = instance.amount
-                stocks += float(price) - float(amount)
-                report.stocks += Decimal(stocks)
-                report.save()

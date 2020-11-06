@@ -59,12 +59,12 @@ INSTALLED_APPS = [
     # django-crontab
     'django_crontab',
 
+    # django-solo
+    'solo',
+
     # apps
     'crm.apps.CrmConfig',
     'users.apps.UsersConfig',
-
-    # django-solo
-    'solo',
 ]
 
 SITE_ID = 1
@@ -165,7 +165,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'tektonikboy98@gmail.com'
-EMAIL_HOST_PASSWORD = 'ilvdhqrumgxwqmzj'
+EMAIL_HOST_PASSWORD = 'ledgxitvuyotrfyt'
 
 CRONJOBS = [
     ('0 12 1,16 * *', 'users.cron.scheduled_email_for_clients'),

@@ -23,7 +23,6 @@ def home(request):
             appointment.surname = form.cleaned_data["surname"]
             appointment.phone = form.cleaned_data["phone"]
             appointment.time = form.cleaned_data["time"]
-            appointment.service = form.cleaned_data["service"]
             appointment.doctor = form.cleaned_data["doctor"]
             appointment.save()
             messages.success(request, "Successfully added appointment")
@@ -146,36 +145,6 @@ class StockViewSet(viewsets.ModelViewSet):
             raise Http404
         else:
             stock.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-class DayViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
-    queryset = Day.objects.all()
-    serializer_class = DaySerializer
-
-    def get(self):
-        day = self.queryset.all()
-        serializer = self.serializer_class(day, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def delete(self, request):
-        pk = request.data.get('id', None)
-        if pk is None:
-            raise ParseError('role_id is required')
-
-        try:
-            day = self.queryset.get(id=pk)
-        except Day.DoesNotExist:
-            raise Http404
-        else:
-            day.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
 
