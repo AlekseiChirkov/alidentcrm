@@ -48,7 +48,7 @@ def send_email(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Appointment)
-def make_report(sender, instance, created, **kwargs):
+def make_report_for_service(sender, instance, created, **kwargs):
     date = now()
     report, created = Report.objects.get_or_create(
         service_id=instance.service_id,
@@ -79,7 +79,7 @@ def create_cheque(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Expense)
-def add_expense_to_daily_report(sender, instance, created, **kwargs):
+def add_expense_to_reports(sender, instance, created, **kwargs):
     income = Income.get_solo()
     if created:
         income.expense += instance.price
@@ -98,7 +98,7 @@ def add_expense_to_daily_report(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Client)
-def count_new_clients_in_daily_report(sender, instance, created, **kwargs):
+def count_new_clients_to_reports(sender, instance, created, **kwargs):
     clients = Client.objects.count()
     income = Income.get_solo()
     income.clients = clients
@@ -137,7 +137,9 @@ def count_stock_amount_for_reports(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Appointment)
-def daily_report(sender, instance, *args, **kwargs):
+def reports(sender, instance, *args, **kwargs):
+    # Daily report
+
     today = datetime.now().date()
     finished_appointments = Appointment.objects.filter(status='Завершен', date=today)
     finished = len(finished_appointments)
@@ -156,9 +158,8 @@ def daily_report(sender, instance, *args, **kwargs):
             report.ratio = report.amount - report.expense
             report.save()
 
+    # Income report
 
-@receiver(post_save, sender=Appointment)
-def create_daily_report_with_count(sender, instance, created, **kwargs):
     finished_appointments = Appointment.objects.filter(status='Завершен')
     finished = len(finished_appointments)
     canceled_appointments = Appointment.objects.filter(status='Отменен')
@@ -185,60 +186,3 @@ def create_daily_report_with_count(sender, instance, created, **kwargs):
             print("Division by 0")
 
         income.save()
-
-
-# @receiver(post_save, sender=Expense)
-# def add_expense_to_report(sender, instance, created, **kwargs):
-#     income = Income.get_solo()
-#     if created:
-#         income.expense += instance.price
-#         income.ratio = income.amount - income.expense
-#         income.save()
-
-
-# @receiver(post_save, sender=Client)
-# def count_new_clients(sender, instance, created, **kwargs):
-#     clients = Client.objects.count()
-#     income = Income.get_solo()
-#     income.clients = clients
-#     income.save()
-
-
-# @receiver(post_save, sender=Appointment)
-# def count_stock_amount(sender, instance, created, **kwargs):
-#     income = Income.get_solo()
-#     if instance.stock and instance.is_added:
-#         stock = instance.service.price - instance.total_price
-#         income.stocks += Decimal(stock)
-#         income.save()
-
-
-# @receiver(post_save, sender=Appointment)
-# def create_report_with_count(sender, instance, created, **kwargs):
-#     finished_appointments = Appointment.objects.filter(status='Завершен')
-#     finished = len(finished_appointments)
-#     canceled_appointments = Appointment.objects.filter(status='Отменен')
-#     canceled = len(canceled_appointments)
-#
-#     amount = 0
-#     if instance.status == 'Завершен':
-#         amount += instance.total_price
-#
-#     income = Income.get_solo()
-#     if instance.status == 'Завершен':
-#         income.finished = finished
-#     if instance.status == 'Отменен':
-#         income.canceled = canceled
-#     income.amount += amount
-#     income.ratio = income.amount - income.expense - income.stocks
-#     income.amount_stocks = income.amount - income.stocks
-#     try:
-#         income.avg_cheque = float(income.amount) / float(income.finished)
-#     except ZeroDivisionError:
-#         print("Division by 0")
-#     income.save()
-
-
-
-
-
